@@ -1,21 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  ActivityIndicator,
-  ImageBackground,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Switch,
-  Text,
-  View,
-} from 'react-native';
-import ViewBoxesWithColorAndText from './src/examples/ViewDemo';
-import TextInANest from './src/examples/TextDemo';
-import DisplayAnImage from './src/examples/ImageDemo';
-import UselessTextInput from './src/examples/TextInputDemo';
-import StyleSheetExample from './src/examples/StyleSheetDemo';
-import TOExample from './src/examples/TouchableOpacityDemo';
-import ModalExample from './src/examples/ModalDemo';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import FlexDimensionsBasics from './src/examples/layouts/FlexDimensionBasics';
+import Layout1 from './src/examples/layouts/Layout1';
+import LotsOfStyles from './src/examples/layouts/LotsOfStyles';
+import FixedDimensionsBasics from './src/examples/layouts/FixedDimensionBasics';
+import PercentageDimensionsBasics from './src/examples/layouts/PercentageDimensionBasics';
+import JustifyContentBasics from './src/examples/layouts/JustifyContentBasics';
+import AlignItemsDemo from './src/examples/layouts/AlignItemsDemo';
+import FlexWrapDemo from './src/examples/layouts/FlexWrapDemo';
+import RelativeLayoutDemo from './src/examples/layouts/RelativeLayoutDemo';
+import AbsoluteLayoutDemo from './src/examples/layouts/AbsoluteLayoutDemo';
+import PracticeLayout01 from './src/examples/PracticeLayout01';
 
 const App = () => {
   // const scrViewRef = useRef(null);
@@ -26,42 +21,45 @@ const App = () => {
   // }, []);
   const [value, setValue] = useState(false);
   return (
-    <ScrollView
-      // ref={scrViewRef}
-      style={styles.container}
-      showsVerticalScrollIndicator>
-      <ViewBoxesWithColorAndText />
-      <TextInANest />
-      <DisplayAnImage />
-      <UselessTextInput />
-      <StyleSheetExample />
-      <TOExample />
-      <ModalExample />
-      <ActivityIndicator
-        size={'large'}
-        color={'red'}
-        style={{ marginTop: 20, marginBottom: 30 }}
-      />
-      <ImageBackground
-        style={{
-          width: 200,
-          height: 200,
-        }}
-        source={{
-          uri: 'https://static.tuoitre.vn/tto/r/2015/08/02/a-1438493457.jpg',
-        }}>
-        <Text style={{ color: 'white', fontSize: 20 }}>Toi ten la ky</Text>
-        <Text style={{ color: 'white', fontSize: 20 }}>Toi ten la ky</Text>
-        <Text style={{ color: 'white', fontSize: 20 }}>Toi ten la ky</Text>
-      </ImageBackground>
-      <StatusBar backgroundColor={'yellow'} barStyle={'dark-content'} />
-      <Switch
-        value={value}
-        onValueChange={state => {
-          setValue(state);
-        }}
-      />
-    </ScrollView>
+    // <ScrollView
+    //   // ref={scrViewRef}
+    //   style={styles.container}
+    //   showsVerticalScrollIndicator>
+    //   <ViewBoxesWithColorAndText />
+    //   <TextInANest />
+    //   <DisplayAnImage />
+    //   <UselessTextInput />
+    //   <StyleSheetExample />
+    //   <TOExample />
+    //   <ModalExample />
+    //   <ActivityIndicator
+    //     size={'large'}
+    //     color={'red'}
+    //     style={{ marginTop: 20, marginBottom: 30 }}
+    //   />
+    //   <ImageBackground
+    //     style={{
+    //       width: 200,
+    //       height: 200,
+    //     }}
+    //     source={{
+    //       uri: 'https://static.tuoitre.vn/tto/r/2015/08/02/a-1438493457.jpg',
+    //     }}>
+    //     <Text style={{ color: 'white', fontSize: 20 }}>Toi ten la ky</Text>
+    //     <Text style={{ color: 'white', fontSize: 20 }}>Toi ten la ky</Text>
+    //     <Text style={{ color: 'white', fontSize: 20 }}>Toi ten la ky</Text>
+    //   </ImageBackground>
+    //   <StatusBar backgroundColor={'yellow'} barStyle={'dark-content'} />
+    //   <Switch
+    //     value={value}
+    //     onValueChange={state => {
+    //       setValue(state);
+    //     }}
+    //   />
+    // </ScrollView>
+    <View style={styles.container}>
+      <PracticeLayout01 />
+    </View>
   );
 };
 
