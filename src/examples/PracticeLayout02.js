@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 
-const PracticeLayout01 = () => {
+const PracticeLayout02 = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View
@@ -35,10 +35,23 @@ const PracticeLayout01 = () => {
               style={{
                 fontSize: 16,
                 fontWeight: '500',
-                marginTop: 20,
-                marginLeft: 20,
+                flex: 1,
+                textAlignVertical: 'center',
+                paddingLeft: 20,
+                borderBottomColor: 'black',
+                borderBottomWidth: 1,
               }}>
               Tôi tên là Kỳ!
+            </Text>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: '500',
+                flex: 1,
+                textAlignVertical: 'center',
+                paddingLeft: 20,
+              }}>
+              Tôi năm nay 25 tuổi
             </Text>
           </View>
         </View>
@@ -54,22 +67,74 @@ const PracticeLayout01 = () => {
               flex: 2,
               borderRightColor: 'black',
               borderRightWidth: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
             }}>
-            <Text style={{ fontSize: 16, fontWeight: '500' }}>
-              Dòng chữ này nằm ở giữa
-            </Text>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <View style={{ flex: 1, backgroundColor: '#5C61F4' }} />
+              <View style={{ flex: 1 }} />
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                Dòng chữ này nằm ở giữa
+              </Text>
+            </View>
           </View>
           <View style={{ flex: 1 }}>
-            <View style={{ flex: 1, backgroundColor: '#5C61F4' }} />
+            <View style={{ flex: 1 }} />
             <View style={{ flex: 1, backgroundColor: '#4CAF50' }} />
           </View>
         </View>
         <View style={{ flex: 1, flexDirection: 'row' }}>
-          <View style={{ flex: 1, backgroundColor: '#223263' }} />
-          <View style={{ flex: 1, backgroundColor: '#9098B1' }} />
-          <View style={{ flex: 1, backgroundColor: '#FF3D00' }} />
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: '#223263',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 16,
+                fontWeight: '500',
+              }}>
+              Text 1
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: '#9098B1',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 16,
+                fontWeight: '500',
+              }}>
+              Text 2
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: '#FF3D00',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 16,
+                fontWeight: '500',
+              }}>
+              Text 3
+            </Text>
+          </View>
         </View>
       </View>
       <View style={{ flex: 1 }}>
@@ -88,7 +153,7 @@ const PracticeLayout01 = () => {
               borderRadius: 15,
               position: 'relative',
               zIndex: 1,
-              elevation: 1,
+              elevation: 0,
             }}
           />
           <View
@@ -101,7 +166,7 @@ const PracticeLayout01 = () => {
               top: 10,
               right: 50,
               zIndex: -1,
-              elevation: 0,
+              elevation: -1,
             }}
           />
         </View>
@@ -140,4 +205,4 @@ const PracticeLayout01 = () => {
   );
 };
 
-export default PracticeLayout01;
+export default PracticeLayout02;

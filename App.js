@@ -1,16 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import FlexDimensionsBasics from './src/examples/layouts/FlexDimensionBasics';
-import Layout1 from './src/examples/layouts/Layout1';
-import LotsOfStyles from './src/examples/layouts/LotsOfStyles';
-import FixedDimensionsBasics from './src/examples/layouts/FixedDimensionBasics';
-import PercentageDimensionsBasics from './src/examples/layouts/PercentageDimensionBasics';
-import JustifyContentBasics from './src/examples/layouts/JustifyContentBasics';
-import AlignItemsDemo from './src/examples/layouts/AlignItemsDemo';
-import FlexWrapDemo from './src/examples/layouts/FlexWrapDemo';
-import RelativeLayoutDemo from './src/examples/layouts/RelativeLayoutDemo';
-import AbsoluteLayoutDemo from './src/examples/layouts/AbsoluteLayoutDemo';
-import PracticeLayout01 from './src/examples/PracticeLayout01';
+import BaiTap1 from './src/examples/baitap/BaiTap1';
 
 const App = () => {
   // const scrViewRef = useRef(null);
@@ -58,7 +48,7 @@ const App = () => {
     //   />
     // </ScrollView>
     <View style={styles.container}>
-      <PracticeLayout01 />
+      <BaiTap1 />
     </View>
   );
 };

@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 
 const AbsoluteLayoutDemo = () => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.box1} />
       <View style={styles.box2} />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     left: 20,
     top: 20,
-    position: 'absolute',
+    position: 'relative',
   },
 });
 
