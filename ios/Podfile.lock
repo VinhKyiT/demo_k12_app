@@ -302,6 +302,8 @@ PODS:
   - React-jsinspector (0.70.12)
   - React-logger (0.70.12):
     - glog
+  - react-native-safe-area-context (4.7.1):
+    - React-Core
   - React-perflogger (0.70.12)
   - React-RCTActionSheet (0.70.12):
     - React-Core/RCTActionSheetHeaders (= 0.70.12)
@@ -368,6 +370,38 @@ PODS:
     - React-jsi (= 0.70.12)
     - React-logger (= 0.70.12)
     - React-perflogger (= 0.70.12)
+  - RNGestureHandler (2.9.0):
+    - React-Core
+  - RNReanimated (2.17.0):
+    - DoubleConversion
+    - FBLazyVector
+    - FBReactNativeSpec
+    - glog
+    - RCT-Folly
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
+    - React-Core
+    - React-Core/DevSupport
+    - React-Core/RCTWebSocket
+    - React-CoreModules
+    - React-cxxreact
+    - React-jsi
+    - React-jsiexecutor
+    - React-jsinspector
+    - React-RCTActionSheet
+    - React-RCTAnimation
+    - React-RCTBlob
+    - React-RCTImage
+    - React-RCTLinking
+    - React-RCTNetwork
+    - React-RCTSettings
+    - React-RCTText
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - RNScreens (3.24.0):
+    - React-Core
+    - React-RCTImage
   - SocketRocket (0.6.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -420,6 +454,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -432,6 +467,9 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNReanimated (from `../node_modules/react-native-reanimated`)
+  - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -495,6 +533,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-safe-area-context:
+    :path: "../node_modules/react-native-safe-area-context"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -519,6 +559,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
+  RNReanimated:
+    :path: "../node_modules/react-native-reanimated"
+  RNScreens:
+    :path: "../node_modules/react-native-screens"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -557,6 +603,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 8ab6379cd3abec21019c9fed3c506750f905bb3c
   React-jsinspector: ffb090a5d57aab834dee2791b1867a17bf37f26f
   React-logger: 00be0dc9dacb7b23f3ab4d78aadccb4b72f24b31
+  react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
   React-perflogger: c0b9c0ab8cbaf732694cd776645b3161d128784d
   React-RCTActionSheet: c2b26d0be4e6e48ed6b4666345da16c8f7933b7b
   React-RCTAnimation: cc36ff278cd41365c98eeec3c8d1fa86e2fc2392
@@ -569,6 +616,9 @@ SPEC CHECKSUMS:
   React-RCTVibration: 89e72d020ee2848022ee214f0542facafe91110a
   React-runtimeexecutor: 6bedb63b3de0c5c3bb3cc44595431e2a91c24da2
   ReactCommon: 2642dd48fe3def7738d85f747c05fdd8c3a47950
+  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
+  RNReanimated: bec7736122a268883bdede07f1bf9cf4b40158db
+  RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: bb774af243598f7f860127c6e9ac7b62fb6519c4
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
