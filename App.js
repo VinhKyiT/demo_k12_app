@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import BaiTap1 from './src/examples/baitap/BaiTap1';
+import BaiTap1Demo from './src/prepare/BaiTap1Demo';
 
 const App = () => {
   // const scrViewRef = useRef(null);
@@ -48,7 +48,7 @@ const App = () => {
     //   />
     // </ScrollView>
     <View style={styles.container}>
-      <BaiTap1 />
+      <></>
     </View>
   );
 };
