@@ -24,19 +24,10 @@ const DetailScreen = () => {
   return (
     <View>
       <Text>Detail Screen</Text>
-      <CustomButton
-        onPress={() => navigation.goBack()}
-        title="Quay về màn hình Home"
-      />
+      <CustomButton onPress={() => navigation.goBack()} title="Quay về màn hình Home" />
       <CustomButton onPress={() => navigation.push('Home')} title="Push Home" />
-      <CustomButton
-        onPress={() => navigation.navigate('Home')}
-        title="Navigate Home"
-      />
-      <CustomButton
-        onPress={() => navigation.push('Detail')}
-        title="Push Detail"
-      />
+      <CustomButton onPress={() => navigation.navigate('Home')} title="Navigate Home" />
+      <CustomButton onPress={() => navigation.push('Detail')} title="Push Detail" />
       <CustomButton onPress={() => navigation.pop(5)} title="Pop" />
     </View>
   );

@@ -5,22 +5,22 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/Home';
 import DetailScreen from '../screens/Detail';
 import TodoScreen from '../screens/Todo';
+import TodoListScreen from '../screens/TodoList';
+import TaskDetailScreen from '../screens/TaskDetail';
+import FlatListDemo from '../examples/FlatListDemo';
 
 const Stack = createStackNavigator();
 
 function MainNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Todo"
-        screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="FlatListDemo" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Todo" component={TodoScreen} />
-        <Stack.Screen
-          name="Detail"
-          component={DetailScreen}
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="TodoList" component={TodoListScreen} />
+        <Stack.Screen name="TaskDetail" component={TaskDetailScreen} />
+        <Stack.Screen name="FlatListDemo" component={FlatListDemo} />
+        <Stack.Screen name="Detail" component={DetailScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
