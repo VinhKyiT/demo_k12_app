@@ -1,44 +1,24 @@
 import { View, Text, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
-
-const DS_LOP = [
-  { id: '1', name: 'Vĩnh Kỳ', age: 20 },
-  { id: '2', name: 'La Quốc Lương', age: 21 },
-  { id: '3', name: 'Lê Ngọc Dũng', age: 22 },
-  { id: '4', name: 'Thanh Tùng', age: 23 },
-  { id: '5', name: 'Quốc Thanh', age: 24 },
-  { id: '6', name: 'Đình Thọ', age: 25 },
-  { id: '7', name: 'Lâm Phương', age: 26 },
-  { id: '8', name: 'Hanh', age: 27 },
-  { id: '9', name: 'Trung Phát', age: 28 },
-  { id: '10', name: 'Minh Thuận', age: 29 },
-  { id: '11', name: 'Quang Thực', age: 30 },
-  // ...
-];
-
-const DS_LOP2 = [
-  { id: '1', name: 'Bùi Phạm Vĩnh Kỳ', age: 20 },
-  { id: '2', name: 'La Quốc Lương', age: 21 },
-  { id: '3', name: 'Lê Ngọc Dũng', age: 22 },
-  { id: '4', name: 'Thanh Tùng', age: 23 },
-  { id: '5', name: 'Quốc Thanh', age: 24 },
-  { id: '6', name: 'Đình Thọ', age: 25 },
-  { id: '7', name: 'Lâm Phương', age: 26 },
-  { id: '8', name: 'Hanh', age: 27 },
-  { id: '9', name: 'Trung Phát', age: 28 },
-  { id: '10', name: 'Minh Thuận', age: 29 },
-  { id: '11', name: 'Quang Thực', age: 30 },
-  // ...
-];
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { USER_INITIAL_PAGE_SIZE, USER_LOAD_MORE_PAGE_SIZE } from '../constants/listConstants';
+import UserItem from '../components/UserItem';
+import { FONTS } from '../constants/fonts';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const FlatListDemo = () => {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isEndList, setIsEndList] = useState(false);
+  const [currentOffset, setCurrentOffset] = useState(0);
 
-  const fetchUser = async () => {
+  const flatlistRef = useRef();
+
+  const fetchData = async (offset = 0, limit = USER_INITIAL_PAGE_SIZE) => {
     try {
-      const result = await fetch('https://api.escuelajs.co/api/v1/users');
+      const result = await fetch(
+        `https://api.escuelajs.co/api/v1/products?offset=${offset}&limit=${limit}`,
+      );
       const resultJson = await result.json();
       return resultJson;
     } catch (error) {
@@ -48,8 +28,11 @@ const FlatListDemo = () => {
 
   useEffect(() => {
     setIsFetching(true);
-    fetchUser()
-      .then(res => setData(res))
+    fetchData()
+      .then(res => {
+        setData(res);
+        setCurrentOffset(USER_INITIAL_PAGE_SIZE);
+      })
       .catch(err => console.log({ err }))
       .finally(() => setIsFetching(false));
   }, []);
@@ -58,69 +41,88 @@ const FlatListDemo = () => {
     if (isRefreshing) {
       return;
     }
-    console.log('handleRefresh');
     setIsRefreshing(true);
-    fetchUser()
-      .then(res => setData(res))
+    fetchData()
+      .then(res => {
+        setData(res);
+        setIsEndList(false);
+      })
       .catch(err => console.log({ err }))
       .finally(() => setIsRefreshing(false));
   };
 
-  console.log('isFetching', isFetching);
+  const handleEndReached = async () => {
+    if (isFetching || isEndList) {
+      return;
+    }
+    try {
+      setIsFetching(true);
+      console.log('currentOffset', currentOffset);
+      const result = await fetchData(currentOffset, USER_LOAD_MORE_PAGE_SIZE);
+      if (result?.length < USER_LOAD_MORE_PAGE_SIZE) {
+        setIsEndList(true);
+      }
+      setData(prev => [...prev, ...result]);
+      setIsFetching(false);
+      setCurrentOffset(currentOffset + USER_LOAD_MORE_PAGE_SIZE);
+    } catch (error) {
+      console.log({ error });
+      setIsFetching(false);
+    }
+  };
+
+  const listEmptyComponent = useCallback(() => {
+    if (isFetching) {
+      return <ActivityIndicator size={'large'} />;
+    }
+    return (
+      <View style={{ alignItems: 'center' }}>
+        <Text>Danh sách rỗng</Text>
+      </View>
+    );
+  }, [isFetching]);
+
+  const listHeaderComponent = useCallback(
+    () => (
+      <View style={{ alignItems: 'center', marginVertical: 16 }}>
+        <Text style={{ color: 'black', fontSize: 20, fontFamily: FONTS.BOLD }}>
+          Danh sách lớp App K12 HCM
+        </Text>
+        <AntDesign name="team" color={'red'} size={30} />
+      </View>
+    ),
+    [],
+  );
+
+  const listFooterComponent = useCallback(() => {
+    if (isFetching && data?.length > 0) {
+      return <ActivityIndicator size={'large'} color={'green'} />;
+    }
+    return (
+      <View style={{ alignItems: 'center', marginVertical: 16 }}>
+        <Text>Đã hết</Text>
+      </View>
+    );
+  }, [isFetching, data]);
+
+  const renderItem = useCallback(({ item, index }) => <UserItem item={item} index={index} />, []);
 
   return (
     <View style={{ flex: 1 }}>
       <FlatList
+        ref={flatlistRef}
         data={data}
         keyExtractor={item => item.id}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+        onEndReached={handleEndReached}
+        initialNumToRender={20}
+        onEndReachedThreshold={0.5}
         ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-        ListEmptyComponent={() => {
-          if (isFetching) {
-            return <ActivityIndicator size={'large'} />;
-          }
-          return (
-            <View style={{ alignItems: 'center' }}>
-              <Text>Danh sách rỗng</Text>
-            </View>
-          );
-        }}
-        ListHeaderComponent={() => (
-          <View style={{ alignItems: 'center', marginVertical: 16 }}>
-            <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>
-              Danh sách lớp App K12 HCM
-            </Text>
-          </View>
-        )}
-        ListFooterComponent={() => {
-          if (isFetching) {
-            return null;
-          }
-          return (
-            <View style={{ alignItems: 'center', marginVertical: 16 }}>
-              <Text>Đã hết</Text>
-            </View>
-          );
-        }}
+        ListEmptyComponent={listEmptyComponent}
+        ListHeaderComponent={listHeaderComponent}
+        ListFooterComponent={listFooterComponent}
         contentContainerStyle={{ paddingHorizontal: 16 }}
-        renderItem={({ item, index }) => (
-          <View
-            style={{
-              padding: 16,
-              borderColor: 'black',
-              borderWidth: 1,
-              borderRadius: 16,
-            }}>
-            <View style={{ flexDirection: 'row' }}>
-              <Text>Tên: </Text>
-              <Text>{item.name}</Text>
-            </View>
-            <View style={{ flexDirection: 'row', marginTop: 4 }}>
-              <Text>Email: </Text>
-              <Text>{item.email}</Text>
-            </View>
-          </View>
-        )}
+        renderItem={renderItem}
       />
     </View>
   );

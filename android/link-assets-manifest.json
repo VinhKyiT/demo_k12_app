@@ -1,0 +1,105 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/AntDesign.ttf",
+      "sha1": "4e77868439280fb434d4697c7b911271406c81f3"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-Black.ttf",
+      "sha1": "49cd46f1f23bfc8b0db2ad65825ecd00b4917627"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-BlackItalic.ttf",
+      "sha1": "b3e6587a6a65afa559e4e078d97ca71eff26115a"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-Bold.ttf",
+      "sha1": "f0ed42979a49d75fdecf08293f8e7eaeb5a2d8be"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-BoldItalic.ttf",
+      "sha1": "10e212ac593cd8821af3b71e759c635a821fed2e"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-ExtraBold.ttf",
+      "sha1": "3193ea6ee7d61d34780a4dfb72ebe1f590694e2e"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-ExtraBoldItalic.ttf",
+      "sha1": "5d2000bc8abce4b2e739c82c6bc76120f0e95e68"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-ExtraLight.ttf",
+      "sha1": "6a339255a47331e93b9efcd8f9913b68d97f4773"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-ExtraLightItalic.ttf",
+      "sha1": "dc6f337ff6c95f3b2beae7a2fc03bd0c959debd2"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-Italic.ttf",
+      "sha1": "a2c1142a344b9c367c6e500fbc5a6461092a565e"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-Light.ttf",
+      "sha1": "df6a2d8116d5a8ffa65385dfb4eab2e1fa7c60b9"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-LightItalic.ttf",
+      "sha1": "7857ac943b5a8adcc1dc40de50ac3c52dd201e0a"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-Medium.ttf",
+      "sha1": "e513ab6b10594cbbb749aa56d4d66391bd3a35c7"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-MediumItalic.ttf",
+      "sha1": "fcbd215e3cd9b7824a5e797018b03b4fb43a4a6c"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-Regular.ttf",
+      "sha1": "eb245bb578205a32c8b301a41adfff248ee73e53"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-SemiBold.ttf",
+      "sha1": "e1fd9e25f72d95830f0e341dccb9c651f36b57ec"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-SemiBoldItalic.ttf",
+      "sha1": "126be112dbece4022a5c72d6a75a70d698e4bfee"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-Thin.ttf",
+      "sha1": "adffc2d3fdfcfb07ea49dafd1314bee9baf2fcd1"
+    },
+    {
+      "path": "src/assets/fonts/Archivo-ThinItalic.ttf",
+      "sha1": "e69bcf3a52d3f54a5606101b6309e7d14369f251"
+    },
+    {
+      "path": "src/assets/fonts/Feather.ttf",
+      "sha1": "e6604258b1ced5efd51360875d782fca65381d47"
+    },
+    {
+      "path": "src/assets/fonts/FontAwesome.ttf",
+      "sha1": "13b1eab65a983c7a73bc7997c479d66943f7c6cb"
+    },
+    {
+      "path": "src/assets/fonts/Ionicons.ttf",
+      "sha1": "86e07c3d974eb09099e6e5a9b3b8310303cf0feb"
+    },
+    {
+      "path": "src/assets/fonts/MaterialCommunityIcons.ttf",
+      "sha1": "4c2a838b00dbb5e8bb1b368fce0de534e8eb241c"
+    },
+    {
+      "path": "src/assets/fonts/MaterialIcons.ttf",
+      "sha1": "7e02c3f005532ff4d24148567c84089756a7848a"
+    },
+    {
+      "path": "src/assets/fonts/SimpleLineIcons.ttf",
+      "sha1": "9ffb81a5a11112e292f2cc323e98486bad597599"
+    }
+  ]
+}
