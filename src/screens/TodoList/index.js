@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import TaskItem from '../../components/TaskItem';
+import TaskItem from '~components/TaskItem';
 const TodoListScreen = () => {
   const [todos, setTodos] = useState([]);
   const [tasksDone, setTasksDone] = useState([]);
@@ -108,7 +108,7 @@ const TodoListScreen = () => {
             elevation: 5,
           }}>
           <Image
-            source={require('../../assets/images/icon_add.png')}
+            source={require('~assets/images/icon_add.png')}
             style={{ width: 30, height: 30 }}
           />
         </TouchableOpacity>

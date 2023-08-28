@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, Text, View } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import ProductItem from '~components/ProductItem';
-import { DOMAIN } from '~constants/env';
-import { FONTS } from '~constants/fonts';
-import { USER_INITIAL_PAGE_SIZE, USER_LOAD_MORE_PAGE_SIZE } from '~constants/listConstants';
+import UserItem from '../../components/UserItem';
+import { FONTS } from '../../constants/fonts';
+import { USER_INITIAL_PAGE_SIZE, USER_LOAD_MORE_PAGE_SIZE } from '../../constants/listConstants';
 
-const FlatListDemo = () => {
+const BTVN_23 = () => {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -17,9 +15,9 @@ const FlatListDemo = () => {
 
   const fetchData = async (offset = 0, limit = USER_INITIAL_PAGE_SIZE) => {
     try {
-      const result = await fetch(`${DOMAIN.BASE_URL}/products?offset=${offset}&limit=${limit}`);
+      const result = await fetch(`https://dummyjson.com/users?skip=${offset}&limit=${limit}`);
       const resultJson = await result.json();
-      return resultJson;
+      return resultJson?.users;
     } catch (error) {
       console.log({ error });
     }
@@ -85,9 +83,8 @@ const FlatListDemo = () => {
     () => (
       <View style={{ alignItems: 'center', marginVertical: 16 }}>
         <Text style={{ color: 'black', fontSize: 20, fontFamily: FONTS.BOLD }}>
-          Danh sách lớp App K12 HCM
+          Danh sách người dùng
         </Text>
-        <AntDesign name="team" color={'red'} size={30} />
       </View>
     ),
     [],
@@ -104,10 +101,7 @@ const FlatListDemo = () => {
     );
   }, [isFetching, data]);
 
-  const renderItem = useCallback(
-    ({ item, index }) => <ProductItem item={item} index={index} />,
-    [],
-  );
+  const renderItem = useCallback(({ item, index }) => <UserItem item={item} index={index} />, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -130,4 +124,4 @@ const FlatListDemo = () => {
   );
 };
 
-export default FlatListDemo;
+export default BTVN_23;

@@ -1,46 +1,52 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, Text, View } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import ProductItem from '~components/ProductItem';
-import { DOMAIN } from '~constants/env';
-import { FONTS } from '~constants/fonts';
-import { USER_INITIAL_PAGE_SIZE, USER_LOAD_MORE_PAGE_SIZE } from '~constants/listConstants';
+import { ActivityIndicator, FlatList, RefreshControl, Text, View, TextInput } from 'react-native';
+import UserItem from '../../components/UserItem';
+import { FONTS } from '../../constants/fonts';
+import { USER_INITIAL_PAGE_SIZE, USER_LOAD_MORE_PAGE_SIZE } from '../../constants/listConstants';
 
-const FlatListDemo = () => {
+const DebouncingScreen = () => {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isEndList, setIsEndList] = useState(false);
   const [currentOffset, setCurrentOffset] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
 
+  const typingTimerRef = useRef();
   const flatlistRef = useRef();
 
   const fetchData = async (offset = 0, limit = USER_INITIAL_PAGE_SIZE) => {
     try {
-      const result = await fetch(`${DOMAIN.BASE_URL}/products?offset=${offset}&limit=${limit}`);
+      const result = await fetch(`https://dummyjson.com/users?skip=${offset}&limit=${limit}`);
       const resultJson = await result.json();
-      return resultJson;
+      return resultJson?.users;
     } catch (error) {
       console.log({ error });
     }
   };
 
   useEffect(() => {
-    setIsFetching(true);
-    fetchData()
-      .then(res => {
-        setData(res);
-        setCurrentOffset(USER_INITIAL_PAGE_SIZE);
-      })
-      .catch(err => console.log({ err }))
-      .finally(() => setIsFetching(false));
-  }, []);
+    if (searchTerm === '') {
+      setIsFetching(true);
+      fetchData()
+        .then(res => {
+          setData(res);
+          setCurrentOffset(USER_INITIAL_PAGE_SIZE);
+        })
+        .catch(err => console.log({ err }))
+        .finally(() => {
+          setIsFetching(false);
+          setIsEndList(false);
+        });
+    }
+  }, [searchTerm]);
 
   const handleRefresh = () => {
     if (isRefreshing) {
       return;
     }
     setIsRefreshing(true);
+    setSearchTerm('');
     fetchData()
       .then(res => {
         setData(res);
@@ -85,9 +91,8 @@ const FlatListDemo = () => {
     () => (
       <View style={{ alignItems: 'center', marginVertical: 16 }}>
         <Text style={{ color: 'black', fontSize: 20, fontFamily: FONTS.BOLD }}>
-          Danh sách lớp App K12 HCM
+          Demo Debouncing
         </Text>
-        <AntDesign name="team" color={'red'} size={30} />
       </View>
     ),
     [],
@@ -104,13 +109,42 @@ const FlatListDemo = () => {
     );
   }, [isFetching, data]);
 
-  const renderItem = useCallback(
-    ({ item, index }) => <ProductItem item={item} index={index} />,
-    [],
-  );
+  const renderItem = useCallback(({ item, index }) => <UserItem item={item} index={index} />, []);
+
+  const handleSearchChange = text => {
+    setSearchTerm(text);
+    if (text === '') {
+      clearTimeout(typingTimerRef?.current);
+      return;
+    }
+    if (typingTimerRef.current) {
+      clearTimeout(typingTimerRef.current);
+    }
+    typingTimerRef.current = setTimeout(async () => {
+      const result = await fetch(`https://dummyjson.com/users/search?q=${text}`);
+      const resultJson = await result.json();
+      setData(resultJson?.users);
+      setIsEndList(true);
+    }, 500);
+  };
 
   return (
     <View style={{ flex: 1 }}>
+      <View>
+        <TextInput
+          value={searchTerm}
+          onChangeText={handleSearchChange}
+          placeholder={'Nhập nội dung tìm kiếm'}
+          style={{
+            width: '90%',
+            backgroundColor: '#fff',
+            alignSelf: 'center',
+            marginVertical: 16,
+            padding: 16,
+            borderRadius: 8,
+          }}
+        />
+      </View>
       <FlatList
         ref={flatlistRef}
         data={data}
@@ -130,4 +164,4 @@ const FlatListDemo = () => {
   );
 };
 
-export default FlatListDemo;
+export default DebouncingScreen;
