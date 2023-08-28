@@ -1,8 +1,8 @@
 import { View, Text, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { USER_INITIAL_PAGE_SIZE, USER_LOAD_MORE_PAGE_SIZE } from '../constants/listConstants';
-import UserItem from '../components/UserItem';
-import { FONTS } from '../constants/fonts';
+import { USER_INITIAL_PAGE_SIZE, USER_LOAD_MORE_PAGE_SIZE } from '~constants/listConstants';
+import UserItem from '~components/UserItem';
+import { FONTS } from '~constants/fonts';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const FlatListDemo = () => {

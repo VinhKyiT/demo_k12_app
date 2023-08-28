@@ -7,24 +7,32 @@ const UserItem = ({ item, index }) => {
   return (
     <View style={styles.itemContainer}>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: item?.images?.[0] }} style={styles.thumbnail} />
+        <Image source={{ uri: item?.image }} style={styles.thumbnail} />
       </View>
       <View style={styles.itemContent}>
         <View style={styles.row}>
-          <FontAwesome name="info-circle" size={16} color={'green'} />
-          <Text style={styles.text}>{item.id}</Text>
+          <View style={styles.icon}>
+            <FontAwesome name="user" size={20} color="#333" />
+          </View>
+          <Text style={styles.text}>{item?.lastName + ' ' + item?.firstName}</Text>
         </View>
         <View style={styles.row}>
-          <FontAwesome name="product-hunt" size={16} color={'red'} />
-          <Text style={styles.text}>{item.title}</Text>
+          <View style={styles.icon}>
+            <FontAwesome name="envelope" size={20} color="#333" />
+          </View>
+          <Text style={styles.text}>{item.email}</Text>
         </View>
         <View style={styles.row}>
-          <FontAwesome name="dollar" size={16} color={'blue'} />
-          <Text style={styles.text}>{item.price}</Text>
+          <View style={styles.icon}>
+            <FontAwesome name="phone" size={20} color="#333" />
+          </View>
+          <Text style={styles.text}>{item.phone}</Text>
         </View>
         <View style={styles.row}>
-          <FontAwesome name="comment" size={16} color={'orange'} />
-          <Text style={styles.text}>{item.description}</Text>
+          <View style={styles.icon}>
+            <FontAwesome name="map-marker" size={20} color="#333" />
+          </View>
+          <Text style={styles.text}>{item?.address?.address + ', ' + item?.address?.city}</Text>
         </View>
       </View>
     </View>
@@ -51,6 +59,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 8,
+    backgroundColor: '#fff',
   },
   itemContent: {
     flexGrow: 1,
@@ -60,7 +69,13 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.REGULAR,
     color: '#333',
     marginLeft: 8,
-    lineHeight: 18,
+    lineHeight: 24,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
