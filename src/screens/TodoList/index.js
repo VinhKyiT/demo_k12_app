@@ -8,19 +8,20 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import TaskItem from '~components/TaskItem';
+import { initialTodoState, todoReducer } from './todoReducer';
+import { SET_CURRENT_TASK, SET_TASKS_DONE, SET_TODOS } from './todoActions';
+
 const TodoListScreen = () => {
-  const [todos, setTodos] = useState([]);
-  const [tasksDone, setTasksDone] = useState([]);
-  const [currentTask, setCurrentTask] = useState('');
+  const [state, dispatch] = useReducer(todoReducer, initialTodoState);
   const navigation = useNavigation();
 
   const handleAddItem = () => {
-    if (currentTask !== '') {
-      setTodos(prev => [...prev, { title: currentTask, status: 'todo' }]);
-      setCurrentTask('');
+    if (state.currentTask !== '') {
+      dispatch({ type: SET_TODOS, payload: state.currentTask });
+      dispatch({ type: SET_CURRENT_TASK, payload: '' });
       Keyboard.dismiss();
     }
   };
@@ -30,11 +31,7 @@ const TodoListScreen = () => {
   };
 
   const handleItemTickBoxClick = index => {
-    const newTodo = todos[index];
-    setTasksDone(prev => [...prev, { ...newTodo, status: 'done' }]);
-    const newTodos = [...todos];
-    newTodos.splice(index, 1);
-    setTodos(newTodos);
+    dispatch({ type: SET_TASKS_DONE, payload: index });
   };
 
   return (
@@ -43,7 +40,7 @@ const TodoListScreen = () => {
         <View style={{ marginTop: 16 }}>
           <Text style={{ color: '#1A1A1A', fontSize: 24, fontWeight: 'bold' }}>Today's tasks</Text>
           <View style={{ marginTop: 16 }}>
-            {todos.map((item, index) => {
+            {state.todos.map((item, index) => {
               return (
                 <TaskItem
                   key={item?.title + index.toString()}
@@ -59,7 +56,7 @@ const TodoListScreen = () => {
         <View style={{ marginTop: 16 }}>
           <Text style={{ color: '#1A1A1A', fontSize: 24, fontWeight: 'bold' }}>Tasks done</Text>
           <View style={{ marginTop: 16 }}>
-            {tasksDone.map((item, index) => {
+            {state.tasksDone.map((item, index) => {
               return (
                 <TaskItem
                   key={item?.title + index.toString()}
@@ -84,8 +81,10 @@ const TodoListScreen = () => {
           paddingHorizontal: 20,
         }}>
         <TextInput
-          value={currentTask}
-          onChangeText={setCurrentTask}
+          value={state.currentTask}
+          onChangeText={text => {
+            dispatch({ type: SET_CURRENT_TASK, payload: text });
+          }}
           placeholder="Write a task"
           style={{
             backgroundColor: '#fff',
