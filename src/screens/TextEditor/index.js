@@ -1,16 +1,45 @@
 import { View, Text, SafeAreaView, TextInput } from 'react-native';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useReducer } from 'react';
 import { FONTS } from '../../constants/fonts';
 
+// initialState
+const initialState = {
+  value: '',
+  content: '',
+};
+// actions
+const SET_VALUE = 'SET_VALUE';
+const SET_CONTENT = 'SET_CONTENT';
+// reducer
+const textEditorReducer = (state, action) => {
+  switch (action.type) {
+    case SET_VALUE: {
+      return {
+        ...state,
+        value: action?.payload,
+      };
+    }
+    case SET_CONTENT: {
+      return {
+        ...state,
+        content: action?.payload,
+      };
+    }
+    default:
+      return state;
+  }
+};
+// dispatch
+
 const TextEditor = () => {
-  const [content, setContent] = useState('');
-  const [value, setValue] = useState('');
+  const [state, dispatch] = useReducer(textEditorReducer, initialState);
+
   const timerRef = useRef();
 
   const handleChangeContent = text => {
-    setValue(text);
+    dispatch({ type: SET_VALUE, payload: text });
     if (text === '') {
-      setContent('');
+      dispatch({ type: SET_CONTENT, payload: '' });
       clearTimeout(timerRef.current);
       return;
     }
@@ -19,7 +48,7 @@ const TextEditor = () => {
     }
     timerRef.current = setTimeout(() => {
       console.log('call');
-      setContent(text);
+      dispatch({ type: SET_CONTENT, payload: text });
     }, 1000);
   };
 
@@ -36,12 +65,12 @@ const TextEditor = () => {
             borderRadius: 8,
             maxHeight: 150,
           }}
-          value={value}
+          value={state.value}
           onChangeText={handleChangeContent}
         />
       </View>
       <View>
-        <Text style={{ fontFamily: FONTS.REGULAR, color: '#333' }}>{content}</Text>
+        <Text style={{ fontFamily: FONTS.REGULAR, color: '#333' }}>{state.content}</Text>
       </View>
     </SafeAreaView>
   );

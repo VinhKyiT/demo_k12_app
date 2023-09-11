@@ -14,6 +14,7 @@ import DeviceEventEmitterDemo from '~screens/DeviceEventEmitter';
 import DebouncingScreen from '~screens/Debouncing';
 import ThrottlingScreen from '~screens/Throtlling';
 import TextEditor from '~screens/TextEditor';
+import Counter from '../screens/Counter';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ function MainNavigator() {
       <Stack.Navigator initialRouteName="TextEditor" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="TextEditor" component={TextEditor} />
+        <Stack.Screen name="Counter" component={Counter} />
         <Stack.Screen name="Debouncing" component={DebouncingScreen} />
         <Stack.Screen name="Throtlling" component={ThrottlingScreen} />
         <Stack.Screen name="DeviceEventEmitter" component={DeviceEventEmitterDemo} />
