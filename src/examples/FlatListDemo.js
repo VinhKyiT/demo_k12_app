@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, Text, View } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ProductItem from '~components/ProductItem';
@@ -6,13 +6,52 @@ import { DOMAIN } from '~constants/env';
 import { FONTS } from '~constants/fonts';
 import { USER_INITIAL_PAGE_SIZE, USER_LOAD_MORE_PAGE_SIZE } from '~constants/listConstants';
 
+const initialState = {
+  isRefresh: false,
+  data: [],
+  isFetching: true,
+};
+
+const SET_DATA = 'SET_DATA';
+const LOAD_MORE = 'LOAD_MORE';
+const SET_REFRESHING = 'SET_REFRESHING';
+const SET_FETCHING = 'SET_FETCHING';
+
+const reducer = (state, action) => {
+  const { payload, type } = action;
+  switch (type) {
+    case SET_DATA: {
+      return { ...state, data: payload || [] };
+    }
+    case LOAD_MORE: {
+      return {
+        ...state,
+        data: [...state.data, ...payload],
+      };
+    }
+    case SET_REFRESHING: {
+      return {
+        ...state,
+        isRefresh: !!payload,
+      };
+    }
+    case SET_FETCHING: {
+      return {
+        ...state,
+        isFetching: !!payload,
+      };
+    }
+    default:
+      return state;
+  }
+};
+
 const FlatListDemo = () => {
-  const [data, setData] = useState([]);
-  const [isFetching, setIsFetching] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isEndList, setIsEndList] = useState(false);
   const [currentOffset, setCurrentOffset] = useState(0);
 
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { data, isRefresh, isFetching } = state;
   const flatlistRef = useRef();
 
   const fetchData = async (offset = 0, limit = USER_INITIAL_PAGE_SIZE) => {
@@ -26,28 +65,31 @@ const FlatListDemo = () => {
   };
 
   useEffect(() => {
-    setIsFetching(true);
+    dispatch({ type: SET_FETCHING, payload: true });
     fetchData()
       .then(res => {
-        setData(res);
+        dispatch({ type: SET_DATA, payload: res });
+        // setData(res);
         setCurrentOffset(USER_INITIAL_PAGE_SIZE);
       })
       .catch(err => console.log({ err }))
-      .finally(() => setIsFetching(false));
+      .finally(() => dispatch({ type: SET_FETCHING, payload: false }));
   }, []);
 
   const handleRefresh = () => {
-    if (isRefreshing) {
+    if (isRefresh) {
       return;
     }
-    setIsRefreshing(true);
+    // setIsRefreshing(true);
+    dispatch({ type: SET_REFRESHING, payload: true });
     fetchData()
       .then(res => {
-        setData(res);
+        // setData(res);
+        dispatch({ type: SET_DATA, payload: res });
         setIsEndList(false);
       })
       .catch(err => console.log({ err }))
-      .finally(() => setIsRefreshing(false));
+      .finally(() => dispatch({ type: SET_REFRESHING, payload: false }));
   };
 
   const handleEndReached = async () => {
@@ -55,18 +97,19 @@ const FlatListDemo = () => {
       return;
     }
     try {
-      setIsFetching(true);
+      dispatch({ type: SET_FETCHING, payload: true });
       console.log('currentOffset', currentOffset);
       const result = await fetchData(currentOffset, USER_LOAD_MORE_PAGE_SIZE);
       if (result?.length < USER_LOAD_MORE_PAGE_SIZE) {
         setIsEndList(true);
       }
-      setData(prev => [...prev, ...result]);
-      setIsFetching(false);
+      // setData(prev => [...prev, ...result]);
+      dispatch({ type: LOAD_MORE, payload: result });
+      dispatch({ type: SET_FETCHING, payload: false });
       setCurrentOffset(currentOffset + USER_LOAD_MORE_PAGE_SIZE);
     } catch (error) {
       console.log({ error });
-      setIsFetching(false);
+      dispatch({ type: SET_FETCHING, payload: false });
     }
   };
 
@@ -115,7 +158,7 @@ const FlatListDemo = () => {
         ref={flatlistRef}
         data={data}
         keyExtractor={item => item.id}
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+        refreshControl={<RefreshControl refreshing={isRefresh} onRefresh={handleRefresh} />}
         onEndReached={handleEndReached}
         initialNumToRender={20}
         onEndReachedThreshold={0.5}

@@ -21,7 +21,7 @@ const Stack = createStackNavigator();
 function MainNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="TextEditor" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="FlatListDemo" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="TextEditor" component={TextEditor} />
         <Stack.Screen name="Counter" component={Counter} />
