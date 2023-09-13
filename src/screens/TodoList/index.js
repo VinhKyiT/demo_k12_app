@@ -12,7 +12,13 @@ import React, { useReducer, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import TaskItem from '~components/TaskItem';
 import { initialTodoState, todoReducer } from './todoReducer';
-import { SET_CURRENT_TASK, SET_TASKS_DONE, SET_TODOS } from './todoActions';
+import {
+  REMOVE_ITEM,
+  SET_CURRENT_TASK,
+  SET_TASKS_DONE,
+  SET_TODOS,
+  UNDO_SET_TASKS_DONE,
+} from './todoActions';
 
 const TodoListScreen = () => {
   const [state, dispatch] = useReducer(todoReducer, initialTodoState);
@@ -30,8 +36,16 @@ const TodoListScreen = () => {
     navigation.navigate('TaskDetail', { item });
   };
 
-  const handleItemTickBoxClick = index => {
-    dispatch({ type: SET_TASKS_DONE, payload: index });
+  const handleTodoItemTickBoxClick = id => {
+    dispatch({ type: SET_TASKS_DONE, payload: id });
+  };
+
+  const handleTaskDoneItemTickBoxClick = id => {
+    dispatch({ type: UNDO_SET_TASKS_DONE, payload: id });
+  };
+
+  const handleDeleteButtonClick = id => {
+    dispatch({ type: REMOVE_ITEM, payload: id });
   };
 
   return (
@@ -45,9 +59,8 @@ const TodoListScreen = () => {
                 <TaskItem
                   key={item?.title + index.toString()}
                   item={item}
-                  index={index}
                   onItemClick={handleItemClick}
-                  onItemTickBoxClick={handleItemTickBoxClick}
+                  onItemTickBoxClick={handleTodoItemTickBoxClick}
                 />
               );
             })}
@@ -61,9 +74,9 @@ const TodoListScreen = () => {
                 <TaskItem
                   key={item?.title + index.toString()}
                   item={item}
-                  index={index}
                   onItemClick={handleItemClick}
-                  onItemTickBoxClick={handleItemTickBoxClick}
+                  onItemTickBoxClick={handleTaskDoneItemTickBoxClick}
+                  onDeleteButtonClick={handleDeleteButtonClick}
                 />
               );
             })}
@@ -86,6 +99,8 @@ const TodoListScreen = () => {
             dispatch({ type: SET_CURRENT_TASK, payload: text });
           }}
           placeholder="Write a task"
+          onSubmitEditing={handleAddItem}
+          returnKeyType="go"
           style={{
             backgroundColor: '#fff',
             width: '80%',

@@ -1,7 +1,14 @@
 import React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity } from 'react-native';
 
-const CustomButton = ({ onPress, title = '', isLoading = false, style }) => {
+const CustomButton = ({
+  onPress,
+  title = '',
+  isLoading = false,
+  style,
+  titleStyle,
+  loadingIndicatorProps,
+}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -16,7 +23,11 @@ const CustomButton = ({ onPress, title = '', isLoading = false, style }) => {
         },
         style && style,
       ]}>
-      {isLoading ? <ActivityIndicator /> : <Text>{title}</Text>}
+      {isLoading ? (
+        <ActivityIndicator {...loadingIndicatorProps} />
+      ) : (
+        <Text style={titleStyle ? titleStyle : {}}>{title}</Text>
+      )}
     </TouchableOpacity>
   );
 };

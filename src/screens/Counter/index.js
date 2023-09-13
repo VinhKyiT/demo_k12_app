@@ -1,61 +1,28 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import React, { useReducer } from 'react';
+import React, { useReducer, createContext } from 'react';
+import { View } from 'react-native';
+import ChildCounter from './ChildCounter';
+import { DECREMENT, INCREMENT } from './state/counterActions';
+import { counterReducer, initialCounterState } from './state/counterReducer';
 
-// Gia tri khoi tao - initialState
-const initialState = 0;
-
-// reducer -> ham
-const reducer = (state, action) => {
-  console.log('action', action);
-  switch (action.type) {
-    case INCREMENT: {
-      if (state === 10) {
-        return state;
-      } else {
-        if (action?.payload) {
-          return state + action?.payload;
-        } else {
-          return state + 1;
-        }
-      }
-    }
-    case DECREMENT:
-      return state - 1;
-    default:
-      return state;
-  }
-};
-
-// action -> hanh dong
-const INCREMENT = 'INCREMENT';
-const DECREMENT = 'DECREMENT';
-
-// dispatch -> la mot ham de kich hoat hanh dong
+// tao context
+export const CounterContext = createContext();
 
 const Counter = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  console.log('state', state);
+  const [state, dispatch] = useReducer(counterReducer, initialCounterState);
 
   const handleIncrease = () => {
-    dispatch({ type: INCREMENT, payload: 3 });
+    dispatch({ type: INCREMENT });
   };
   const handleDecrease = () => {
     dispatch({ type: DECREMENT });
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-        <TouchableOpacity onPress={handleDecrease}>
-          <Text style={{ fontSize: 40 }}>-</Text>
-        </TouchableOpacity>
-        <Text style={{ fontSize: 40, marginHorizontal: 16 }}>{state}</Text>
-        <TouchableOpacity onPress={handleIncrease}>
-          <Text style={{ fontSize: 40 }}>+</Text>
-        </TouchableOpacity>
+    <CounterContext.Provider value={{ state, dispatch, handleIncrease, handleDecrease }}>
+      <View style={{ flex: 1 }}>
+        <ChildCounter />
       </View>
-    </View>
+    </CounterContext.Provider>
   );
 };
 
