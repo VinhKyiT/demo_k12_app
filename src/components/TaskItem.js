@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-const TaskItem = ({ item, index, onItemClick, onItemTickBoxClick, onDeleteButtonClick }) => {
+const TaskItem = ({ item, onItemClick, onItemTickBoxClick, onDeleteButtonClick }) => {
   return (
     <TouchableOpacity
       onPress={() => onItemClick(item)}

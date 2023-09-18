@@ -5,6 +5,7 @@ import ProductItem from '~components/ProductItem';
 import { DOMAIN } from '~constants/env';
 import { FONTS } from '~constants/fonts';
 import { USER_INITIAL_PAGE_SIZE, USER_LOAD_MORE_PAGE_SIZE } from '~constants/listConstants';
+import useCart from '../contexts/CartContext/useCart';
 
 const initialState = {
   isRefresh: false,
@@ -49,6 +50,8 @@ const reducer = (state, action) => {
 const FlatListDemo = () => {
   const [isEndList, setIsEndList] = useState(false);
   const [currentOffset, setCurrentOffset] = useState(0);
+  const { cartData, handleAddToCart } = useCart();
+  console.log('cartData', cartData);
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const { data, isRefresh, isFetching } = state;
@@ -148,8 +151,10 @@ const FlatListDemo = () => {
   }, [isFetching, data]);
 
   const renderItem = useCallback(
-    ({ item, index }) => <ProductItem item={item} index={index} />,
-    [],
+    ({ item, index }) => (
+      <ProductItem item={item} index={index} onAddToCart={() => handleAddToCart(item)} />
+    ),
+    [handleAddToCart],
   );
 
   return (
