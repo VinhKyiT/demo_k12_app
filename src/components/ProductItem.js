@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React, { memo } from 'react';
 import { FONTS } from '../constants/fonts';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -36,12 +36,24 @@ const ProductItem = ({ item, onAddToCart }) => {
         </View>
       </View>
       <View>
-        <CustomButton
-          title="Thêm vào giỏ hàng"
-          titleStyle={styles.buttonTitle}
-          style={styles.buttonContainer}
-          onPress={onAddToCart}
-        />
+        {item?.quantity ? (
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <TouchableOpacity onPress={() => {}}>
+              <Text style={{ fontSize: 26 }}>-</Text>
+            </TouchableOpacity>
+            <Text style={{ fontSize: 26, marginHorizontal: 16 }}>{item?.quantity}</Text>
+            <TouchableOpacity onPress={() => {}}>
+              <Text style={{ fontSize: 26 }}>+</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <CustomButton
+            title="Thêm vào giỏ hàng"
+            titleStyle={styles.buttonTitle}
+            style={styles.buttonContainer}
+            onPress={onAddToCart}
+          />
+        )}
       </View>
     </View>
   );
