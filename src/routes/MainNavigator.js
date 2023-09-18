@@ -18,6 +18,8 @@ import ThrottlingScreen from '~screens/Throtlling';
 import TodoScreen from '~screens/Todo';
 import TodoListScreen from '~screens/TodoList';
 import Counter from '../screens/Counter';
+import CartScreen from '../screens/Cart';
+import SignupScreen from '../screens/SignupScreen';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +31,7 @@ function MainNavigator() {
         {isLoggedIn ? (
           <>
             <Stack.Screen name="FlatListDemo" component={FlatListDemo} />
+            <Stack.Screen name="CartScreen" component={CartScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="ContextDemo" component={ParentComponent} />
             <Stack.Screen name="TextEditor" component={TextEditor} />
@@ -46,6 +49,7 @@ function MainNavigator() {
         ) : (
           <>
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="SignupScreen" component={SignupScreen} />
           </>
         )}
       </Stack.Navigator>

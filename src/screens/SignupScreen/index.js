@@ -1,18 +1,30 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import CustomButton from '~components/CustomButton';
 import { useAuth } from '~hooks/useAuth';
 
-const LoginScreen = () => {
+const SignupScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation();
+  const [name, setName] = useState('');
 
-  const { handleLogin, isLoading } = useAuth();
+  const { handleSignup, isLoading } = useAuth();
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-      <Text>Vui lòng đăng nhập</Text>
+      <Text>Đăng ký tài khoản</Text>
+      <TextInput
+        style={{
+          borderColor: '#333',
+          borderWidth: 1,
+          borderRadius: 8,
+          width: '100%',
+          marginTop: 16,
+          paddingHorizontal: 8,
+        }}
+        value={name}
+        onChangeText={setName}
+        placeholder="Vui lòng nhập họ tên"
+      />
       <TextInput
         style={{
           borderColor: '#333',
@@ -43,8 +55,8 @@ const LoginScreen = () => {
       />
 
       <CustomButton
-        onPress={() => handleLogin(email, password)}
-        title={'Đăng nhập'}
+        onPress={() => handleSignup(name, email, password)}
+        title={'Đăng Ký'}
         isLoading={isLoading}
         titleStyle={{ color: '#fff' }}
         loadingIndicatorProps={{ color: '#fff' }}
@@ -58,24 +70,8 @@ const LoginScreen = () => {
           borderRadius: 8,
         }}
       />
-      <Text
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlignVertical: 'center',
-          lineHeight: 24,
-          marginTop: 16,
-        }}>
-        Chưa có tài khoản?{' '}
-        <Text
-          onPress={() => {
-            navigation.navigate('SignupScreen');
-          }}>
-          Đăng ký ngay
-        </Text>
-      </Text>
     </View>
   );
 };
 
-export default React.memo(LoginScreen);
+export default React.memo(SignupScreen);

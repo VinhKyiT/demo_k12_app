@@ -1,10 +1,19 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ProductItem from '~components/ProductItem';
 import { DOMAIN } from '~constants/env';
 import { FONTS } from '~constants/fonts';
 import { USER_INITIAL_PAGE_SIZE, USER_LOAD_MORE_PAGE_SIZE } from '~constants/listConstants';
+import useCart from '../hooks/useCart';
 
 const initialState = {
   isRefresh: false,
@@ -53,6 +62,8 @@ const FlatListDemo = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { data, isRefresh, isFetching } = state;
   const flatlistRef = useRef();
+  const navigation = useNavigation();
+  const { handleAddToCart } = useCart();
 
   const fetchData = async (offset = 0, limit = USER_INITIAL_PAGE_SIZE) => {
     try {
@@ -130,10 +141,15 @@ const FlatListDemo = () => {
         <Text style={{ color: 'black', fontSize: 20, fontFamily: FONTS.BOLD }}>
           Danh sách lớp App K12 HCM
         </Text>
-        <AntDesign name="team" color={'red'} size={30} />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('CartScreen');
+          }}>
+          <AntDesign name="shoppingcart" color={'red'} size={30} />
+        </TouchableOpacity>
       </View>
     ),
-    [],
+    [navigation],
   );
 
   const listFooterComponent = useCallback(() => {
@@ -148,8 +164,10 @@ const FlatListDemo = () => {
   }, [isFetching, data]);
 
   const renderItem = useCallback(
-    ({ item, index }) => <ProductItem item={item} index={index} />,
-    [],
+    ({ item, index }) => (
+      <ProductItem item={item} index={index} onAddToCart={() => handleAddToCart(item)} />
+    ),
+    [handleAddToCart],
   );
 
   return (
