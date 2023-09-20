@@ -10,6 +10,16 @@ const LoginScreen = () => {
   const navigation = useNavigation();
 
   const { handleLogin, isLoading } = useAuth();
+
+  const _onLoginButtonPress = async () => {
+    try {
+      if (email && password) {
+        await handleLogin(email, password);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
       <Text>Vui lòng đăng nhập</Text>
@@ -43,7 +53,7 @@ const LoginScreen = () => {
       />
 
       <CustomButton
-        onPress={() => handleLogin(email, password)}
+        onPress={_onLoginButtonPress}
         title={'Đăng nhập'}
         isLoading={isLoading}
         titleStyle={{ color: '#fff' }}
