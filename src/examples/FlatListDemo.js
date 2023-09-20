@@ -13,6 +13,8 @@ import ProductItem from '~components/ProductItem';
 import { DOMAIN } from '~constants/env';
 import { FONTS } from '~constants/fonts';
 import { USER_INITIAL_PAGE_SIZE, USER_LOAD_MORE_PAGE_SIZE } from '~constants/listConstants';
+import { removeData } from '../helpers/storage';
+import { useAuth } from '../hooks/useAuth';
 import useCart from '../hooks/useCart';
 
 const initialState = {
@@ -63,7 +65,8 @@ const FlatListDemo = () => {
   const { data, isRefresh, isFetching } = state;
   const flatlistRef = useRef();
   const navigation = useNavigation();
-  const { handleAddToCart } = useCart();
+  const { handleAddToCart, removeAllCart } = useCart();
+  const { setLogin } = useAuth();
 
   const fetchData = async (offset = 0, limit = USER_INITIAL_PAGE_SIZE) => {
     try {
@@ -124,6 +127,13 @@ const FlatListDemo = () => {
     }
   };
 
+  const handleLogout = useCallback(async () => {
+    await removeData('TOKEN');
+    await removeData('CART_DATA');
+    removeAllCart();
+    setLogin(false);
+  }, [setLogin, removeAllCart]);
+
   const listEmptyComponent = useCallback(() => {
     if (isFetching) {
       return <ActivityIndicator size={'large'} />;
@@ -137,7 +147,16 @@ const FlatListDemo = () => {
 
   const listHeaderComponent = useCallback(
     () => (
-      <View style={{ alignItems: 'center', marginVertical: 16 }}>
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginVertical: 16,
+          flexDirection: 'row',
+        }}>
+        <TouchableOpacity onPress={handleLogout}>
+          <AntDesign name="logout" color={'red'} size={24} />
+        </TouchableOpacity>
         <Text style={{ color: 'black', fontSize: 20, fontFamily: FONTS.BOLD }}>
           Danh sách lớp App K12 HCM
         </Text>
@@ -145,11 +164,11 @@ const FlatListDemo = () => {
           onPress={() => {
             navigation.navigate('CartScreen');
           }}>
-          <AntDesign name="shoppingcart" color={'red'} size={30} />
+          <AntDesign name="shoppingcart" color={'green'} size={30} />
         </TouchableOpacity>
       </View>
     ),
-    [navigation],
+    [handleLogout, navigation],
   );
 
   const listFooterComponent = useCallback(() => {

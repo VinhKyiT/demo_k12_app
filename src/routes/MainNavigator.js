@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 // import screens
 import FlatListDemo from '~examples/FlatListDemo';
 import SectionListDemo from '~examples/SectionListDemo';
@@ -20,17 +20,39 @@ import TodoListScreen from '~screens/TodoList';
 import Counter from '../screens/Counter';
 import CartScreen from '../screens/Cart';
 import SignupScreen from '../screens/SignupScreen';
+import AsyncStorageDemo from '../examples/AsyncStorageDemo';
+import { getData } from '../helpers/storage';
 
 const Stack = createStackNavigator();
 
 function MainNavigator() {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, setLogin } = useAuth();
+  const getAccessToken = async () => {
+    const tokenData = await getData('TOKEN');
+    return tokenData;
+  };
+  useEffect(() => {
+    getAccessToken()
+      .then(res => {
+        if (res?.accessToken) {
+          setLogin(true);
+        } else {
+          setLogin(false);
+        }
+      })
+      .finally(() => {
+        // an splash screen
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isLoggedIn ? (
           <>
             <Stack.Screen name="FlatListDemo" component={FlatListDemo} />
+            <Stack.Screen name="TodoList" component={TodoListScreen} />
+            <Stack.Screen name="AsyncStorageDemo" component={AsyncStorageDemo} />
             <Stack.Screen name="CartScreen" component={CartScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="ContextDemo" component={ParentComponent} />
@@ -41,7 +63,6 @@ function MainNavigator() {
             <Stack.Screen name="DeviceEventEmitter" component={DeviceEventEmitterDemo} />
             <Stack.Screen name="Todo" component={TodoScreen} />
             <Stack.Screen name="BTVN_23" component={BTVN_23} />
-            <Stack.Screen name="TodoList" component={TodoListScreen} />
             <Stack.Screen name="TaskDetail" component={TaskDetailScreen} />
             <Stack.Screen name="SectionListDemo" component={SectionListDemo} />
             <Stack.Screen name="Detail" component={DetailScreen} options={{ headerShown: false }} />

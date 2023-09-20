@@ -1,4 +1,5 @@
 import {
+  REINIT_DATA,
   REMOVE_ITEM,
   SET_CURRENT_TASK,
   SET_TASKS_DONE,
@@ -18,6 +19,9 @@ const initialTodoState = {
 const todoReducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
+    case REINIT_DATA: {
+      return payload;
+    }
     case SET_TODOS: {
       return {
         ...state,

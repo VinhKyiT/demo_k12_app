@@ -1,5 +1,6 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, TextInput, ToastAndroid, View } from 'react-native';
 import CustomButton from '~components/CustomButton';
 import { useAuth } from '~hooks/useAuth';
 
@@ -7,8 +8,28 @@ const SignupScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-
+  const navigation = useNavigation();
   const { handleSignup, isLoading } = useAuth();
+
+  const onSignupButtonPress = async () => {
+    try {
+      if ((email, password, name)) {
+        const result = await handleSignup(name, email, password);
+        const error = result?.response?.data?.message;
+        if (error) {
+          ToastAndroid.show(error.toString(), ToastAndroid.LONG);
+        }
+        if (result) {
+          navigation.goBack();
+        }
+      } else {
+        ToastAndroid.show('Vui lòng nhập đủ thông tin', 3000);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
       <Text>Đăng ký tài khoản</Text>
@@ -55,7 +76,7 @@ const SignupScreen = () => {
       />
 
       <CustomButton
-        onPress={() => handleSignup(name, email, password)}
+        onPress={onSignupButtonPress}
         title={'Đăng Ký'}
         isLoading={isLoading}
         titleStyle={{ color: '#fff' }}
