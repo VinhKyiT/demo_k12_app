@@ -1,5 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
 // import screens
 import SectionListDemo from '~examples/SectionListDemo';
@@ -23,6 +23,18 @@ import DrawerNavigator from './DrawerNavigator';
 
 const Stack = createStackNavigator();
 
+const config = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
+
 function MainNavigator() {
   const { isLoggedIn, setLogin } = useAuth();
   const getAccessToken = async () => {
@@ -45,7 +57,15 @@ function MainNavigator() {
   }, []);
   return (
     <NavigationContainer ref={NavigationServices.navigationRef}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          transitionSpec: {
+            open: config,
+            close: config,
+          },
+          cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
+        }}>
         {isLoggedIn ? (
           <>
             <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />

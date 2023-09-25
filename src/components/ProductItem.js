@@ -12,7 +12,7 @@ const ProductItem = ({ item, onAddToCart, onUpdateItemInCart, onRemoveFromCart }
         <View style={styles.imageContainer}>
           <AppImage
             source={{
-              uri: 'https://images2.thanhnien.vn/Uploaded/caotung/2020_12_30/photo-1-16092554908561278237856_GFAT.jpg?width=500',
+              uri: item?.images?.[0],
             }}
             style={styles.thumbnail}
           />

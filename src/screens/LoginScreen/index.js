@@ -21,6 +21,7 @@ const LoginScreen = () => {
           width: '100%',
           marginTop: 16,
           paddingHorizontal: 8,
+          paddingVertical: 12,
         }}
         keyboardType="email-address"
         value={email}
@@ -35,6 +36,7 @@ const LoginScreen = () => {
           width: '100%',
           marginTop: 16,
           paddingHorizontal: 8,
+          paddingVertical: 12,
         }}
         secureTextEntry
         value={password}

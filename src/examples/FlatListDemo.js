@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
+  SafeAreaView,
   Text,
   TouchableOpacity,
   View,
@@ -185,7 +186,7 @@ const FlatListDemo = () => {
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <FlatList
         ref={flatlistRef}
         data={data}
@@ -201,7 +202,7 @@ const FlatListDemo = () => {
         contentContainerStyle={{ paddingHorizontal: 16 }}
         renderItem={renderItem}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
