@@ -1,13 +1,14 @@
 import React, { createContext, useCallback, useState } from 'react';
 import axios from 'axios';
-import { storeData } from '../../helpers/storage';
+import { removeData, storeData } from '../../helpers/storage';
+import useCart from '../../hooks/useCart';
 
 export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const { removeAllCart } = useCart();
   // const handleLogin = async (_email, _password) => {
   //   setIsLoading(true);
   //   try {
@@ -54,6 +55,13 @@ const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const handleLogout = useCallback(async () => {
+    await removeData('TOKEN');
+    await removeData('CART_DATA');
+    removeAllCart();
+    setLogin(false);
+  }, [setLogin, removeAllCart]);
+
   const handleSignup = async (name, email, password) => {
     setIsLoading(true);
     try {
@@ -78,7 +86,8 @@ const AuthContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, handleLogin, handleSignup, isLoading, setLogin }}>
+    <AuthContext.Provider
+      value={{ handleLogout, isLoggedIn, handleLogin, handleSignup, isLoading, setLogin }}>
       {children}
     </AuthContext.Provider>
   );

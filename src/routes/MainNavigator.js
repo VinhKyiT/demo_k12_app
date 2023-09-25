@@ -22,6 +22,8 @@ import CartScreen from '../screens/Cart';
 import SignupScreen from '../screens/SignupScreen';
 import AsyncStorageDemo from '../examples/AsyncStorageDemo';
 import { getData } from '../helpers/storage';
+import TabNavigator from './TabNavigator';
+import DrawerNavigator from './DrawerNavigator';
 
 const Stack = createStackNavigator();
 
@@ -50,9 +52,8 @@ function MainNavigator() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isLoggedIn ? (
           <>
+            <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
             <Stack.Screen name="FlatListDemo" component={FlatListDemo} />
-            <Stack.Screen name="TodoList" component={TodoListScreen} />
-            <Stack.Screen name="AsyncStorageDemo" component={AsyncStorageDemo} />
             <Stack.Screen name="CartScreen" component={CartScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="ContextDemo" component={ParentComponent} />
@@ -60,8 +61,6 @@ function MainNavigator() {
             <Stack.Screen name="Counter" component={Counter} />
             <Stack.Screen name="Debouncing" component={DebouncingScreen} />
             <Stack.Screen name="Throtlling" component={ThrottlingScreen} />
-            <Stack.Screen name="DeviceEventEmitter" component={DeviceEventEmitterDemo} />
-            <Stack.Screen name="Todo" component={TodoScreen} />
             <Stack.Screen name="BTVN_23" component={BTVN_23} />
             <Stack.Screen name="TaskDetail" component={TaskDetailScreen} />
             <Stack.Screen name="SectionListDemo" component={SectionListDemo} />

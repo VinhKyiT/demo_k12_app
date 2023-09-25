@@ -88,7 +88,7 @@ const TodoListScreen = () => {
         <View style={{ marginTop: 16 }}>
           <Text style={{ color: '#1A1A1A', fontSize: 24, fontWeight: 'bold' }}>Today's tasks</Text>
           <View style={{ marginTop: 16 }}>
-            {state.todos.map((item, index) => {
+            {state?.todos?.map((item, index) => {
               return (
                 <TaskItem
                   key={item?.title + index.toString()}
@@ -103,7 +103,7 @@ const TodoListScreen = () => {
         <View style={{ marginTop: 16 }}>
           <Text style={{ color: '#1A1A1A', fontSize: 24, fontWeight: 'bold' }}>Tasks done</Text>
           <View style={{ marginTop: 16 }}>
-            {state.tasksDone.map((item, index) => {
+            {state?.tasksDone?.map((item, index) => {
               return (
                 <TaskItem
                   key={item?.title + index.toString()}
@@ -128,7 +128,7 @@ const TodoListScreen = () => {
           paddingHorizontal: 20,
         }}>
         <TextInput
-          value={state.currentTask}
+          value={state?.currentTask}
           onChangeText={text => {
             dispatch({ type: SET_CURRENT_TASK, payload: text });
           }}
