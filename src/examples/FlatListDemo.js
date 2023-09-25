@@ -13,9 +13,9 @@ import ProductItem from '~components/ProductItem';
 import { DOMAIN } from '~constants/env';
 import { FONTS } from '~constants/fonts';
 import { USER_INITIAL_PAGE_SIZE, USER_LOAD_MORE_PAGE_SIZE } from '~constants/listConstants';
-import { removeData } from '../helpers/storage';
 import { useAuth } from '../hooks/useAuth';
 import useCart from '../hooks/useCart';
+import NavigationServices from '../utils/NavigationServices';
 
 const initialState = {
   isRefresh: false,
@@ -64,7 +64,6 @@ const FlatListDemo = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { data, isRefresh, isFetching } = state;
   const flatlistRef = useRef();
-  const navigation = useNavigation();
   const { handleAddToCart, removeAllCart } = useCart();
   const { setLogin } = useAuth();
 
@@ -127,13 +126,6 @@ const FlatListDemo = () => {
     }
   };
 
-  const handleLogout = useCallback(async () => {
-    await removeData('TOKEN');
-    await removeData('CART_DATA');
-    removeAllCart();
-    setLogin(false);
-  }, [setLogin, removeAllCart]);
-
   const listEmptyComponent = useCallback(() => {
     if (isFetching) {
       return <ActivityIndicator size={'large'} />;
@@ -154,21 +146,24 @@ const FlatListDemo = () => {
           marginVertical: 16,
           flexDirection: 'row',
         }}>
-        <TouchableOpacity onPress={handleLogout}>
-          <AntDesign name="logout" color={'red'} size={24} />
+        <TouchableOpacity
+          onPress={() => {
+            NavigationServices.openDrawer();
+          }}>
+          <AntDesign name="menuunfold" color={'red'} size={24} />
         </TouchableOpacity>
         <Text style={{ color: 'black', fontSize: 20, fontFamily: FONTS.BOLD }}>
           Danh sách lớp App K12 HCM
         </Text>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('CartScreen');
+            NavigationServices.navigate('CartScreen');
           }}>
           <AntDesign name="shoppingcart" color={'green'} size={30} />
         </TouchableOpacity>
       </View>
     ),
-    [handleLogout, navigation],
+    [],
   );
 
   const listFooterComponent = useCallback(() => {

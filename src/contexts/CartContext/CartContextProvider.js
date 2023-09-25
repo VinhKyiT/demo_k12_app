@@ -69,7 +69,7 @@ const CartContextProvider = ({ children }) => {
   useEffect(() => {
     const subscription = AppState.addEventListener('change', async nextAppState => {
       if (nextAppState.match(/inactive|background/)) {
-        await storeData('CART_DATA', state);
+        await storeData('CART_DATA', state ?? cartInitialState);
       } else if (nextAppState === 'active') {
         const cartData = await getData('CART_DATA');
         dispatch({ type: REINIT_CART, payload: cartData });

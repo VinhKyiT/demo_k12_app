@@ -3,6 +3,8 @@ import { FlatList, Text, View } from 'react-native';
 import ProductItem from '~components/ProductItem';
 import { FONTS } from '~constants/fonts';
 import useCart from '~hooks/useCart';
+import CustomButton from '../../components/CustomButton';
+import NavigationServices from '../../utils/NavigationServices';
 
 const CartScreen = () => {
   const flatlistRef = useRef();
@@ -12,6 +14,13 @@ const CartScreen = () => {
     return (
       <View style={{ alignItems: 'center' }}>
         <Text>Danh sách rỗng</Text>
+        <CustomButton
+          title="Về trang chủ"
+          onPress={() => {
+            console.log('back to DrawerNavigator');
+            NavigationServices.navigate('TabNavigator');
+          }}
+        />
       </View>
     );
   }, []);

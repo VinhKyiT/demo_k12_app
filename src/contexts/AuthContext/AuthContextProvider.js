@@ -1,13 +1,15 @@
 import React, { createContext, useCallback, useState } from 'react';
 import axios from 'axios';
-import { storeData } from '../../helpers/storage';
+import { removeData, storeData } from '../../helpers/storage';
+import useCart from '../../hooks/useCart';
 
 export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [user, setUser] = useState(null);
+  const { removeAllCart } = useCart();
   // const handleLogin = async (_email, _password) => {
   //   setIsLoading(true);
   //   try {
@@ -45,6 +47,16 @@ const AuthContextProvider = ({ children }) => {
           accessToken: loginResult?.data?.access_token,
           refreshToken: loginResult?.data?.refresh_token,
         });
+        try {
+          const resUser = await axios.get('https://api.escuelajs.co/api/v1/auth/profile', {
+            headers: {
+              Authorization: `Bearer ${loginResult?.data?.access_token}`,
+            },
+          });
+          setUser(resUser?.data);
+        } catch (error) {
+          console.log(error);
+        }
         setIsLoggedIn(true);
         setIsLoading(false);
       }
@@ -73,12 +85,20 @@ const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const handleLogout = useCallback(async () => {
+    await removeData('TOKEN');
+    await removeData('CART_DATA');
+    removeAllCart();
+    setLogin(false);
+  }, [setLogin, removeAllCart]);
+
   const setLogin = useCallback(isLoggedInValue => {
     setIsLoggedIn(isLoggedInValue);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, handleLogin, handleSignup, isLoading, setLogin }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, handleLogin, handleSignup, isLoading, setLogin, handleLogout, user }}>
       {children}
     </AuthContext.Provider>
   );

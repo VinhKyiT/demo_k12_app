@@ -10,11 +10,11 @@ const App = () => {
     <View style={styles.container}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          <AuthContextProvider>
-            <CartContextProvider>
+          <CartContextProvider>
+            <AuthContextProvider>
               <MainNavigator />
-            </CartContextProvider>
-          </AuthContextProvider>
+            </AuthContextProvider>
+          </CartContextProvider>
         </View>
       </GestureHandlerRootView>
     </View>

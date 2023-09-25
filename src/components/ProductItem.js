@@ -1,16 +1,21 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { memo } from 'react';
 import { FONTS } from '../constants/fonts';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomButton from './CustomButton';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
+import AppImage from './AppImage';
 const ProductItem = ({ item, onAddToCart, onUpdateItemInCart, onRemoveFromCart }) => {
   return (
     <View style={styles.itemContainer}>
       <View style={styles.itemWrapper}>
         <View style={styles.imageContainer}>
-          <Image source={{ uri: item?.images?.[0] }} style={styles.thumbnail} />
+          <AppImage
+            source={{
+              uri: 'https://images2.thanhnien.vn/Uploaded/caotung/2020_12_30/photo-1-16092554908561278237856_GFAT.jpg?width=500',
+            }}
+            style={styles.thumbnail}
+          />
         </View>
         <View style={styles.itemContent}>
           <View style={styles.row}>
