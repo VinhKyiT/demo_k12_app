@@ -4,7 +4,7 @@ import {
   DrawerItemList,
   createDrawerNavigator,
 } from '@react-navigation/drawer';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppImage from '../components/AppImage';
@@ -12,22 +12,33 @@ import AppText from '../components/AppText';
 import { useAuth } from '../hooks/useAuth';
 import CartScreen from '../screens/Cart';
 import TabNavigator from './TabNavigator';
+import { FONTS } from '~constants/fonts';
+import NavigationServices from '~utils/NavigationServices';
+
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = props => {
   const { navigation } = props;
   const { handleLogout, user } = useAuth();
+
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={{ paddingTop: 0 }}>
-      <View style={{ width: '100%', height: 100, backgroundColor: '#668EBD' }}>
-        <View>
+      <View style={{ width: '100%', backgroundColor: '#668EBD', padding: 8 }}>
+        <View style={{ alignItems: 'flex-start' }}>
           {/* Avatar */}
-          <AppImage />
-          {/* Ten */}
-          <AppText style={{ color: 'white' }}>Ten</AppText>
+          <AppImage
+            source={{ uri: user?.avatar }}
+            style={{ width: 70, height: 70, borderRadius: 999 }}
+          />
+          <View style={{ marginTop: 16 }}>
+            {/* Ten */}
+            <AppText style={{ color: 'white', fontFamily: FONTS.BOLD, fontSize: 16 }}>
+              {user?.name}
+            </AppText>
+            {/* Email */}
+            <AppText style={{ color: '#e8e8e8' }}>{user?.email}</AppText>
+          </View>
         </View>
-        {/* Email */}
-        <AppText style={{ color: 'white' }}>Email</AppText>
       </View>
       <DrawerItemList {...props} />
       <View style={{ width: '100%', height: 1, backgroundColor: 'rgba(128, 128, 128, 0.3)' }} />
@@ -38,6 +49,14 @@ const CustomDrawerContent = props => {
         )}
         onPress={() => {
           navigation.closeDrawer();
+          NavigationServices.reset({
+            index: 0,
+            routes: [
+              {
+                name: 'LoginScreen',
+              },
+            ],
+          });
           handleLogout();
         }}
       />

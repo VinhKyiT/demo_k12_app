@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import CustomButton from '~components/CustomButton';
 import { useAuth } from '~hooks/useAuth';
+import NavigationServices from '~utils/NavigationServices';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -10,6 +11,14 @@ const LoginScreen = () => {
   const navigation = useNavigation();
 
   const { handleLogin, isLoading } = useAuth();
+
+  const _handleLogin = async () => {
+    const loginResult = await handleLogin(email, password);
+    if (loginResult) {
+      NavigationServices.replace('DrawerNavigator');
+    }
+  };
+
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
       <Text>Vui lòng đăng nhập</Text>
@@ -45,7 +54,7 @@ const LoginScreen = () => {
       />
 
       <CustomButton
-        onPress={() => handleLogin(email, password)}
+        onPress={_handleLogin}
         title={'Đăng nhập'}
         isLoading={isLoading}
         titleStyle={{ color: '#fff' }}

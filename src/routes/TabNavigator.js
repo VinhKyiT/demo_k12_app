@@ -6,6 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorageDemo from '../examples/AsyncStorageDemo';
 import ThrottlingScreen from '../screens/Throtlling';
+import ModalExample from '~examples/ModalDemo';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,8 +24,8 @@ const TabNavigator = () => {
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
         }}
-        name="FlatListDemo"
-        component={FlatListDemo}
+        name="ModalExample"
+        component={ModalExample}
       />
       <Tab.Screen
         options={{

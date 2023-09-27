@@ -1,7 +1,9 @@
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, Alert } from 'react-native';
 import React, { useState } from 'react';
 import CustomButton from '../components/CustomButton';
 import { getData, removeData, storeData } from '../helpers/storage';
+import { I18n, setLocale } from '~i18n';
+import RNRestart from 'react-native-restart';
 
 const AsyncStorageDemo = () => {
   const [value, setValue] = useState('');
@@ -22,6 +24,17 @@ const AsyncStorageDemo = () => {
     await removeData('KEY1');
   };
 
+  const changeLanguage = lang => {
+    setLocale(lang);
+    Alert.alert(I18n.t('alert.alertTitle'), I18n.t('alert.alertLanguageChanged'), [
+      {
+        text: 'OK',
+        onPress: () => RNRestart.restart(),
+        style: 'default',
+      },
+    ]);
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
@@ -33,6 +46,20 @@ const AsyncStorageDemo = () => {
         <CustomButton onPress={handleGetData} title="Đọc dữ liệu" />
         <Text>{data}</Text>
       </View>
+      <Text>{I18n.t('welcome')}</Text>
+      <Text>{I18n.t('greet', { name: 'John' })}</Text>
+      <CustomButton
+        title="Switch to English"
+        onPress={() => {
+          changeLanguage('en');
+        }}
+      />
+      <CustomButton
+        title="Switch to Vietnamese"
+        onPress={() => {
+          changeLanguage('vi');
+        }}
+      />
     </View>
   );
 };

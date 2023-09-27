@@ -1,6 +1,6 @@
-import React, { createContext, useCallback, useState } from 'react';
+import React, { createContext, useCallback, useState, useMemo } from 'react';
 import axios from 'axios';
-import { removeData, storeData } from '../../helpers/storage';
+import { getData, removeData, storeData } from '../../helpers/storage';
 import useCart from '../../hooks/useCart';
 
 export const AuthContext = createContext();
@@ -35,7 +35,7 @@ const AuthContextProvider = ({ children }) => {
   //   }
   // };
 
-  const handleLogin = async (email, password) => {
+  const handleLogin = useCallback(async (email, password) => {
     setIsLoading(true);
     try {
       const loginResult = await axios.post('https://api.escuelajs.co/api/v1/auth/login', {
@@ -47,26 +47,40 @@ const AuthContextProvider = ({ children }) => {
           accessToken: loginResult?.data?.access_token,
           refreshToken: loginResult?.data?.refresh_token,
         });
-        try {
-          const resUser = await axios.get('https://api.escuelajs.co/api/v1/auth/profile', {
-            headers: {
-              Authorization: `Bearer ${loginResult?.data?.access_token}`,
-            },
-          });
-          setUser(resUser?.data);
-        } catch (error) {
-          console.log(error);
-        }
         setIsLoggedIn(true);
         setIsLoading(false);
+        return true;
       }
     } catch (error) {
       setIsLoading(false);
       console.log(error);
+      return false;
     }
-  };
+  }, []);
 
-  const handleSignup = async (name, email, password) => {
+  const getLoginStatus = useCallback(async () => {
+    const hasToken = await getData('TOKEN');
+    if (hasToken?.accessToken) {
+      return true;
+    }
+    return false;
+  }, []);
+
+  const getUserData = useCallback(async () => {
+    try {
+      const token = await getData('TOKEN');
+      const resUser = await axios.get('https://api.escuelajs.co/api/v1/auth/profile', {
+        headers: {
+          Authorization: `Bearer ${token.accessToken}`,
+        },
+      });
+      setUser(resUser?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const handleSignup = useCallback(async (name, email, password) => {
     setIsLoading(true);
     try {
       const response = await axios.post('https://api.escuelajs.co/api/v1/users/', {
@@ -83,7 +97,7 @@ const AuthContextProvider = ({ children }) => {
       setIsLoading(false);
       return error;
     }
-  };
+  }, []);
 
   const handleLogout = useCallback(async () => {
     await removeData('TOKEN');
@@ -96,12 +110,32 @@ const AuthContextProvider = ({ children }) => {
     setIsLoggedIn(isLoggedInValue);
   }, []);
 
-  return (
-    <AuthContext.Provider
-      value={{ isLoggedIn, handleLogin, handleSignup, isLoading, setLogin, handleLogout, user }}>
-      {children}
-    </AuthContext.Provider>
+  const memoizedValue = useMemo(
+    () => ({
+      isLoggedIn,
+      handleLogin,
+      handleSignup,
+      isLoading,
+      setLogin,
+      handleLogout,
+      user,
+      getUserData,
+      getLoginStatus,
+    }),
+    [
+      getLoginStatus,
+      getUserData,
+      handleLogin,
+      handleLogout,
+      handleSignup,
+      isLoading,
+      isLoggedIn,
+      setLogin,
+      user,
+    ],
   );
+
+  return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;
 };
 
 export default AuthContextProvider;
