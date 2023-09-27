@@ -1,34 +1,49 @@
 import React, { useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import { StyleSheet, Text, Pressable, View } from 'react-native';
+import CustomButton from '~components/CustomButton';
+import Modal from 'react-native-modal';
+import { hideModal, showModal } from '~components/Modal';
 
 const ModalExample = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
   return (
-    <View style={styles.centeredView}>
+    <View>
+      <CustomButton
+        title="Open Modal"
+        onPress={() =>
+          showModal({
+            onConfirm: () => {
+              console.log('confirm pressed');
+              showModal({
+                onConfirm: () => {
+                  console.log('confirm pressed');
+                  hideModal();
+                },
+              });
+            },
+          })
+        }
+      />
       <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
+        isVisible={isModalVisible}
+        animationIn="slideInUp" // Hiệu ứng khi mở Modal
+        animationOut="slideOutDown" // Hiệu ứng khi đóng Modal
+        onBackdropPress={toggleModal} // Đóng Modal khi chạm vào nền đen (Backdrop)
+      >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
+            <Pressable style={[styles.button, styles.buttonClose]} onPress={toggleModal}>
               <Text style={styles.textStyle}>Hide Modal</Text>
             </Pressable>
           </View>
         </View>
       </Modal>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}>
-        <Text style={styles.textStyle}>Show Modal</Text>
-      </Pressable>
     </View>
   );
 };
