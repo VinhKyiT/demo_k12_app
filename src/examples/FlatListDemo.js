@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import {
   ActivityIndicator,
+  Animated,
   FlatList,
   RefreshControl,
   SafeAreaView,
@@ -67,6 +68,8 @@ const FlatListDemo = () => {
   const flatlistRef = useRef();
   const { handleAddToCart, removeAllCart } = useCart();
   const { setLogin } = useAuth();
+
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   const fetchData = async (offset = 0, limit = USER_INITIAL_PAGE_SIZE) => {
     try {
@@ -185,8 +188,25 @@ const FlatListDemo = () => {
     [handleAddToCart],
   );
 
+  const height = scrollY.interpolate({
+    inputRange: [0, 70, 140],
+    outputRange: [0, 0, 50], // Nếu bạn muốn tạo hiệu ứng nảy khi cuộn
+    extrapolate: 'clamp', // Giới hạn giá trị sau inputRange
+  });
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Animated.View
+        style={{
+          position: 'absolute',
+          top: 0,
+          width: '100%',
+          backgroundColor: 'red',
+          height,
+          elevation: 6,
+          zIndex: 999,
+        }}
+      />
       <FlatList
         ref={flatlistRef}
         data={data}
@@ -201,6 +221,9 @@ const FlatListDemo = () => {
         ListFooterComponent={listFooterComponent}
         contentContainerStyle={{ paddingHorizontal: 16 }}
         renderItem={renderItem}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+          useNativeDriver: false,
+        })}
       />
     </SafeAreaView>
   );
