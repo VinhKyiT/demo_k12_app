@@ -2,6 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import {
   ActivityIndicator,
+  Animated,
+  Dimensions,
   FlatList,
   RefreshControl,
   SafeAreaView,
@@ -67,6 +69,8 @@ const FlatListDemo = () => {
   const flatlistRef = useRef();
   const { handleAddToCart, removeAllCart } = useCart();
   const { setLogin } = useAuth();
+
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   const fetchData = async (offset = 0, limit = USER_INITIAL_PAGE_SIZE) => {
     try {
@@ -156,16 +160,15 @@ const FlatListDemo = () => {
         <Text style={{ color: 'black', fontSize: 20, fontFamily: FONTS.BOLD }}>
           Danh sách lớp App K12 HCM
         </Text>
-        <TouchableOpacity
-          onPress={() => {
-            NavigationServices.navigate('CartScreen');
-          }}>
-          <AntDesign name="shoppingcart" color={'green'} size={30} />
-        </TouchableOpacity>
+        <View style={{ width: 24, aspectRatio: 1 }} />
       </View>
     ),
     [],
   );
+
+  useEffect(() => {
+    console.log('Dimensions.get', Dimensions.get('window'));
+  }, []);
 
   const listFooterComponent = useCallback(() => {
     if (isFetching && data?.length > 0) {
@@ -187,6 +190,45 @@ const FlatListDemo = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Animated.View
+        style={{
+          width: '100%',
+          position: 'absolute',
+          top: 0,
+          zIndex: 999,
+          height: scrollY.interpolate({
+            inputRange: [0, 100, 200],
+            outputRange: [0, 0, 60],
+            extrapolate: 'clamp',
+          }),
+          backgroundColor: 'red',
+        }}
+      />
+      <Animated.View
+        style={{
+          width: 60,
+          height: 60,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'cyan',
+          elevation: 5,
+          borderRadius: 99,
+          position: 'absolute',
+          bottom: 16,
+          right: scrollY.interpolate({
+            inputRange: [0, 100, 200],
+            outputRange: [16, 16, -76],
+            extrapolate: 'clamp',
+          }),
+          zIndex: 999,
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            NavigationServices.navigate('CartScreen');
+          }}>
+          <AntDesign name="shoppingcart" color={'green'} size={30} />
+        </TouchableOpacity>
+      </Animated.View>
       <FlatList
         ref={flatlistRef}
         data={data}
@@ -201,6 +243,9 @@ const FlatListDemo = () => {
         ListFooterComponent={listFooterComponent}
         contentContainerStyle={{ paddingHorizontal: 16 }}
         renderItem={renderItem}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+          useNativeDriver: false,
+        })}
       />
     </SafeAreaView>
   );

@@ -4,6 +4,7 @@ import CustomButton from '../components/CustomButton';
 import { getData, removeData, storeData } from '../helpers/storage';
 import { I18n, setLocale } from '~i18n';
 import RNRestart from 'react-native-restart';
+import { showModal } from '../components/AppModal';
 
 const AsyncStorageDemo = () => {
   const [value, setValue] = useState('');
@@ -26,15 +27,20 @@ const AsyncStorageDemo = () => {
 
   const changeLanguage = lang => {
     setLocale(lang);
-    Alert.alert(I18n.t('alert.alertTitle'), I18n.t('alert.alertLanguageChanged'), [
-      {
-        text: 'OK',
-        onPress: () => RNRestart.restart(),
-        style: 'default',
-      },
-    ]);
+    //   Alert.alert(I18n.t('alert.alertTitle'), I18n.t('alert.alertLanguageChanged'), [
+    //     {
+    //       text: 'OK',
+    //       onPress: () => RNRestart.restart(),
+    //       style: 'default',
+    //     },
+    //   ]);
+    // };
+    showModal({
+      title: I18n.t('alert.alertTitle'),
+      content: I18n.t('alert.alertLanguageChanged'),
+      onConfirm: () => RNRestart.restart(),
+    });
   };
-
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
