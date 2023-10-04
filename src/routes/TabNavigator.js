@@ -8,6 +8,9 @@ import AsyncStorageDemo from '../examples/AsyncStorageDemo';
 import ThrottlingScreen from '../screens/Throtlling';
 import ModalExample from '~examples/ModalDemo';
 import Animations from '../screens/Animations/Animations';
+import { DynamicTabBar } from '../examples/AnimatedTabIndicator';
+import BottomSheetDemo from '../examples/BottomSheetDemo';
+import TwitterHeader from '../examples/layouts/TwitterHeader';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,8 +28,8 @@ const TabNavigator = () => {
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
         }}
-        name="FlatListDemo"
-        component={FlatListDemo}
+        name="TwitterHeader"
+        component={TwitterHeader}
       />
       <Tab.Screen
         options={{
