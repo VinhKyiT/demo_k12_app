@@ -11,6 +11,7 @@ import Animations from '../screens/Animations/Animations';
 import { DynamicTabBar } from '../examples/AnimatedTabIndicator';
 import BottomSheetDemo from '../examples/BottomSheetDemo';
 import TwitterHeader from '../examples/layouts/TwitterHeader';
+import CarouselDemo from '../examples/CarouselDemo';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,8 +29,8 @@ const TabNavigator = () => {
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
         }}
-        name="TwitterHeader"
-        component={TwitterHeader}
+        name="CarouselDemo"
+        component={CarouselDemo}
       />
       <Tab.Screen
         options={{
