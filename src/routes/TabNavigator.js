@@ -10,6 +10,7 @@ import ModalExample from '~examples/ModalDemo';
 import Animations from '../screens/Animations/Animations';
 import TwitterProfile from '../screens/TwitterProfile';
 import BottomSheetDemo from '../screens/BottomSheetDemo';
+import CarouselDemo from '../screens/CarouselDemo';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,8 +28,8 @@ const TabNavigator = () => {
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
         }}
-        name="BottomSheetDemoScreen"
-        component={BottomSheetDemo}
+        name="CarouselDemoScreen"
+        component={CarouselDemo}
       />
       <Tab.Screen
         options={{
