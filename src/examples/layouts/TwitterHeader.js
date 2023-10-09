@@ -53,6 +53,12 @@ const TwitterHeader = () => {
     outputRange: [0, 0, 0, 1],
     extrapolate: 'clamp',
   });
+
+  const handleScroll = e => {
+    const { nativeEvent } = e;
+    console.log(nativeEvent.contentOffset.y);
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <Animated.View
@@ -88,6 +94,7 @@ const TwitterHeader = () => {
         scrollEventThrottle={16}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
           useNativeDriver: false,
+          listener: handleScroll,
         })}>
         <Animated.View
           style={{

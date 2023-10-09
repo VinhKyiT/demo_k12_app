@@ -30,7 +30,7 @@ const TabNavigator = () => {
           ),
         }}
         name="CarouselDemo"
-        component={CarouselDemo}
+        component={TwitterHeader}
       />
       <Tab.Screen
         options={{

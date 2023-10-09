@@ -69,7 +69,7 @@ const CarouselDemo = () => {
     );
   }, []);
 
-  const handleScroll = e => {
+  const handleScroll = useCallback(e => {
     if (!e) {
       return;
     }
@@ -78,7 +78,7 @@ const CarouselDemo = () => {
     // console.log('SCREEN_WIDTH:' + SCREEN_WIDTH + ' -------- OFFSET:' + currentOffset);
     const currentIndex = Math.floor((currentOffset + SCREEN_WIDTH / 2) / SCREEN_WIDTH);
     setCurrentSlide(currentIndex);
-  };
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
