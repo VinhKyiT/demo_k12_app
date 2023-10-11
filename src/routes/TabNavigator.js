@@ -11,7 +11,7 @@ import Animations from '../screens/Animations/Animations';
 import TwitterProfile from '../screens/TwitterProfile';
 import BottomSheetDemo from '../screens/BottomSheetDemo';
 import CarouselDemo from '../screens/CarouselDemo';
-import SwipeToDeleteDemo from '../examples/SwipeToDeleteDemo';
+import DemoGestureHandler from '../examples/exampleGestureHandler';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,8 +29,8 @@ const TabNavigator = () => {
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
         }}
-        name="SwipeToDeleteDemoScreen"
-        component={SwipeToDeleteDemo}
+        name="DemoGestureHandlerScreen"
+        component={DemoGestureHandler}
       />
       <Tab.Screen
         options={{
