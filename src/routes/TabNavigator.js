@@ -11,6 +11,9 @@ import Animations from '../screens/Animations/Animations';
 import TwitterProfile from '../screens/TwitterProfile';
 import BottomSheetDemo from '../screens/BottomSheetDemo';
 import CarouselDemo from '../screens/CarouselDemo';
+import ReanimatedDemo from '../screens/Reanimated';
+import DemoGestureHandler from '../screens/GestureHandler';
+import SwipeToDelete from '../screens/SwipeToDelete';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,6 +23,8 @@ const TabNavigator = () => {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: 'green',
+        tabBarShowLabel: false,
+        tabBarStyle: { backgroundColor: 'transparent', elevation: 0, borderTopWidth: 0 },
       }}>
       <Tab.Screen
         options={{
@@ -28,8 +33,8 @@ const TabNavigator = () => {
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
         }}
-        name="CarouselDemoScreen"
-        component={CarouselDemo}
+        name="SwipeToDeleteScreen"
+        component={SwipeToDelete}
       />
       <Tab.Screen
         options={{
