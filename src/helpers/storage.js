@@ -8,7 +8,6 @@ const storeData = async (key, value) => {
     } else {
       await AsyncStorage.setItem(key, JSON.stringify(value));
     }
-    console.log('Dữ liệu đã được lưu trữ thành công.');
   } catch (error) {
     console.error('Lỗi khi lưu trữ dữ liệu: ', error);
   }
@@ -19,7 +18,6 @@ const getData = async key => {
   try {
     const value = await AsyncStorage.getItem(key);
     if (value !== null) {
-      console.log('Dữ liệu đã được lấy thành công:', value);
       return JSON.parse(value);
     } else {
       console.log('Không tìm thấy dữ liệu cho key:', key);
@@ -33,10 +31,11 @@ const getData = async key => {
 const removeData = async key => {
   try {
     await AsyncStorage.removeItem(key);
-    console.log('Dữ liệu đã được xóa thành công.');
   } catch (error) {
     console.error('Lỗi khi xóa dữ liệu: ', error);
   }
 };
 
-export { storeData, getData, removeData };
+const LocalStorage = { storeData, getData, removeData };
+
+export default LocalStorage;

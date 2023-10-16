@@ -1,9 +1,9 @@
+import { FOODS_IMAGES } from './foods';
 const IMAGES = {
   SPLASH_SCREEN: require('./splash_screen.png'),
-  MEN: require('./men.jpg'),
-  WOMAN: require('./woman.jpg'),
-  KID: require('./kid.jpg'),
-  DECOR: require('./decor.jpg'),
+  FOODS: FOODS_IMAGES,
+  MINI_LOGO: require('./mini_logo.png'),
+  ONBOARDING_WOMAN: require('./onboarding_woman.png'),
 };
 
 export { IMAGES };

@@ -1,27 +1,30 @@
-import React, { useEffect } from 'react';
-import { View, ImageBackground } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
+import React, { useCallback, useEffect } from 'react';
+import { ImageBackground, View } from 'react-native';
 import { IMAGES } from '~assets/images';
-import AppImage from '~components/AppImage';
-import { useAuth } from '~hooks/useAuth';
 import NavigationServices from '~utils/NavigationServices';
+import { ROUTES } from '../../constants/routes';
+import LocalStorage from '../../helpers/storage';
 
 const AppSplash = () => {
-  const { getUserData, getLoginStatus } = useAuth();
+  const getIsShownOnboarding = async () => {
+    const result = await LocalStorage.getData('IS_SHOWN_ONBOARDING');
+    return result ? true : false;
+  };
+
+  const handleSplashData = useCallback(async () => {
+    const isShownOnboarding = await getIsShownOnboarding();
+    setTimeout(() => {
+      if (isShownOnboarding) {
+        NavigationServices.replace(ROUTES.AUTH_SCREEN);
+      } else {
+        NavigationServices.replace(ROUTES.ONBOARDING_SCREEN);
+      }
+    }, 300);
+  }, []);
+
   useEffect(() => {
-    getUserData()
-      .then(res => {})
-      .finally(async () => {
-        const isLoggedIn = await getLoginStatus();
-        SplashScreen.hide();
-        if (isLoggedIn) {
-          NavigationServices.replace('DrawerNavigator');
-        } else {
-          NavigationServices.replace('LoginScreen');
-        }
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getUserData]);
+    handleSplashData();
+  }, [handleSplashData]);
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground

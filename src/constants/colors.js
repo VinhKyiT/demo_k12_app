@@ -1,0 +1,14 @@
+const COLORS = {
+  ONBOARDING_ORANGE: '#FF4B3A',
+  WHITE: '#ffffff',
+  APP_ORANGE: '#FF460A',
+  BLACK: '#000000',
+  GRAY: '#919191',
+  LIGHT_ORANGE: '#F47B0A',
+  APP_PINK: '#EB4796',
+  APP_SEA_BLUE: '#0038FF',
+  APP_RED: '#DF2C2C',
+  SCREEN_BG: '#F2F2F2',
+};
+
+export { COLORS };
