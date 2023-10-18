@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { IMAGES } from '../../assets/images';
+import { IMAGES } from '~assets/images';
 import styles from './styles';
-import AppText from '../../components/AppText';
-import AppInput from '../../components/AppInput';
-import AppButton from '../../components/AppButton';
+import AppText from '~components/AppText';
+import AppInput from '~components/AppInput';
+import AppButton from '~components/AppButton';
+import { useAuth } from '~hooks/useAuth';
 
 const AuthScreen = () => {
   const [currentTab, setCurrentTab] = useState(0);
@@ -14,6 +15,13 @@ const AuthScreen = () => {
   const handleTabChange = tab => {
     setCurrentTab(tab);
   };
+
+  const { handleLogin } = useAuth();
+
+  const onLoginPress = () => {
+    handleLogin(email, password);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.topPart}>
@@ -59,7 +67,12 @@ const AuthScreen = () => {
             <AppText style={styles.forgotText}>Forgot password?</AppText>
           </TouchableOpacity>
         </View>
-        <AppButton title="Login" titleStyle={styles.buttonTitle} style={styles.buttonContainer} />
+        <AppButton
+          onPress={onLoginPress}
+          title="Login"
+          titleStyle={styles.buttonTitle}
+          style={styles.buttonContainer}
+        />
       </View>
     </View>
   );

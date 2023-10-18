@@ -5,5 +5,9 @@ const ROUTES = {
   HOME_SCREEN: 'HomeScreen',
   DRAWER: 'DrawerNavigator',
   TAB: 'TabNavigator',
+  WISHLIST: 'WishListScreen',
+  PROFILE: 'ProfileScreen',
+  HISTORY: 'HistoryScreen',
+  SEARCH_SCREEN: 'SearchScreen',
 };
 export { ROUTES };

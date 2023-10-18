@@ -4,6 +4,7 @@ import { IMAGES } from '~assets/images';
 import NavigationServices from '~utils/NavigationServices';
 import { ROUTES } from '../../constants/routes';
 import LocalStorage from '../../helpers/storage';
+import SplashScreen from 'react-native-splash-screen';
 
 const AppSplash = () => {
   const getIsShownOnboarding = async () => {
@@ -11,19 +12,30 @@ const AppSplash = () => {
     return result ? true : false;
   };
 
+  const getIsLoggedInStatus = async () => {
+    const loginStatus = await LocalStorage.getData('IS_LOGGED_IN');
+    return !!loginStatus;
+  };
+
   const handleSplashData = useCallback(async () => {
     const isShownOnboarding = await getIsShownOnboarding();
-    setTimeout(() => {
-      if (isShownOnboarding) {
-        NavigationServices.replace(ROUTES.AUTH_SCREEN);
+    const isLoggedIn = await getIsLoggedInStatus();
+
+    if (isShownOnboarding) {
+      if (isLoggedIn) {
+        NavigationServices.replace(ROUTES.DRAWER);
       } else {
-        NavigationServices.replace(ROUTES.ONBOARDING_SCREEN);
+        NavigationServices.replace(ROUTES.AUTH_SCREEN);
       }
-    }, 300);
+    } else {
+      NavigationServices.replace(ROUTES.ONBOARDING_SCREEN);
+    }
   }, []);
 
   useEffect(() => {
-    handleSplashData();
+    handleSplashData().finally(() => {
+      setTimeout(() => SplashScreen.hide(), 50);
+    });
   }, [handleSplashData]);
   return (
     <View style={{ flex: 1 }}>
