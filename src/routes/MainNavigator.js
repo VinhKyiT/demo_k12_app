@@ -19,6 +19,7 @@ import OnboardingScreen from '../screens/OnboardingScreen';
 import NavigationServices from '../utils/NavigationServices';
 import DrawerNavigator from './DrawerNavigator';
 import SearchScreen from '../screens/SearchScreen';
+import ProductDetailScreen from '~screens/ProductDetailScreen';
 
 const Stack = createStackNavigator();
 
@@ -45,7 +46,7 @@ function MainNavigator() {
             open: config,
             close: config,
           },
-          cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
+          // cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
         }}>
         <>
           <Stack.Screen name={ROUTES.SPLASH_SCREEN} component={AppSplash} />
@@ -53,6 +54,7 @@ function MainNavigator() {
           <Stack.Screen name={ROUTES.AUTH_SCREEN} component={AuthScreen} />
           <Stack.Screen name={ROUTES.ONBOARDING_SCREEN} component={OnboardingScreen} />
           <Stack.Screen name={ROUTES.SEARCH_SCREEN} component={SearchScreen} />
+          <Stack.Screen name={ROUTES.PRODUCT_DETAIL_SCREEN} component={ProductDetailScreen} />
         </>
       </Stack.Navigator>
     </NavigationContainer>

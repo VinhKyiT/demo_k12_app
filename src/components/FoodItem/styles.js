@@ -4,27 +4,27 @@ import { FONTS } from '../../constants/fonts';
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft: 32,
     justifyContent: 'center',
   },
   itemWrapper: {
-    height: 270,
-    width: 200,
+    height: '100%',
+    width: '100%',
     alignItems: 'center',
     backgroundColor: COLORS.WHITE,
     borderRadius: 30,
-    shadowColor: COLORS.SHADOW,
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 3,
+      height: 5,
     },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
   },
   itemImage: {
-    width: 164,
-    height: 164,
+    width: 140,
+    height: 140,
     marginTop: -40,
     borderRadius: 999,
   },
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: COLORS.BLACK,
     textAlign: 'center',
+    marginHorizontal: 16,
   },
   itemPriceText: {
     fontFamily: FONTS.ROUNDED.BOLD,

@@ -4,10 +4,10 @@ import FastImage from 'react-native-fast-image';
 import AppText from '../AppText';
 import styles from './styles';
 
-const FoodItem = ({ item }) => {
+const FoodItem = ({ item, onItemPress }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity activeOpacity={0.8}>
+      <TouchableOpacity activeOpacity={0.8} onPress={onItemPress}>
         <View style={styles.itemWrapper}>
           <FastImage
             source={item.image}

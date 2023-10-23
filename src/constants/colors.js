@@ -16,6 +16,8 @@ const COLORS = {
   SUPER_LIGHT_GRAY: '#EFEEEE',
   TEXT_GRAY: '#9A9A9D',
   SHADOW: '#3939391A',
+  WHITE_LIST_BG: '#F9F9F9',
+  DOT_INACTIVE: '#C4C4C4',
   /**
    *
    * @param {number} opacityPercent - from 0 to 100

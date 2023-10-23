@@ -62,6 +62,11 @@ const styles = StyleSheet.create({
     color: COLORS.APP_ORANGE,
     fontFamily: FONTS.ROUNDED.REGULAR,
   },
+  itemContainer: {
+    marginLeft: 32,
+    height: 270,
+    width: 200,
+  },
 });
 
 export default styles;

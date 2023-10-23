@@ -38,8 +38,16 @@ const HomeScreen = () => {
     setSelectingCategory(id);
   };
 
+  const handleItemPress = useCallback(item => {
+    NavigationServices.navigate(ROUTES.PRODUCT_DETAIL_SCREEN, { productDetail: item });
+  }, []);
+
   const renderItem = useCallback(({ item }) => {
-    return <FoodItem item={item} />;
+    return (
+      <View style={styles.itemContainer}>
+        <FoodItem item={item} onItemPress={() => handleItemPress(item)} />
+      </View>
+    );
   }, []);
 
   return (

@@ -9,5 +9,6 @@ const ROUTES = {
   PROFILE: 'ProfileScreen',
   HISTORY: 'HistoryScreen',
   SEARCH_SCREEN: 'SearchScreen',
+  PRODUCT_DETAIL_SCREEN: 'ProductDetailScreen',
 };
 export { ROUTES };

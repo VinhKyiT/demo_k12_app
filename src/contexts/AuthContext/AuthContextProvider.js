@@ -23,7 +23,7 @@ const AuthContextProvider = ({ children }) => {
 
   const handleLogin = useCallback((email, password) => {
     if (email?.toLowerCase() === 'admin@gmail.com' && password === '123123') {
-      NavigationServices.replace(ROUTES.DRAWER);
+      NavigationServices.reset({ routes: [{ name: ROUTES.DRAWER }], index: 0 });
       setIsLoggedIn(true);
       LocalStorage.storeData('IS_LOGGED_IN', true);
     }
