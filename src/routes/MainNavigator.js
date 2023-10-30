@@ -20,6 +20,8 @@ import NavigationServices from '../utils/NavigationServices';
 import DrawerNavigator from './DrawerNavigator';
 import SearchScreen from '../screens/SearchScreen';
 import ProductDetailScreen from '~screens/ProductDetailScreen';
+import CartScreen from '~screens/CartScreen';
+import EditProfileScreen from '~screens/EditProfileScreen';
 
 const Stack = createStackNavigator();
 
@@ -55,6 +57,8 @@ function MainNavigator() {
           <Stack.Screen name={ROUTES.ONBOARDING_SCREEN} component={OnboardingScreen} />
           <Stack.Screen name={ROUTES.SEARCH_SCREEN} component={SearchScreen} />
           <Stack.Screen name={ROUTES.PRODUCT_DETAIL_SCREEN} component={ProductDetailScreen} />
+          <Stack.Screen name={ROUTES.CART_SCREEN} component={CartScreen} />
+          <Stack.Screen name={ROUTES.EDIT_PROFILE_SCREEN} component={EditProfileScreen} />
         </>
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,4 +1,6 @@
 import { StyleSheet } from 'react-native';
+import { COLORS } from '~constants/colors';
+import { FONTS } from '~constants/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,6 +22,17 @@ const styles = StyleSheet.create({
   bodyContainer: {
     paddingHorizontal: 32,
     marginTop: 32,
+  },
+  buttonTitle: {
+    color: COLORS.WHITE,
+    fontFamily: FONTS.TEXT.SEMIBOLD,
+    fontSize: 16,
+  },
+  buttonContainer: {
+    backgroundColor: COLORS.BUTTON_ORANGE,
+    marginHorizontal: 32,
+    marginVertical: 16,
+    borderRadius: 30,
   },
 });
 

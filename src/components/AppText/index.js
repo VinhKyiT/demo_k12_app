@@ -10,6 +10,7 @@ const AppText = ({
   color = COLORS.BLACK,
   weight = 'regular',
   variant = 'text',
+  style = {},
   ...rest
 }) => {
   const containerStyle = useMemo(() => {
@@ -23,8 +24,9 @@ const AppText = ({
     };
     resultStyle.push(styles.text);
     resultStyle.push(styleByProps);
+    resultStyle.push(style);
     return resultStyle;
-  }, []);
+  }, [color, size, style, variant, weight]);
   return (
     <Text style={containerStyle} {...rest}>
       {children}

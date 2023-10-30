@@ -10,5 +10,7 @@ const ROUTES = {
   HISTORY: 'HistoryScreen',
   SEARCH_SCREEN: 'SearchScreen',
   PRODUCT_DETAIL_SCREEN: 'ProductDetailScreen',
+  CART_SCREEN: 'CartScreen',
+  EDIT_PROFILE_SCREEN: 'EditProfileScreen',
 };
 export { ROUTES };

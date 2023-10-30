@@ -29,7 +29,7 @@ const HomeScreen = () => {
       rightIconType: 'feather',
       rightIconName: 'shopping-cart',
       rightIconColor: COLORS.ICON_GRAY,
-      onRightIconPress: () => console.log('Right icon press'),
+      onRightIconPress: () => NavigationServices.navigate(ROUTES.CART_SCREEN),
     }),
     [],
   );

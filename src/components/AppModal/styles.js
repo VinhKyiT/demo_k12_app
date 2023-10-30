@@ -23,27 +23,25 @@ const styles = StyleSheet.create({
     elevation: 5,
     width: '90%',
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
   modalHeaderText: {
     fontFamily: FONTS.TEXT.MEDIUM,
     fontSize: 20,
     color: '#000',
   },
+  buttonPrimary: {
+    backgroundColor: '#FA4A0C',
+    paddingVertical: 8,
+    borderRadius: 99,
+  },
+  buttonSecondary: {
+    backgroundColor: 'transparent',
+  },
+  textPrimary: {
+    color: '#fff',
+    fontFamily: FONTS.BOLD,
+    fontSize: 16,
+  },
+  textSecondary: {},
 });
 
 export default styles;

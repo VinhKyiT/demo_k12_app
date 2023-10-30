@@ -1,0 +1,118 @@
+import { View, FlatList, TouchableOpacity } from 'react-native';
+import React, { memo, useMemo, useCallback } from 'react';
+import styles from './styles';
+import { useCart } from '~hooks/useCart';
+import AppHeader from '~components/AppHeader';
+import NavigationServices from '~utils/NavigationServices';
+import { COLORS } from '~constants/colors';
+import AppText from '~components/AppText';
+import AppIcon from '~components/AppIcon';
+import FastImage from 'react-native-fast-image';
+import { showModal } from '~components/AppModal';
+
+const CartScreen = () => {
+  const { cartData, handleUpdateCart, handleRemoveFromCart } = useCart();
+
+  const headerLeftIconProps = useMemo(
+    () => ({
+      leftIconType: 'antdesign',
+      leftIconName: 'left',
+      leftIconColor: COLORS.BLACK,
+      onLeftIconPress: () => {
+        NavigationServices.goBack();
+      },
+    }),
+    [],
+  );
+
+  const handleIncrease = useCallback(
+    item => {
+      handleUpdateCart(item?.id, 1);
+    },
+    [handleUpdateCart],
+  );
+  const handleDecrease = useCallback(
+    item => {
+      if (item.quantity === 1) {
+        showModal({
+          title: 'Thông báo',
+          content: `Bạn có chắc muốn xoá ${item.name} khỏi giỏ hàng?`,
+          hasCancel: true,
+          cancelText: 'No',
+          confirmText: 'Yes',
+          onConfirm: () => handleRemoveFromCart(item.id),
+          revertButtons: true,
+        });
+      } else {
+        handleUpdateCart(item?.id, -1);
+      }
+    },
+    [handleUpdateCart, handleRemoveFromCart],
+  );
+  const renderItem = useCallback(
+    ({ item }) => {
+      return (
+        <View style={styles.itemContainer}>
+          <FastImage source={item.image} style={styles.itemImage} />
+          <View style={styles.itemBody}>
+            <AppText
+              variant="rounded"
+              weight="semibold"
+              size={17}
+              style={styles.itemName}
+              numberOfLines={1}>
+              {item?.name}
+            </AppText>
+            <AppText variant="rounded" weight="semibold" color={COLORS.BUTTON_ORANGE}>
+              {(item?.price * item?.quantity).toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+              })}
+            </AppText>
+          </View>
+          <View style={styles.itemQuantity}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => handleDecrease(item)}>
+              <AppIcon type="feather" name="minus" size={15} color={COLORS.WHITE} />
+            </TouchableOpacity>
+            <AppText
+              size={13}
+              variant="rounded"
+              weight="semibold"
+              color={COLORS.WHITE}
+              style={{ marginHorizontal: 4 }}>
+              {item?.quantity}
+            </AppText>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => handleIncrease(item)}>
+              <AppIcon type="feather" name="plus" size={15} color={COLORS.WHITE} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    },
+    [handleDecrease, handleIncrease],
+  );
+
+  const listHeaderComponent = useCallback(() => {
+    return (
+      <View style={styles.listHeaderContainer}>
+        <AppIcon size={20} type="material-community" name="gesture-swipe-left" />
+        <AppText size={10}>swipe on an item to delete</AppText>
+      </View>
+    );
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <AppHeader centerTitle={'Cart'} leftIcon={headerLeftIconProps} />
+      <FlatList
+        ListHeaderComponent={listHeaderComponent}
+        contentContainerStyle={styles.listContentStyle}
+        data={cartData?.carts}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
+    </View>
+  );
+};
+
+export default memo(CartScreen);

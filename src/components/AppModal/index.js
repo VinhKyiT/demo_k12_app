@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DeviceEventEmitter, View } from 'react-native';
 import Modal from 'react-native-modal';
-import { FONTS } from '~constants/fonts';
 import AppButton from '../AppButton';
 import AppText from '../AppText';
 import styles from './styles';
@@ -16,6 +15,7 @@ const defaultOptions = {
   onConfirm: () => {},
   closeModalOnBackdropPress: false,
   customContent: null,
+  revertButtons: false,
 };
 
 const AppModal = () => {
@@ -76,14 +76,15 @@ const AppModal = () => {
               style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 }}>
               {!!options.hasCancel && (
                 <AppButton
-                  style={{ backgroundColor: 'transparent' }}
+                  titleStyle={options.revertButtons ? styles.textPrimary : styles.textSecondary}
+                  style={options.revertButtons ? styles.buttonPrimary : styles.buttonSecondary}
                   title={options.cancelText}
                   onPress={onCancel}
                 />
               )}
               <AppButton
-                titleStyle={{ color: '#fff', fontFamily: FONTS.BOLD, fontSize: 16 }}
-                style={{ backgroundColor: '#FA4A0C', paddingVertical: 8, borderRadius: 99 }}
+                titleStyle={options.revertButtons ? styles.textSecondary : styles.textPrimary}
+                style={options.revertButtons ? styles.buttonSecondary : styles.buttonPrimary}
                 title={options.confirmText}
                 onPress={onConfirm}
               />

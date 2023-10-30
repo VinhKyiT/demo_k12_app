@@ -5,6 +5,7 @@ import AppModal from '~components/AppModal';
 import AuthContextProvider from '~contexts/AuthContext/AuthContextProvider';
 import { initLocale } from '~i18n';
 import MainNavigator from './src/routes/MainNavigator';
+import CartContextProvider from '~contexts/CartContext/CartContextProvider';
 
 const App = () => {
   useLayoutEffect(() => {
@@ -15,8 +16,10 @@ const App = () => {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <AuthContextProvider>
-            <MainNavigator />
-            <AppModal />
+            <CartContextProvider>
+              <MainNavigator />
+              <AppModal />
+            </CartContextProvider>
           </AuthContextProvider>
         </View>
       </GestureHandlerRootView>
