@@ -12,5 +12,6 @@ const ROUTES = {
   PRODUCT_DETAIL_SCREEN: 'ProductDetailScreen',
   CART_SCREEN: 'CartScreen',
   EDIT_PROFILE_SCREEN: 'EditProfileScreen',
+  CONNECTION_CHECKER_SCREEN: 'ConnectionCheckerScreen',
 };
 export { ROUTES };

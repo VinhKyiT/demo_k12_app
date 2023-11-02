@@ -7,6 +7,7 @@ import FastImage from 'react-native-fast-image';
 import AppIcon from '~components/AppIcon';
 import AppHeader from '~components/AppHeader';
 import NavigationServices from '~utils/NavigationServices';
+import AppRadioGroup from '../../components/AppRadioGroup';
 
 const PAYMENT_OPTIONS = [
   {
@@ -90,39 +91,11 @@ const EditProfileScreen = () => {
             Payment Method
           </AppText>
         </View>
-        <View style={{ backgroundColor: COLORS.WHITE, padding: 16, borderRadius: 20 }}>
-          {PAYMENT_OPTIONS.map(item => {
-            return (
-              <TouchableOpacity
-                onPress={() => setSelectingPayment(item.id)}
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: COLORS.WHITE,
-                  marginVertical: 16,
-                  alignItems: 'center',
-                }}
-                key={item.id}>
-                <AppIcon
-                  type="material"
-                  name={selectingPayment === item.id ? 'radio-button-on' : 'radio-button-off'}
-                  color={selectingPayment === item.id ? COLORS.LIGHT_ORANGE : COLORS.TEXT_DARK_GRAY}
-                />
-                {!!item.icon && (
-                  <View
-                    style={{
-                      padding: 16,
-                      backgroundColor: item.iconBackground,
-                      borderRadius: 10,
-                      marginHorizontal: 8,
-                    }}>
-                    <AppIcon {...item.icon} />
-                  </View>
-                )}
-                <AppText>{item.title}</AppText>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+        <AppRadioGroup
+          data={PAYMENT_OPTIONS}
+          selectingItem={selectingPayment}
+          onItemPress={setSelectingPayment}
+        />
       </ScrollView>
     </View>
   );

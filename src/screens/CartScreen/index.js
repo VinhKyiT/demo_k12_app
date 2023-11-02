@@ -9,6 +9,7 @@ import AppText from '~components/AppText';
 import AppIcon from '~components/AppIcon';
 import FastImage from 'react-native-fast-image';
 import { showModal } from '~components/AppModal';
+import EmptyComponent from '../../components/EmptyComponent';
 
 const CartScreen = () => {
   const { cartData, handleUpdateCart, handleRemoveFromCart } = useCart();
@@ -105,6 +106,18 @@ const CartScreen = () => {
     <View style={styles.container}>
       <AppHeader centerTitle={'Cart'} leftIcon={headerLeftIconProps} />
       <FlatList
+        ListEmptyComponent={
+          <EmptyComponent
+            icon={{
+              type: 'feather',
+              name: 'shopping-cart',
+              size: 160,
+              color: COLORS.ICON_LIGHT_GRAY,
+            }}
+            title="No products yet"
+            description="Hit the orange button down below to Create an order"
+          />
+        }
         ListHeaderComponent={listHeaderComponent}
         contentContainerStyle={styles.listContentStyle}
         data={cartData?.carts}

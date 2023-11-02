@@ -20,6 +20,8 @@ const COLORS = {
   DOT_INACTIVE: '#C4C4C4',
   BUTTON_ORANGE: '#FA4A0C',
   TEXT_DARK_GRAY: '#808080',
+  ICON_LIGHT_GRAY: '#C7C7C7',
+  GREEN: '#4BB543',
   /**
    *
    * @param {number} opacityPercent - from 0 to 100

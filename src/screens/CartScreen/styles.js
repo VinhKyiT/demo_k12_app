@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   },
   listContentStyle: {
     paddingHorizontal: 32,
+    flexGrow: 1,
   },
   listHeaderContainer: {
     flexDirection: 'row',

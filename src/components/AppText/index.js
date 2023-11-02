@@ -10,6 +10,7 @@ const AppText = ({
   color = COLORS.BLACK,
   weight = 'regular',
   variant = 'text',
+  align = 'left',
   style = {},
   ...rest
 }) => {
@@ -20,13 +21,14 @@ const AppText = ({
     const styleByProps = {
       fontSize: size,
       fontFamily: FONTS[fontVariant][fontWeight],
+      textAlign: align,
       color,
     };
     resultStyle.push(styles.text);
     resultStyle.push(styleByProps);
     resultStyle.push(style);
     return resultStyle;
-  }, [color, size, style, variant, weight]);
+  }, [color, size, style, variant, weight, align]);
   return (
     <Text style={containerStyle} {...rest}>
       {children}

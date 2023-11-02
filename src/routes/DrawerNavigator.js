@@ -7,6 +7,7 @@ import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import TabNavigator from './TabNavigator';
 import { ROUTES } from '../constants/routes';
+import ConnectionCheckerScreen from '../screens/ConnectionCheckerScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -32,6 +33,16 @@ const DrawerNavigator = () => {
         }}
         name={ROUTES.TAB}
         component={TabNavigator}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+          drawerLabel: 'Internet',
+        }}
+        name={ROUTES.CONNECTION_CHECKER_SCREEN}
+        component={ConnectionCheckerScreen}
       />
     </Drawer.Navigator>
   );

@@ -1,5 +1,7 @@
-const TEXT_FONT_PREFIX = 'SF-Pro-Text';
-const ROUNDED_FONT_PREFIX = 'SF-Pro-Rounded';
+import { Platform } from 'react-native';
+
+const TEXT_FONT_PREFIX = Platform.OS === 'ios' ? 'SFProText' : 'SF-Pro-Text';
+const ROUNDED_FONT_PREFIX = Platform.OS === 'ios' ? 'SFProRounded' : 'SF-Pro-Rounded';
 
 const FONTS = {
   TEXT: {
