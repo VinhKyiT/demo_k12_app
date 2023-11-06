@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { IMAGES } from '~assets/images';
@@ -6,21 +6,51 @@ import styles from './styles';
 import AppText from '~components/AppText';
 import AppInput from '~components/AppInput';
 import AppButton from '~components/AppButton';
-import { useAuth } from '~hooks/useAuth';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginErrorSelector, loginStateSelector } from '~redux/auth/auth.selectors';
+import axios from 'axios';
+import { loginFailed, loginSuccess } from '~redux/auth/auth.actions';
+import NavigationServices from '~utils/NavigationServices';
+import { ROUTES } from '~constants/routes';
 
 const AuthScreen = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const loginError = useSelector(loginErrorSelector);
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(loginStateSelector);
   const handleTabChange = tab => {
     setCurrentTab(tab);
   };
 
-  const { handleLogin } = useAuth();
+  const onLoginPress = useCallback(async () => {
+    try {
+      const loginResponse = await axios.post('https://store.kybuidev.com/api/v1/auth/login', {
+        email,
+        password,
+      });
+      console.log('loginResponse', loginResponse?.data?.access_token);
 
-  const onLoginPress = () => {
-    handleLogin(email, password);
-  };
+      if (loginResponse?.data?.access_token) {
+        dispatch(
+          loginSuccess({
+            accessToken: loginResponse?.data?.access_token,
+            refreshToken: loginResponse?.data?.refresh_token,
+          }),
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch(loginFailed(error?.response?.data?.message));
+    }
+  }, [dispatch, email, password]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      NavigationServices.reset({ routes: [{ name: ROUTES.DRAWER }], index: 0 });
+    }
+  }, [isLoggedIn]);
 
   return (
     <View style={styles.container}>
@@ -53,6 +83,7 @@ const AuthScreen = () => {
             value={email}
             onChangeText={setEmail}
             placeholder="Eg: nguyenvana@gmail.com"
+            error={loginError}
           />
           <AppInput
             style={[styles.inputStyle]}

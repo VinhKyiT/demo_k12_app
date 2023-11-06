@@ -1,10 +1,10 @@
-import { ADD_TO_CART, REINIT_CART, REMOVE_FROM_CART, UPDATE_CART } from './constants';
+import { ADD_TO_CART, REINIT_CART, REMOVE_FROM_CART, UPDATE_CART } from './cart.constants';
 
 const cartInitialState = {
   carts: [],
 };
 
-const cartReducer = (state, action) => {
+const cartReducer = (state = cartInitialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case REINIT_CART: {
@@ -53,5 +53,4 @@ const cartReducer = (state, action) => {
       return state;
   }
 };
-
-export { cartInitialState, cartReducer };
+export default cartReducer;

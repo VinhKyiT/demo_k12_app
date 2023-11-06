@@ -1,7 +1,6 @@
 import { View, FlatList, TouchableOpacity } from 'react-native';
 import React, { memo, useMemo, useCallback } from 'react';
 import styles from './styles';
-import { useCart } from '~hooks/useCart';
 import AppHeader from '~components/AppHeader';
 import NavigationServices from '~utils/NavigationServices';
 import { COLORS } from '~constants/colors';
@@ -10,9 +9,15 @@ import AppIcon from '~components/AppIcon';
 import FastImage from 'react-native-fast-image';
 import { showModal } from '~components/AppModal';
 import EmptyComponent from '../../components/EmptyComponent';
+import { useSelector, useDispatch } from 'react-redux';
+import { getCartsSelector } from '~redux/cart/cart.selectors';
+import { removeFromCart, updateCart } from '~redux/cart/cart.actions';
 
 const CartScreen = () => {
-  const { cartData, handleUpdateCart, handleRemoveFromCart } = useCart();
+  const listCart = useSelector(getCartsSelector);
+  const dispatch = useDispatch();
+
+  console.log('listCart', listCart);
 
   const headerLeftIconProps = useMemo(
     () => ({
@@ -28,9 +33,9 @@ const CartScreen = () => {
 
   const handleIncrease = useCallback(
     item => {
-      handleUpdateCart(item?.id, 1);
+      dispatch(updateCart({ id: item?.id, quantity: 1 }));
     },
-    [handleUpdateCart],
+    [dispatch],
   );
   const handleDecrease = useCallback(
     item => {
@@ -41,14 +46,14 @@ const CartScreen = () => {
           hasCancel: true,
           cancelText: 'No',
           confirmText: 'Yes',
-          onConfirm: () => handleRemoveFromCart(item.id),
+          onConfirm: () => dispatch(removeFromCart(item.id)),
           revertButtons: true,
         });
       } else {
-        handleUpdateCart(item?.id, -1);
+        dispatch(updateCart({ id: item?.id, quantity: -1 }));
       }
     },
-    [handleUpdateCart, handleRemoveFromCart],
+    [dispatch],
   );
   const renderItem = useCallback(
     ({ item }) => {
@@ -120,7 +125,7 @@ const CartScreen = () => {
         }
         ListHeaderComponent={listHeaderComponent}
         contentContainerStyle={styles.listContentStyle}
-        data={cartData?.carts}
+        data={listCart}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />

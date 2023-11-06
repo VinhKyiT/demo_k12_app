@@ -16,6 +16,10 @@ const styles = StyleSheet.create({
   inputStyle: {
     fontFamily: FONTS.TEXT.REGULAR,
   },
+  errorText: {
+    marginHorizontal: 4,
+    marginTop: 4,
+  },
 });
 
 export default styles;

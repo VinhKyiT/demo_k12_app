@@ -12,19 +12,19 @@ import Dots from '~components/Dots';
 import AppText from '~components/AppText';
 import BodySection from './components/BodySection';
 import AppButton from '~components/AppButton';
-import { useCart } from '~hooks/useCart';
+import { addToCart } from '~redux/cart/cart.actions';
+import { useDispatch } from 'react-redux';
 
 const ProductDetailScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const carouselRef = useRef(null);
   const { params } = useRoute();
   const { productDetail } = params || {};
-
-  const { handleAddToCart } = useCart();
+  const dispatch = useDispatch();
 
   const onAddToCart = useCallback(() => {
-    handleAddToCart(productDetail);
-  }, [handleAddToCart, productDetail]);
+    dispatch(addToCart(productDetail));
+  }, [dispatch, productDetail]);
 
   const headerLeftIconProps = useMemo(
     () => ({
