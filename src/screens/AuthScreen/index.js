@@ -9,9 +9,12 @@ import AppButton from '~components/AppButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginErrorSelector, loginStateSelector } from '~redux/auth/auth.selectors';
 import axios from 'axios';
-import { loginFailed, loginSuccess } from '~redux/auth/auth.actions';
+import { loginFailed, loginRequest, loginSuccess } from '~redux/auth/auth.actions';
 import NavigationServices from '~utils/NavigationServices';
 import { ROUTES } from '~constants/routes';
+import { getUserProfile } from '../../redux/profile/profile.actions';
+import { getLoadingSelector } from '../../redux/loading/loading.selectors';
+import { LOGIN } from '../../redux/auth/auth.constants';
 
 const AuthScreen = () => {
   const [currentTab, setCurrentTab] = useState(0);
@@ -24,26 +27,12 @@ const AuthScreen = () => {
     setCurrentTab(tab);
   };
 
-  const onLoginPress = useCallback(async () => {
-    try {
-      const loginResponse = await axios.post('https://store.kybuidev.com/api/v1/auth/login', {
-        email,
-        password,
-      });
-      console.log('loginResponse', loginResponse?.data?.access_token);
+  const isLoggingIn = useSelector(state => getLoadingSelector(state, [LOGIN.REQUEST]));
 
-      if (loginResponse?.data?.access_token) {
-        dispatch(
-          loginSuccess({
-            accessToken: loginResponse?.data?.access_token,
-            refreshToken: loginResponse?.data?.refresh_token,
-          }),
-        );
-      }
-    } catch (error) {
-      console.log(error);
-      dispatch(loginFailed(error?.response?.data?.message));
-    }
+  console.log('isLoggingIn', isLoggingIn);
+
+  const onLoginPress = useCallback(async () => {
+    dispatch(loginRequest({ email, password }));
   }, [dispatch, email, password]);
 
   useEffect(() => {
@@ -99,6 +88,7 @@ const AuthScreen = () => {
           </TouchableOpacity>
         </View>
         <AppButton
+          isLoading={isLoggingIn}
           onPress={onLoginPress}
           title="Login"
           titleStyle={styles.buttonTitle}

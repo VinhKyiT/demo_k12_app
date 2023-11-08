@@ -7,6 +7,8 @@ import FastImage from 'react-native-fast-image';
 import AppIcon from '~components/AppIcon';
 import NavigationServices from '~utils/NavigationServices';
 import { ROUTES } from '~constants/routes';
+import { useSelector } from 'react-redux';
+import { getUserInfoSelector } from '../../redux/profile/profile.selectors';
 
 const PROFILE_CHOICES = [
   {
@@ -32,6 +34,7 @@ const PROFILE_CHOICES = [
 ];
 
 const ProfileScreen = () => {
+  const userInfo = useSelector(getUserInfoSelector);
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -53,16 +56,16 @@ const ProfileScreen = () => {
         <View style={styles.userInfoContainer}>
           <FastImage
             source={{
-              uri: 'https://cdn.tuoitre.vn/zoom/480_300/471584752817336320/2023/10/29/mu-ngay-28-10-read-only-16985452171851876173143-156-0-1406-2000-crop-1698545275763112973407.jpg',
+              uri: userInfo?.avatar,
             }}
             style={styles.profileImage}
           />
           <View style={styles.infoWrapper}>
             <AppText size={18} weight="semibold">
-              Vinh Ky
+              {userInfo?.name}
             </AppText>
             <AppText color={COLORS.TEXT_DARK_GRAY} size={15}>
-              kybuidev@gmail.com
+              {userInfo?.email}
             </AppText>
             <View style={styles.profileDivider} />
             <AppText color={COLORS.TEXT_DARK_GRAY} size={15}>

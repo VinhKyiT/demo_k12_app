@@ -6,7 +6,8 @@ import { initLocale } from '~i18n';
 import MainNavigator from './src/routes/MainNavigator';
 import { COLORS } from './src/constants/colors';
 import { Provider } from 'react-redux';
-import { store } from '~redux/store';
+import { persistor, store } from '~redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const App = () => {
   useLayoutEffect(() => {
@@ -18,8 +19,10 @@ const App = () => {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <Provider store={store}>
-            <MainNavigator />
-            <AppModal />
+            <PersistGate loading={null} persistor={persistor}>
+              <MainNavigator />
+              <AppModal />
+            </PersistGate>
           </Provider>
         </View>
       </GestureHandlerRootView>

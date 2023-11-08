@@ -1,4 +1,4 @@
-import { LOGIN_FAILED, LOGIN_SUCCESS } from './auth.constants';
+import { LOGIN, LOGOUT } from './auth.constants';
 
 const initialState = {
   isLoggedIn: false,
@@ -9,7 +9,7 @@ const initialState = {
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN_SUCCESS: {
+    case LOGIN.SUCCESS: {
       return {
         ...state,
         isLoggedIn: true,
@@ -18,11 +18,14 @@ const authReducer = (state = initialState, action) => {
         error: '',
       };
     }
-    case LOGIN_FAILED: {
+    case LOGIN.FAILED: {
       return {
         ...state,
         error: action?.payload,
       };
+    }
+    case LOGOUT.ORIGIN: {
+      return { ...initialState };
     }
     default:
       return state;

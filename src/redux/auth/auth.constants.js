@@ -1,2 +1,5 @@
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILED = 'LOGIN_FAILED';
+import { createTypes } from '../actionTypes';
+
+export const LOGIN = createTypes('AUTH/LOGIN');
+
+export const LOGOUT = createTypes('AUTH/LOGOUT');
