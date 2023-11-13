@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
 import AppHeader from '~components/AppHeader';
 import AppIcon from '~components/AppIcon';
@@ -9,9 +9,18 @@ import { ROUTES } from '~constants/routes';
 import { foodData, menuData } from '~mock';
 import NavigationServices from '~utils/NavigationServices';
 import styles from './styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { getHomeCategoriesRequest } from '../../redux/home/home.actions';
+import { getHomeCategoriesSelector } from '../../redux/home/home.selectors';
+import AppLoading from '../../components/AppLoading';
+import withLoading from '../../HOCs/withLoading';
+import { GET_HOME_CATEGORIES } from '../../redux/home/home.constants';
 
 const HomeScreen = () => {
   const [selectingCategory, setSelectingCategory] = useState(menuData[0].id);
+  const dispatch = useDispatch();
+  const categoriesData = useSelector(getHomeCategoriesSelector);
+
   const leftIconProps = useMemo(
     () => ({
       leftIconType: 'feather',
@@ -42,13 +51,20 @@ const HomeScreen = () => {
     NavigationServices.navigate(ROUTES.PRODUCT_DETAIL_SCREEN, { productDetail: item });
   }, []);
 
-  const renderItem = useCallback(({ item }) => {
-    return (
-      <View style={styles.itemContainer}>
-        <FoodItem item={item} onItemPress={() => handleItemPress(item)} />
-      </View>
-    );
-  }, []);
+  const renderItem = useCallback(
+    ({ item }) => {
+      return (
+        <View style={styles.itemContainer}>
+          <FoodItem item={item} onItemPress={() => handleItemPress(item)} />
+        </View>
+      );
+    },
+    [handleItemPress],
+  );
+
+  useEffect(() => {
+    dispatch(getHomeCategoriesRequest());
+  }, [dispatch]);
 
   return (
     <View style={styles.container}>
@@ -70,7 +86,7 @@ const HomeScreen = () => {
         showsHorizontalScrollIndicator={false}
         style={styles.foodCategoryScrollView}
         contentContainerStyle={styles.foodCategoryContainer}>
-        {menuData.map(item => {
+        {categoriesData.data.map(item => {
           return (
             <TouchableOpacity
               onPress={() => onFoodCategoryItemPress(item.id)}
@@ -110,4 +126,4 @@ const HomeScreen = () => {
   );
 };
 
-export default memo(HomeScreen);
+export default memo(withLoading(HomeScreen, [GET_HOME_CATEGORIES.REQUEST]));
