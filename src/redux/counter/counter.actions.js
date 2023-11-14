@@ -1,3 +1,4 @@
+import axiosClient from '../../utils/axiosClient';
 import { INCREMENT_COUNTER } from './counter.constants';
 import axios from 'axios';
 
@@ -31,10 +32,10 @@ export const fetchDataFailed = error => ({
 export const fetchData = () => {
   return dispatch => {
     dispatch(fetchDataRequest());
-    axios
-      .get('https://store.kybuidev.com/api/v1/categories')
+    axiosClient
+      .get('https://store.kybuidev.com/api/v1/auth/profile')
       .then(response => {
-        const data = response.data;
+        const data = response;
         dispatch(fetchDataSuccess(data));
       })
       .catch(error => {

@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
+import { FlatList, SafeAreaView, ScrollView, TouchableOpacity, View } from 'react-native';
 import AppHeader from '~components/AppHeader';
 import AppIcon from '~components/AppIcon';
 import AppText from '~components/AppText';
@@ -67,7 +67,7 @@ const HomeScreen = () => {
   }, [dispatch]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <AppHeader leftIcon={leftIconProps} rightIcon={rightIconProps} />
       <View style={styles.sloganContainer}>
         <AppText style={styles.sloganText}>{'Delicious \nfood for you'}</AppText>
@@ -122,7 +122,7 @@ const HomeScreen = () => {
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

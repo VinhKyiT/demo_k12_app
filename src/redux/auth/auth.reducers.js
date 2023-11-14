@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT } from './auth.constants';
+import { LOGIN, LOGOUT, SET_TOKEN } from './auth.constants';
 
 const initialState = {
   isLoggedIn: false,
@@ -18,6 +18,12 @@ const authReducer = (state = initialState, action) => {
         error: '',
       };
     }
+    case SET_TOKEN.ORIGIN:
+      return {
+        ...state,
+        accessToken: action.payload?.accessToken,
+        refreshToken: action.payload?.refreshToken,
+      };
     case LOGIN.FAILED: {
       return {
         ...state,

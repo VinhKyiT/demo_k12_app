@@ -12,6 +12,7 @@ import ConnectionCheckerScreen from '../screens/ConnectionCheckerScreen';
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/auth/auth.actions';
 import NavigationServices from '../utils/NavigationServices';
+import { SafeAreaView } from 'react-native';
 
 const Drawer = createDrawerNavigator();
 
@@ -19,17 +20,19 @@ const CustomDrawerContent = props => {
   const dispatch = useDispatch();
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={{ paddingTop: 0 }}>
-      <DrawerItemList {...props} />
-      <DrawerItem
-        label={'Logout'}
-        icon={({ color, size }) => (
-          <MaterialCommunityIcons name="logout" color={color} size={size} />
-        )}
-        onPress={() => {
-          dispatch(logout());
-          NavigationServices.reset({ routes: [{ name: ROUTES.AUTH_SCREEN }], index: 0 });
-        }}
-      />
+      <SafeAreaView>
+        <DrawerItemList {...props} />
+        <DrawerItem
+          label={'Logout'}
+          icon={({ color, size }) => (
+            <MaterialCommunityIcons name="logout" color={color} size={size} />
+          )}
+          onPress={() => {
+            dispatch(logout());
+            NavigationServices.reset({ routes: [{ name: ROUTES.AUTH_SCREEN }], index: 0 });
+          }}
+        />
+      </SafeAreaView>
     </DrawerContentScrollView>
   );
 };
