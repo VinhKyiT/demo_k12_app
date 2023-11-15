@@ -1,6 +1,6 @@
 import { DOMAIN } from './env';
 
-const isDev = false;
+const isDev = true;
 const BASE_URL = isDev ? DOMAIN.DEV_BASE_URL : DOMAIN.BASE_URL;
 const END_POINTS = {
   auth: {

@@ -1,35 +1,31 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { getProfileApi, loginApi } from '../../services/apis/auth.apis';
+import { getUserProfile, resetUserProfile } from '../profile/profile.actions';
 import { loginFailed, loginSuccess } from './auth.actions';
 import { LOGIN, LOGOUT } from './auth.constants';
-import axios from 'axios';
-import { getUserProfile, resetUserProfile } from '../profile/profile.actions';
 
 export function* loginSaga(obj) {
   const { payload, onSuccess, onFailed } = obj;
   try {
     console.log('login payload', payload);
-    const loginResponse = yield call(axios.post, 'https://store.kybuidev.com/api/v1/auth/login', {
+    const loginResponse = yield call(loginApi, {
       email: payload.email,
       password: payload.password,
     });
     console.log('loginResponse', loginResponse);
-    if (loginResponse?.data?.access_token) {
-      const profileResponse = yield call(
-        axios.get,
-        'https://store.kybuidev.com/api/v1/auth/profile',
-        {
-          headers: {
-            Authorization: `Bearer ${loginResponse?.data?.access_token}`,
-          },
+    if (loginResponse?.access_token) {
+      const profileResponse = yield call(getProfileApi, {
+        headers: {
+          Authorization: `Bearer ${loginResponse?.access_token}`,
         },
-      );
+      });
       console.log('profileResponse', profileResponse);
-      if (profileResponse?.data?.id) {
-        yield put(getUserProfile(profileResponse?.data));
+      if (profileResponse?.id) {
+        yield put(getUserProfile(profileResponse));
         yield put(
           loginSuccess({
-            accessToken: loginResponse?.data?.access_token,
-            refreshToken: loginResponse?.data?.refresh_token,
+            accessToken: loginResponse?.access_token,
+            refreshToken: loginResponse?.refresh_token,
           }),
         );
       } else {

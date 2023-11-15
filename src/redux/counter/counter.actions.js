@@ -1,3 +1,4 @@
+import { DOMAIN } from '../../constants/env';
 import axiosClient from '../../utils/axiosClient';
 import { INCREMENT_COUNTER } from './counter.constants';
 import axios from 'axios';
@@ -33,7 +34,7 @@ export const fetchData = () => {
   return dispatch => {
     dispatch(fetchDataRequest());
     axiosClient
-      .get('https://store.kybuidev.com/api/v1/auth/profile')
+      .get(DOMAIN.DEV_BASE_URL + '/auth/profile')
       .then(response => {
         const data = response;
         dispatch(fetchDataSuccess(data));

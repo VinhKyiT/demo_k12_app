@@ -18,8 +18,8 @@ import { LOGIN } from '../../redux/auth/auth.constants';
 
 const AuthScreen = () => {
   const [currentTab, setCurrentTab] = useState(0);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('kybuidev@gmail.com');
+  const [password, setPassword] = useState('123123');
   const loginError = useSelector(loginErrorSelector);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(loginStateSelector);

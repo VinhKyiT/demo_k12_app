@@ -1,14 +1,17 @@
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import React from 'react';
 import { COLORS } from '../../constants/colors';
+import { RootSiblingPortal } from 'react-native-root-siblings';
 
 const AppLoading = () => {
   return (
-    <View style={styles.container}>
-      <View style={styles.indicatorWrapper}>
-        <ActivityIndicator size={'large'} color={COLORS.APP_ORANGE} />
+    <RootSiblingPortal>
+      <View style={styles.container}>
+        <View style={styles.indicatorWrapper}>
+          <ActivityIndicator size={'large'} color={COLORS.APP_ORANGE} />
+        </View>
       </View>
-    </View>
+    </RootSiblingPortal>
   );
 };
 
@@ -23,6 +26,7 @@ const styles = StyleSheet.create({
     right: 0,
     width: '100%',
     height: '100%',
+    zIndex: 9999,
     backgroundColor: 'rgba(0, 0, 0, 0.15)',
     justifyContent: 'center',
     alignItems: 'center',

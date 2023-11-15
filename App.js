@@ -8,6 +8,7 @@ import { initLocale } from '~i18n';
 import { persistor, store } from '~redux/store';
 import { COLORS } from './src/constants/colors';
 import MainNavigator from './src/routes/MainNavigator';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 const App = () => {
   useLayoutEffect(() => {
@@ -20,8 +21,10 @@ const App = () => {
         <View style={{ flex: 1 }}>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-              <MainNavigator />
-              <AppModal />
+              <RootSiblingParent>
+                <MainNavigator />
+                <AppModal />
+              </RootSiblingParent>
             </PersistGate>
           </Provider>
         </View>
