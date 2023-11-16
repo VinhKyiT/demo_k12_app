@@ -8,6 +8,7 @@ import AppIcon from '~components/AppIcon';
 import AppHeader from '~components/AppHeader';
 import NavigationServices from '~utils/NavigationServices';
 import AppRadioGroup from '../../components/AppRadioGroup';
+import { ROUTES } from '../../constants/routes';
 
 const PAYMENT_OPTIONS = [
   {
@@ -85,6 +86,13 @@ const EditProfileScreen = () => {
               Đường D5, Bình Thạnh, Hồ Chí Minh, Việt Nam
             </AppText>
           </View>
+          <TouchableOpacity
+            style={{ position: 'absolute', top: 16, right: 16 }}
+            onPress={() => {
+              NavigationServices.navigate(ROUTES.CHANGE_INFORMATION);
+            }}>
+            <AppIcon type="antdesign" name="edit" size={24} />
+          </TouchableOpacity>
         </View>
         <View style={styles.profileTopArea}>
           <AppText size={18} weight="semibold">

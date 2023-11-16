@@ -13,5 +13,6 @@ const ROUTES = {
   CART_SCREEN: 'CartScreen',
   EDIT_PROFILE_SCREEN: 'EditProfileScreen',
   CONNECTION_CHECKER_SCREEN: 'ConnectionCheckerScreen',
+  CHANGE_INFORMATION: 'ChangeInformationScreen',
 };
 export { ROUTES };

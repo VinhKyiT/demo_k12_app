@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT } from './auth.constants';
+import { LOGIN, LOGOUT, SET_TOKEN } from './auth.constants';
 
 export const loginRequest = payload => ({
   type: LOGIN.REQUEST,
@@ -17,5 +17,10 @@ export const loginFailed = payload => ({
 
 export const logout = payload => ({
   type: LOGOUT.ORIGIN,
+  payload,
+});
+
+export const setToken = payload => ({
+  type: SET_TOKEN.ORIGIN,
   payload,
 });

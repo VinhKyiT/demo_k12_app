@@ -1,5 +1,5 @@
+import { getProfileApi } from '../../services/apis/auth.apis';
 import { INCREMENT_COUNTER } from './counter.constants';
-import axios from 'axios';
 
 export const incrementRequest = (amount = 1) => {
   return {
@@ -31,8 +31,7 @@ export const fetchDataFailed = error => ({
 export const fetchData = () => {
   return dispatch => {
     dispatch(fetchDataRequest());
-    axios
-      .get('https://store.kybuidev.com/api/v1/categories')
+    getProfileApi()
       .then(response => {
         const data = response.data;
         dispatch(fetchDataSuccess(data));
