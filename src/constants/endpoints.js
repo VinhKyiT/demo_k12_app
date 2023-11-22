@@ -14,6 +14,10 @@ const END_POINTS = {
     UPLOAD: BASE_URL + '/files/upload',
     GET_FILE: BASE_URL + '/files',
   },
+  USERS: {
+    GET_USER: BASE_URL + '/users',
+    UPDATE_USER: BASE_URL + '/users',
+  },
 };
 
 export { END_POINTS };

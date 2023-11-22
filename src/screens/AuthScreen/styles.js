@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     marginTop: 32,
+    flexGrow: 1,
   },
   inputStyle: {
     fontFamily: FONTS.TEXT.SEMIBOLD,
@@ -80,10 +81,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     height: 70,
     backgroundColor: COLORS.APP_ORANGE,
-    position: 'absolute',
-    bottom: 32,
-    left: 32,
-    right: 32,
+    marginBottom: 32,
   },
 });
 
