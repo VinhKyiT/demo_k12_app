@@ -8,12 +8,14 @@ const AppButton = ({
   isLoading = false,
   style,
   titleStyle,
+  disabled,
   loadingIndicatorProps,
 }) => {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={onPress}
+      disabled={disabled}
       style={[styles.buttonContainer, style && style]}>
       {isLoading ? (
         <ActivityIndicator {...loadingIndicatorProps} />

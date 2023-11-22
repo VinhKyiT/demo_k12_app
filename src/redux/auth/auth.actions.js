@@ -1,8 +1,10 @@
 import { LOGIN, LOGOUT, SET_TOKEN } from './auth.constants';
 
-export const loginRequest = payload => ({
+export const loginRequest = (payload, onSuccess, onFailed) => ({
   type: LOGIN.REQUEST,
   payload,
+  onSuccess,
+  onFailed,
 });
 
 export const loginSuccess = payload => ({

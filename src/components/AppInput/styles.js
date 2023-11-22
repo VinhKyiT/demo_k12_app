@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     fontFamily: FONTS.TEXT.REGULAR,
+    height: 45,
   },
   errorText: {
     marginHorizontal: 4,

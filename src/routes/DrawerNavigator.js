@@ -12,6 +12,7 @@ import ConnectionCheckerScreen from '../screens/ConnectionCheckerScreen';
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/auth/auth.actions';
 import NavigationServices from '../utils/NavigationServices';
+import auth from '@react-native-firebase/auth';
 
 const Drawer = createDrawerNavigator();
 
@@ -26,8 +27,13 @@ const CustomDrawerContent = props => {
           <MaterialCommunityIcons name="logout" color={color} size={size} />
         )}
         onPress={() => {
-          dispatch(logout());
-          NavigationServices.reset({ routes: [{ name: ROUTES.AUTH_SCREEN }], index: 0 });
+          // dispatch(logout());
+          auth()
+            .signOut()
+            .then(() => {
+              NavigationServices.reset({ routes: [{ name: ROUTES.AUTH_SCREEN }], index: 0 });
+              console.log('User signed out!');
+            });
         }}
       />
     </DrawerContentScrollView>

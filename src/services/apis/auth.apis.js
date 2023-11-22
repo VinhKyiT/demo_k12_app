@@ -3,7 +3,7 @@ import { END_POINTS } from '../../constants/endpoints';
 import axiosClient from '../../utils/axiosClient';
 
 export const loginApi = data => {
-  return axiosClient.post(END_POINTS.AUTH.LOGIN, data);
+  return axios.post(END_POINTS.AUTH.LOGIN, data);
 };
 
 export const getProfileApi = config => {

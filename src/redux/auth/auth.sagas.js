@@ -9,14 +9,14 @@ export function* loginSaga(obj) {
   try {
     console.log('login payload', payload);
     const loginResponse = yield call(loginApi, {
-      email: payload.email,
+      email: payload.email.trim?.().toLowerCase?.(),
       password: payload.password,
     });
     console.log('loginResponse', loginResponse);
-    if (loginResponse?.access_token) {
+    if (loginResponse.data?.access_token) {
       const profileResponse = yield call(getProfileApi, {
         headers: {
-          Authorization: `Bearer ${loginResponse?.access_token}`,
+          Authorization: `Bearer ${loginResponse.data?.access_token}`,
         },
       });
       console.log('profileResponse', profileResponse);
@@ -24,17 +24,20 @@ export function* loginSaga(obj) {
         yield put(getUserProfile(profileResponse));
         yield put(
           loginSuccess({
-            accessToken: loginResponse?.access_token,
-            refreshToken: loginResponse?.refresh_token,
+            accessToken: loginResponse.data?.access_token,
+            refreshToken: loginResponse.data?.refresh_token,
           }),
         );
+        onSuccess?.();
       } else {
         yield put(loginFailed('Fetch user failed'));
+        onFailed?.();
       }
     }
   } catch (error) {
     yield put(loginFailed(error?.response?.data?.message));
     console.log(error);
+    onFailed?.(error?.response?.data?.message);
   }
 }
 

@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "780718731250",
+    "project_id": "login-formik-firebase",
+    "storage_bucket": "login-formik-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780718731250:android:f82c884ec0346e3d20056b",
+        "android_client_info": {
+          "package_name": "com.login_formik_firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "780718731250-t09fla9q3k8l7prsi4vi751osuomeim7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.login_formik_firebase",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "780718731250-77rirdl3tk76o112jo3r7entfl6jnegh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEE3Vxf5jxUSa5BFQJgXpfIsqUgq_zRN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "780718731250-77rirdl3tk76o112jo3r7entfl6jnegh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "780718731250-5803ufjubmn4s00htn6bnkplc4kj54mg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Login-Formik-Firebase"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780718731250:android:82fe50e5ed6a2dfe20056b",
+        "android_client_info": {
+          "package_name": "com.nestechk12hcm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "780718731250-77rirdl3tk76o112jo3r7entfl6jnegh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEE3Vxf5jxUSa5BFQJgXpfIsqUgq_zRN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "780718731250-77rirdl3tk76o112jo3r7entfl6jnegh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "780718731250-5803ufjubmn4s00htn6bnkplc4kj54mg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Login-Formik-Firebase"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
