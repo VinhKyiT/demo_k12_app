@@ -9,8 +9,13 @@ import { Provider } from 'react-redux';
 import { persistor, store } from '~redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { RootSiblingParent } from 'react-native-root-siblings';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const App = () => {
+  GoogleSignin.configure({
+    webClientId: '39417402772-6pb0ovgbm9hsaoafelpk76ssl4cp72v7.apps.googleusercontent.com',
+  });
+
   useLayoutEffect(() => {
     initLocale();
   }, []);

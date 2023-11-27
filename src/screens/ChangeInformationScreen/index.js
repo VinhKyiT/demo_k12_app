@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -14,47 +14,62 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserInfoSelector } from '../../redux/profile/profile.selectors';
 import { updateUserApi } from '../../services/apis/user.apis';
 import AppButton from '../../components/AppButton';
-import { getUserProfile } from '../../redux/profile/profile.actions';
+import { getUserProfile, updateUserProfileRequest } from '../../redux/profile/profile.actions';
+import { changeInfoSchema } from '../../utils/schemas/profileSchema';
 
 const ChangeInformationScreen = () => {
   const [avatar, setAvatar] = useState('');
   const userInfo = useSelector(getUserInfoSelector);
   const dispatch = useDispatch();
+  const formikRef = useRef();
   const initialValues = useMemo(
     () => ({
+      avatar: userInfo?.avatar,
       email: userInfo?.email,
       name: userInfo?.name,
       oldPassword: '',
       newPassword: '',
       reEnterPassword: '',
     }),
-    [userInfo?.email, userInfo?.name],
+    [userInfo?.avatar, userInfo?.email, userInfo?.name],
   );
 
   const openPicker = () => {
     ImagePicker.openPicker({ cropping: true, width: 400, height: 400 }).then(image => {
       uploadFile(image).then(res => {
+        console.log(res);
         setAvatar(res);
+        formikRef.current?.setFieldValue('avatar', res?.location);
       });
     });
   };
 
   const handleFormSubmit = useCallback(
-    async ({ name, newPassword, oldPassword, reEnterPassword }) => {
-      try {
-        const res = await updateUserApi({
-          userId: userInfo.id,
-          payload: {
-            name,
-          },
-        });
-        console.log('res', res);
-        if (res) {
-          dispatch(getUserProfile(res));
-        }
-      } catch (error) {
-        console.log(error);
-      }
+    async ({ name, newPassword, oldPassword, reEnterPassword, avatar }) => {
+      dispatch(
+        updateUserProfileRequest({
+          name,
+          newPassword,
+          oldPassword,
+          reEnterPassword,
+          userId: userInfo?.id,
+          avatar,
+        }),
+      );
+      // try {
+      //   const res = await updateUserApi({
+      //     userId: userInfo.id,
+      //     payload: {
+      //       name,
+      //     },
+      //   });
+      //   console.log('res', res);
+      //   if (res) {
+      //     dispatch(getUserProfile(res));
+      //   }
+      // } catch (error) {
+      //   console.log(error);
+      // }
     },
     [dispatch, userInfo.id],
   );
@@ -83,8 +98,22 @@ const ChangeInformationScreen = () => {
             <AppIcon type="antdesign" name="camerao" size={16} color={COLORS.WHITE} />
           </TouchableOpacity>
         </View>
-        <Formik initialValues={initialValues} onSubmit={handleFormSubmit}>
-          {({ values, handleChange, handleSubmit }) => {
+        <Formik
+          innerRef={formikRef}
+          validationSchema={changeInfoSchema}
+          initialValues={initialValues}
+          onSubmit={handleFormSubmit}>
+          {({
+            values,
+            handleChange,
+            handleSubmit,
+            dirty,
+            errors,
+            touched,
+            handleBlur,
+            setFieldTouched,
+          }) => {
+            console.log('values', values);
             return (
               <View style={styles.inputWrapper}>
                 <View style={{ width: '100%' }}>
@@ -95,6 +124,11 @@ const ChangeInformationScreen = () => {
                     containerStyle={styles.inputContainer}
                     value={values.email}
                     editable={false}
+                    error={dirty && touched.email && errors.email}
+                    onBlur={handleBlur('email')}
+                    onFocus={() => {
+                      setFieldTouched('email');
+                    }}
                   />
                   <AppInput
                     title={'Name'}
@@ -103,6 +137,11 @@ const ChangeInformationScreen = () => {
                     containerStyle={styles.inputContainer}
                     value={values.name}
                     onChangeText={handleChange('name')}
+                    error={dirty && touched.name && errors.name}
+                    onBlur={handleBlur('name')}
+                    onFocus={() => {
+                      setFieldTouched('name');
+                    }}
                   />
                   <AppInput
                     title={'Old Password'}
@@ -111,6 +150,12 @@ const ChangeInformationScreen = () => {
                     containerStyle={styles.inputContainer}
                     value={values.oldPassword}
                     onChangeText={handleChange('oldPassword')}
+                    error={dirty && touched.oldPassword && errors.oldPassword}
+                    onBlur={handleBlur('oldPassword')}
+                    onFocus={() => {
+                      setFieldTouched('oldPassword');
+                    }}
+                    secureTextEntry
                   />
                   <AppInput
                     title={'New Password'}
@@ -119,6 +164,12 @@ const ChangeInformationScreen = () => {
                     containerStyle={styles.inputContainer}
                     value={values.newPassword}
                     onChangeText={handleChange('newPassword')}
+                    error={dirty && touched.newPassword && errors.newPassword}
+                    onBlur={handleBlur('newPassword')}
+                    onFocus={() => {
+                      setFieldTouched('newPassword');
+                    }}
+                    secureTextEntry
                   />
                   <AppInput
                     title={'Re-enter Password'}
@@ -127,6 +178,12 @@ const ChangeInformationScreen = () => {
                     containerStyle={styles.inputContainer}
                     value={values.reEnterPassword}
                     onChangeText={handleChange('reEnterPassword')}
+                    error={dirty && touched.reEnterPassword && errors.reEnterPassword}
+                    onBlur={handleBlur('reEnterPassword')}
+                    onFocus={() => {
+                      setFieldTouched('reEnterPassword');
+                    }}
+                    secureTextEntry
                   />
                 </View>
                 <AppButton

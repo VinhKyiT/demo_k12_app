@@ -18,11 +18,35 @@ import { LOGIN } from '../../redux/auth/auth.constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Formik } from 'formik';
 import { validationLoginSchema } from '../../utils/schemas/loginSchema';
-const AuthScreen = () => {
+import auth from '@react-native-firebase/auth';
+import { GoogleSigninButton, GoogleSignin } from '@react-native-google-signin/google-signin';
+
+const FirebaseAuthScreen = () => {
   const [currentTab, setCurrentTab] = useState(0);
-  const loginError = useSelector(loginErrorSelector);
-  const dispatch = useDispatch();
+  // const loginError = useSelector(loginErrorSelector);
+  // const dispatch = useDispatch();
   const isLoggedIn = useSelector(loginStateSelector);
+
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  const onAuthStateChanged = useCallback(
+    resUser => {
+      console.log('resUser', resUser);
+      setUser(resUser);
+      if (initializing) {
+        setInitializing(false);
+      }
+    },
+    [initializing],
+  );
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, [onAuthStateChanged]);
 
   const formRef = useRef();
 
@@ -32,13 +56,44 @@ const AuthScreen = () => {
 
   const isLoggingIn = useSelector(state => getLoadingSelector(state, [LOGIN.REQUEST]));
 
-  const onLoginPress = useCallback(
-    async ({ email, password }) => {
-      console.log('on login press');
-      dispatch(loginRequest({ email, password }));
-    },
-    [dispatch],
-  );
+  const onLoginPress = useCallback(async ({ email, password }) => {
+    console.log(email, password);
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log('User account created & signed in!');
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+
+        console.error(error);
+      });
+    // dispatch(loginRequest({ email, password }));
+  }, []);
+
+  async function onGoogleButtonPress() {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
+
+  const handleLoginWithGoogle = () => {
+    onGoogleButtonPress().then(() => console.log('Signed in with Google!'));
+  };
+
   useEffect(() => {
     if (isLoggedIn) {
       NavigationServices.reset({ routes: [{ name: ROUTES.DRAWER }], index: 0 });
@@ -119,13 +174,34 @@ const AuthScreen = () => {
                       setFieldTouched('password');
                     }}
                   />
-                  <TouchableOpacity style={styles.forgotContainer} onPress={handleReset}>
-                    <AppText style={styles.forgotText}>Forgot password?</AppText>
+                  <TouchableOpacity
+                    style={styles.forgotContainer}
+                    onPress={() => {
+                      auth()
+                        .signOut()
+                        .then(() => {
+                          console.log('User signed out!');
+                          GoogleSignin.revokeAccess()
+                            .then(res => {
+                              console.log('revoke google access success', res);
+                            })
+                            .catch(err => {
+                              console.log('revoke google access error', err);
+                            });
+                        });
+                    }}>
+                    <AppText style={styles.forgotText}>Sign out?</AppText>
                   </TouchableOpacity>
                 </View>
               );
             }}
           </Formik>
+          <GoogleSigninButton
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={handleLoginWithGoogle}
+            disabled={false}
+          />
           <AppButton
             isLoading={isLoggingIn}
             onPress={formRef.current?.handleSubmit}
@@ -139,4 +215,4 @@ const AuthScreen = () => {
   );
 };
 
-export default React.memo(AuthScreen);
+export default React.memo(FirebaseAuthScreen);

@@ -1,4 +1,4 @@
-import { GET_USER_PROFILE } from './profile.constants';
+import { GET_USER_PROFILE, UPDATE_USER_PROFILE } from './profile.constants';
 
 const initialProfileState = {
   userInfo: {},
@@ -15,6 +15,12 @@ const profileReducers = (state = initialProfileState, action) => {
     }
     case GET_USER_PROFILE.RESET: {
       return { ...initialProfileState };
+    }
+    case UPDATE_USER_PROFILE.SUCCESS: {
+      return {
+        ...state,
+        userInfo: payload,
+      };
     }
     default:
       return state;
