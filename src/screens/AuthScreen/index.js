@@ -128,7 +128,9 @@ const AuthScreen = () => {
           </Formik>
           <AppButton
             isLoading={isLoggingIn}
-            onPress={formRef.current?.handleSubmit}
+            onPress={() => {
+              formRef.current?.handleSubmit();
+            }}
             title="Login"
             titleStyle={styles.buttonTitle}
             style={styles.buttonContainer}

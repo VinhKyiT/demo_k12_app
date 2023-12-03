@@ -1,5 +1,5 @@
-import React, { useLayoutEffect } from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import React, { useEffect, useLayoutEffect } from 'react';
+import { Alert, SafeAreaView, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AppModal from '~components/AppModal';
 import { initLocale } from '~i18n';
@@ -10,6 +10,13 @@ import { persistor, store } from '~redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {
+  allowPushNotification,
+  createChanel,
+  onDisplayNotification,
+} from './src/services/shared/notification.service';
+import messaging from '@react-native-firebase/messaging';
+import notifee, { EventType } from '@notifee/react-native';
 
 const App = () => {
   GoogleSignin.configure({
@@ -19,6 +26,82 @@ const App = () => {
   useLayoutEffect(() => {
     initLocale();
   }, []);
+
+  useEffect(() => {
+    allowPushNotification(async () => {
+      createChanel();
+      const deviceToken = await messaging().getToken();
+      console.log('deviceToken', deviceToken);
+    });
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      onDisplayNotification(remoteMessage);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  // useEffect(() => {
+  //   // Assume a message-notification contains a "type" property in the data payload of the screen to open
+
+  //   messaging().onNotificationOpenedApp(remoteMessage => {
+  //     console.log(
+  //       'Notification caused app to open from background state:',
+  //       remoteMessage.notification,
+  //     );
+  //   });
+
+  //   // Check whether an initial notification is available
+  //   messaging()
+  //     .getInitialNotification()
+  //     .then(remoteMessage => {
+  //       if (remoteMessage) {
+  //         console.log(
+  //           'Notification caused app to open from quit state:',
+  //           remoteMessage.notification,
+  //         );
+  //       }
+  //     });
+  // }, []);
+
+  // Bootstrap sequence function
+  async function bootstrap() {
+    const initialNotification = await notifee.getInitialNotification();
+
+    if (initialNotification) {
+      console.log('Notification caused application to open', initialNotification.notification);
+      console.log('Press action used to open the app', initialNotification.pressAction);
+    }
+  }
+
+  useEffect(() => {
+    bootstrap()
+      .then(() => {})
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    return notifee.onForegroundEvent(({ type, detail }) => {
+      switch (type) {
+        case EventType.DISMISSED:
+          console.log('User dismissed notification', detail.notification);
+          break;
+        case EventType.PRESS:
+          console.log('User pressed notification', detail.notification);
+          break;
+        case EventType.ACTION_PRESS:
+          if (detail.pressAction.id === 'mark-as-read') {
+            console.log('Nhan vao nut da xem');
+          } else if (detail.pressAction.id === 'reply') {
+            console.log('Tra loi tin nhan', detail.input);
+          }
+      }
+    });
+  }, []);
+
   // console.log(store.getState());
   return (
     <SafeAreaView style={styles.container}>

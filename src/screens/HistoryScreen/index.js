@@ -4,6 +4,7 @@ import styles from './styles';
 import AppButton from '../../components/AppButton';
 import ImagePicker from 'react-native-image-crop-picker';
 import { uploadFile } from '../../services/shared/files.services';
+import { onDisplayNotification } from '../../services/shared/notification.service';
 
 const HistoryScreen = () => {
   return (
@@ -15,6 +16,12 @@ const HistoryScreen = () => {
             uploadFile(image);
             console.log(image);
           });
+        }}
+      />
+      <AppButton
+        title="Display Notification"
+        onPress={() => {
+          onDisplayNotification();
         }}
       />
     </View>

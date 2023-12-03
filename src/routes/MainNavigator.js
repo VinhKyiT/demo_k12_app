@@ -55,7 +55,7 @@ function MainNavigator() {
         <>
           <Stack.Screen name={ROUTES.SPLASH_SCREEN} component={AppSplash} />
           <Stack.Screen name={ROUTES.DRAWER} component={DrawerNavigator} />
-          <Stack.Screen name={ROUTES.AUTH_SCREEN} component={FirebaseAuthScreen} />
+          <Stack.Screen name={ROUTES.AUTH_SCREEN} component={AuthScreen} />
           <Stack.Screen name={ROUTES.ONBOARDING_SCREEN} component={OnboardingScreen} />
           <Stack.Screen name={ROUTES.SEARCH_SCREEN} component={SearchScreen} />
           <Stack.Screen name={ROUTES.PRODUCT_DETAIL_SCREEN} component={ProductDetailScreen} />
