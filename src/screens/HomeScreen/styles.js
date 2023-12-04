@@ -4,7 +4,7 @@ import { FONTS } from '../../constants/fonts';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: COLORS.SCREEN_BG,
   },
   sloganContainer: {
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
   sloganText: {
     fontFamily: FONTS.ROUNDED.BOLD,
-    color: COLORS.BLACK,
+    color: COLORS.APP_SEA_BLUE,
     fontSize: 34,
   },
   searchContainer: {

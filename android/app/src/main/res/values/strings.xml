@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">nestechk12hcm</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">jlNy81q3MhPKJred662aZFrF4-ds4i7bjWfYR</string>
 </resources>

@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "codepush:android:staging": "appcenter codepush release-react -a kybuidev/Nestech-K12-HCM-Android -d Staging",
+    "codepush:android:production": "appcenter codepush release-react -a kybuidev/Nestech-K12-HCM-Android -d Production"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4",
@@ -27,6 +29,7 @@
     "i18n-js": "3.9.2",
     "react": "18.1.0",
     "react-native": "0.70.12",
+    "react-native-code-push": "7.0.5",
     "react-native-config": "^1.5.1",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "2.8.0",

@@ -67,10 +67,10 @@ const HomeScreen = () => {
   }, [dispatch]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <AppHeader leftIcon={leftIconProps} rightIcon={rightIconProps} />
       <View style={styles.sloganContainer}>
-        <AppText style={styles.sloganText}>{'Delicious \nfood for you'}</AppText>
+        <AppText style={styles.sloganText}>{'Delicious \nfood and drink\nfor you'}</AppText>
       </View>
       <TouchableOpacity
         activeOpacity={0.8}
@@ -122,7 +122,7 @@ const HomeScreen = () => {
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
-    </View>
+    </ScrollView>
   );
 };
 

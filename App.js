@@ -17,6 +17,7 @@ import {
 } from './src/services/shared/notification.service';
 import messaging from '@react-native-firebase/messaging';
 import notifee, { EventType } from '@notifee/react-native';
+import codePush from 'react-native-code-push';
 
 const App = () => {
   GoogleSignin.configure({
@@ -128,4 +129,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default codePush({
+  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+  installMode: codePush.InstallMode.ON_NEXT_SUSPEND,
+  mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
+  minimumBackgroundDuration: 10,
+})(App);
