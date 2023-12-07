@@ -4,7 +4,7 @@ import { FONTS } from '../../constants/fonts';
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
     backgroundColor: COLORS.SCREEN_BG,
   },
   sloganContainer: {

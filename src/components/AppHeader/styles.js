@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
   centerTitle: {
     fontFamily: FONTS.TEXT.SEMIBOLD,
-    size: 18,
+    fontSize: 18,
     color: COLORS.BLACK,
   },
 });

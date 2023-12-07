@@ -67,7 +67,7 @@ const HomeScreen = () => {
   }, [dispatch]);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <AppHeader leftIcon={leftIconProps} rightIcon={rightIconProps} />
       <View style={styles.sloganContainer}>
         <AppText style={styles.sloganText}>{'Delicious \nfood and drink\nfor you'}</AppText>
@@ -122,7 +122,7 @@ const HomeScreen = () => {
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
-    </ScrollView>
+    </View>
   );
 };
 

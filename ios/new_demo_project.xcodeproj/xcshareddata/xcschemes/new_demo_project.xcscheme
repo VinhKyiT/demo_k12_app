@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "nestechk12hcm.app"
-               BlueprintName = "nestechk12hcm"
-               ReferencedContainer = "container:nestechk12hcm.xcodeproj">
+               BuildableName = "NewAppK12.app"
+               BlueprintName = "NewAppK12"
+               ReferencedContainer = "container:NewAppK12.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "nestechk12hcmTests.xctest"
-               BlueprintName = "nestechk12hcmTests"
-               ReferencedContainer = "container:nestechk12hcm.xcodeproj">
+               BuildableName = "NewAppK12Tests.xctest"
+               BlueprintName = "NewAppK12Tests"
+               ReferencedContainer = "container:NewAppK12.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "nestechk12hcm.app"
-            BlueprintName = "nestechk12hcm"
-            ReferencedContainer = "container:nestechk12hcm.xcodeproj">
+            BuildableName = "NewAppK12.app"
+            BlueprintName = "NewAppK12"
+            ReferencedContainer = "container:NewAppK12.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "nestechk12hcm.app"
-            BlueprintName = "nestechk12hcm"
-            ReferencedContainer = "container:nestechk12hcm.xcodeproj">
+            BuildableName = "NewAppK12.app"
+            BlueprintName = "NewAppK12"
+            ReferencedContainer = "container:NewAppK12.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

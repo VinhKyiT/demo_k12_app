@@ -1,27 +1,29 @@
-import React, { useEffect, useLayoutEffect } from 'react';
-import { Alert, SafeAreaView, StyleSheet, View } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import React, {useEffect, useLayoutEffect} from 'react';
+import {Alert, SafeAreaView, StyleSheet, View} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import AppModal from '~components/AppModal';
-import { initLocale } from '~i18n';
+import {initLocale} from '~i18n';
 import MainNavigator from './src/routes/MainNavigator';
-import { COLORS } from './src/constants/colors';
-import { Provider } from 'react-redux';
-import { persistor, store } from '~redux/store';
-import { PersistGate } from 'redux-persist/integration/react';
-import { RootSiblingParent } from 'react-native-root-siblings';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {COLORS} from './src/constants/colors';
+import {Provider} from 'react-redux';
+import {persistor, store} from '~redux/store';
+import {PersistGate} from 'redux-persist/integration/react';
+import {RootSiblingParent} from 'react-native-root-siblings';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {
   allowPushNotification,
   createChanel,
   onDisplayNotification,
 } from './src/services/shared/notification.service';
 import messaging from '@react-native-firebase/messaging';
-import notifee, { EventType } from '@notifee/react-native';
+import notifee, {EventType} from '@notifee/react-native';
 import codePush from 'react-native-code-push';
+import CodePushProvider from '~contexts/CodePush';
 
 const App = () => {
   GoogleSignin.configure({
-    webClientId: '39417402772-6pb0ovgbm9hsaoafelpk76ssl4cp72v7.apps.googleusercontent.com',
+    webClientId:
+      '39417402772-6pb0ovgbm9hsaoafelpk76ssl4cp72v7.apps.googleusercontent.com',
   });
 
   useLayoutEffect(() => {
@@ -73,8 +75,14 @@ const App = () => {
     const initialNotification = await notifee.getInitialNotification();
 
     if (initialNotification) {
-      console.log('Notification caused application to open', initialNotification.notification);
-      console.log('Press action used to open the app', initialNotification.pressAction);
+      console.log(
+        'Notification caused application to open',
+        initialNotification.notification,
+      );
+      console.log(
+        'Press action used to open the app',
+        initialNotification.pressAction,
+      );
     }
   }
 
@@ -85,7 +93,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    return notifee.onForegroundEvent(({ type, detail }) => {
+    return notifee.onForegroundEvent(({type, detail}) => {
       switch (type) {
         case EventType.DISMISSED:
           console.log('User dismissed notification', detail.notification);
@@ -106,8 +114,8 @@ const App = () => {
   // console.log(store.getState());
   return (
     <SafeAreaView style={styles.container}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
+      <GestureHandlerRootView style={{flex: 1}}>
+        <View style={{flex: 1}}>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <RootSiblingParent>
@@ -129,9 +137,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default codePush({
-  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-  installMode: codePush.InstallMode.ON_NEXT_SUSPEND,
-  mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
-  minimumBackgroundDuration: 10,
-})(App);
+const AppWrapper = () => {
+  return (
+    <CodePushProvider>
+      <App />
+    </CodePushProvider>
+  );
+};
+
+export default AppWrapper;
