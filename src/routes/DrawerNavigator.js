@@ -12,6 +12,8 @@ import ConnectionCheckerScreen from '../screens/ConnectionCheckerScreen';
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/auth/auth.actions';
 import NavigationServices from '../utils/NavigationServices';
+import CameraScreen from '~screens/CameraScreen';
+import CodeScannerScreen from '~screens/CodeScannerScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -58,6 +60,26 @@ const DrawerNavigator = () => {
         }}
         name={ROUTES.CONNECTION_CHECKER_SCREEN}
         component={ConnectionCheckerScreen}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="camera" color={color} size={size} />
+          ),
+          drawerLabel: 'Camera',
+        }}
+        name={ROUTES.CAMERA}
+        component={CameraScreen}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="qrcode-scan" color={color} size={size} />
+          ),
+          drawerLabel: 'QR Scanner',
+        }}
+        name={ROUTES.CODE_SCANNER}
+        component={CodeScannerScreen}
       />
     </Drawer.Navigator>
   );

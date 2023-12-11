@@ -14,5 +14,7 @@ const ROUTES = {
   EDIT_PROFILE_SCREEN: 'EditProfileScreen',
   CONNECTION_CHECKER_SCREEN: 'ConnectionCheckerScreen',
   CHANGE_INFORMATION: 'ChangeInformationScreen',
+  CAMERA: 'CameraScreen',
+  CODE_SCANNER: 'CodeScannerScreen',
 };
 export { ROUTES };

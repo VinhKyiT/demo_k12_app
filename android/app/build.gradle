@@ -102,8 +102,8 @@ android {
         applicationId "com.nestechk12hcm"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "1.1.0"
+        versionCode 4
+        versionName "1.1.1"
         vectorDrawables.useSupportLibrary = true
 
         //REF: https://github.com/microsoft/react-native-code-push/issues/2116#issuecomment-907251687
