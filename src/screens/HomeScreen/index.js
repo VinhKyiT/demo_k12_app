@@ -48,7 +48,7 @@ const HomeScreen = () => {
   };
 
   const handleItemPress = useCallback(item => {
-    NavigationServices.navigate(ROUTES.PRODUCT_DETAIL_SCREEN, { productDetail: item });
+    NavigationServices.navigate(ROUTES.PRODUCT_DETAIL_SCREEN, { productId: item.id });
   }, []);
 
   const renderItem = useCallback(

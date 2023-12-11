@@ -10,7 +10,7 @@ MainNavigator
  */
 import { NavigationContainer } from '@react-navigation/native';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 // import screens
 import AuthScreen from '~screens/AuthScreen';
 import AppSplash from '~screens/Splash';
@@ -39,9 +39,19 @@ const config = {
   },
 };
 
+const linking = {
+  prefixes: ['mychat://', 'https://vinhkyit.com'],
+  config: {
+    initialRouteName: ROUTES.SPLASH_SCREEN,
+    screens: {
+      [ROUTES.PRODUCT_DETAIL_SCREEN]: 'product/:productId',
+    },
+  },
+};
+
 function MainNavigator() {
   return (
-    <NavigationContainer ref={NavigationServices.navigationRef}>
+    <NavigationContainer ref={NavigationServices.navigationRef} linking={linking}>
       <Stack.Navigator
         initialRouteName={ROUTES.SPLASH_SCREEN}
         screenOptions={{
