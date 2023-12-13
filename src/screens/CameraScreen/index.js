@@ -2,12 +2,21 @@ import { AppState, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import styles from './styles';
 import AppText from '~components/AppText';
-import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
-import { Camera, useCameraDevices } from 'react-native-vision-camera';
+import {
+  check,
+  checkMultiple,
+  PERMISSIONS,
+  request,
+  requestMultiple,
+  RESULTS,
+} from 'react-native-permissions';
+import { Camera, useCameraDevices, useCameraFormat } from 'react-native-vision-camera';
 import { useIsFocused } from '@react-navigation/native';
 import AppIcon from '~components/AppIcon';
 import { COLORS } from '~constants/colors';
 import { uploadFile } from '~services/shared/files.services';
+import { CameraRoll } from '@react-native-camera-roll/camera-roll';
+import { MODE } from './config';
 
 const CameraScreen = () => {
   const [hasPermission, setHasPermission] = useState(false);
@@ -19,6 +28,12 @@ const CameraScreen = () => {
   const cameraRef = useRef(null);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [device, setDevice] = useState(null);
+  const [mode, setMode] = useState(MODE.PHOTO);
+  const [isRecording, setIsRecording] = useState(false);
+  const format = useCameraFormat(device, [
+    { videoResolution: { width: 1280, height: 720 } },
+    { fps: 30 },
+  ]);
 
   useEffect(() => {
     if (devices.length > 0) {
@@ -29,19 +44,41 @@ const CameraScreen = () => {
 
   const devices = useCameraDevices();
 
-  const takePhoto = useCallback(async () => {
-    if (isCameraInitialized) {
+  const handleShot = useCallback(async () => {
+    if (!isCameraInitialized) {
+      return;
+    }
+    if (isRecording) {
+      await cameraRef.current.stopRecording();
+      setIsRecording(false);
+      return;
+    }
+    if (mode === MODE.PHOTO) {
       try {
         const photo = await cameraRef.current.takePhoto({
           flash: 'off',
         });
-        console.log('photo', photo);
-        uploadFile({ path: `file://${photo.path}`, mime: 'image/jpeg' });
+        // console.log('photo', photo);
+        // uploadFile({ path: `file://${photo.path}`, mime: 'image/jpeg' });
+        await CameraRoll.save(`file://${photo.path}`, {
+          type: 'photo',
+        });
       } catch (error) {
         console.log('error', error);
       }
+    } else if (mode === MODE.VIDEO) {
+      cameraRef.current.startRecording({
+        onRecordingFinished: async video => {
+          const path = video.path;
+          await CameraRoll.save(`file://${path}`, {
+            type: 'video',
+          });
+        },
+        onRecordingError: error => console.error(error),
+      });
+      setIsRecording(true);
     }
-  }, [isCameraInitialized]);
+  }, [isCameraInitialized, isRecording, mode, setIsRecording]);
 
   const handleSwitchCamera = useCallback(() => {
     if (cameraDirection === 'back') {
@@ -50,6 +87,10 @@ const CameraScreen = () => {
       setCameraDirection('back');
     }
   }, [cameraDirection]);
+
+  const handleSwitchMode = useCallback(currentMode => {
+    setMode(currentMode);
+  }, []);
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
@@ -106,6 +147,11 @@ const CameraScreen = () => {
           break;
       }
     });
+    requestMultiple([PERMISSIONS.ANDROID.READ_MEDIA_IMAGES, PERMISSIONS.ANDROID.READ_MEDIA_VIDEO])
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.log(err));
   }, []);
 
   if (!hasPermission || !device) {
@@ -119,9 +165,10 @@ const CameraScreen = () => {
   return (
     <View style={styles.container}>
       <Camera
+        format={format}
         ref={cameraRef}
-        photo={true}
-        // video={true}
+        photo={mode === MODE.PHOTO ? true : undefined}
+        video={mode === MODE.VIDEO ? true : undefined}
         // audio={true}
         style={StyleSheet.absoluteFill}
         device={device}
@@ -130,7 +177,31 @@ const CameraScreen = () => {
           setIsCameraInitialized(true);
         }}
       />
-      <TouchableOpacity activeOpacity={0.5} onPress={takePhoto} style={styles.shotButton} />
+      <View style={styles.cameraControlView}>
+        <View style={styles.modeSwitcherView}>
+          <TouchableOpacity onPress={() => handleSwitchMode(MODE.PHOTO)}>
+            <AppText
+              color={COLORS.WHITE}
+              size={16}
+              weight={mode === MODE.PHOTO ? 'bold' : 'regular'}>
+              Photo
+            </AppText>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleSwitchMode(MODE.VIDEO)}>
+            <AppText
+              color={COLORS.WHITE}
+              size={16}
+              weight={mode === MODE.VIDEO ? 'bold' : 'regular'}>
+              Video
+            </AppText>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={handleShot}
+          style={[styles.shotButton, isRecording && { backgroundColor: COLORS.APP_RED }]}
+        />
+      </View>
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={handleSwitchCamera}

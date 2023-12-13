@@ -10,14 +10,25 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 40,
-    position: 'absolute',
-    bottom: 30,
-    alignSelf: 'center',
   },
   switchButton: {
     position: 'absolute',
     top: 20,
     right: 20,
+  },
+
+  cameraControlView: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  modeSwitcherView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+    gap: 20,
   },
 });
 

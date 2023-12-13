@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
-import { ImageBackground, View } from 'react-native';
+import { ImageBackground, View, Linking } from 'react-native';
 import { IMAGES } from '~assets/images';
 import NavigationServices from '~utils/NavigationServices';
 import { ROUTES } from '../../constants/routes';
 import LocalStorage from '../../helpers/storage';
 import SplashScreen from 'react-native-splash-screen';
+import useDeepLink from '~hooks/useDeepLink';
 
 const AppSplash = () => {
+  const { handleDeeplinkUrlReceived } = useDeepLink();
   const getIsShownOnboarding = async () => {
     const result = await LocalStorage.getData('IS_SHOWN_ONBOARDING');
     return result ? true : false;
@@ -37,6 +39,21 @@ const AppSplash = () => {
       setTimeout(() => SplashScreen.hide(), 50);
     });
   }, [handleSplashData]);
+
+  useEffect(() => {
+    Linking.getInitialURL()
+      .then(url => {
+        const lastUrl = LocalStorage.getData('LAST_URL');
+        if (lastUrl) {
+          return;
+        }
+        console.log('initial url', url);
+        LocalStorage.storeData('LAST_URL', url);
+        handleDeeplinkUrlReceived({ url });
+      })
+      .catch(err => console.log(err));
+  }, [handleDeeplinkUrlReceived]);
+
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground

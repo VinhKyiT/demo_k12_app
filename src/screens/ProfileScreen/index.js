@@ -1,4 +1,4 @@
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import React, { memo } from 'react';
 import styles from './styles';
 import AppText from '~components/AppText';
@@ -64,13 +64,25 @@ const ProfileScreen = () => {
             <AppText size={18} weight="semibold">
               {userInfo?.name}
             </AppText>
-            <AppText color={COLORS.TEXT_DARK_GRAY} size={15}>
-              {userInfo?.email}
-            </AppText>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                Linking.openURL(`mailto:${userInfo?.email}`);
+              }}>
+              <AppText color={COLORS.TEXT_DARK_GRAY} size={15}>
+                {userInfo?.email}
+              </AppText>
+            </TouchableOpacity>
             <View style={styles.profileDivider} />
-            <AppText color={COLORS.TEXT_DARK_GRAY} size={15}>
-              +84 123 456 789
-            </AppText>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                Linking.openURL('tel:0378383986');
+              }}>
+              <AppText color={COLORS.TEXT_DARK_GRAY} size={15}>
+                +84 123 456 789
+              </AppText>
+            </TouchableOpacity>
             <View style={styles.profileDivider} />
             <AppText color={COLORS.TEXT_DARK_GRAY} size={15}>
               Đường D5, Bình Thạnh, Hồ Chí Minh, Việt Nam

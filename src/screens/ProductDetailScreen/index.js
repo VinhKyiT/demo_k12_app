@@ -1,5 +1,5 @@
 import { ScrollView, View } from 'react-native';
-import React, { memo, useMemo, useRef, useState, useCallback } from 'react';
+import React, { memo, useMemo, useRef, useState, useCallback, useEffect } from 'react';
 import styles from './styles';
 import { useRoute } from '@react-navigation/native';
 import AppHeader from '~components/AppHeader';
@@ -14,12 +14,14 @@ import BodySection from './components/BodySection';
 import AppButton from '~components/AppButton';
 import { addToCart } from '~redux/cart/cart.actions';
 import { useDispatch } from 'react-redux';
+import { foodData } from '~mock';
 
 const ProductDetailScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [productDetail, setProductDetail] = useState({});
   const carouselRef = useRef(null);
   const { params } = useRoute();
-  const { productDetail } = params || {};
+  const { productId } = params || {};
   const dispatch = useDispatch();
 
   const onAddToCart = useCallback(() => {
@@ -46,6 +48,14 @@ const ProductDetailScreen = () => {
     }),
     [],
   );
+
+  useEffect(() => {
+    const product = foodData.find(item => item.id.toString() === productId?.toString());
+    if (product) {
+      setProductDetail(product);
+    }
+  }, [productId]);
+
   return (
     <View style={styles.container}>
       <AppHeader leftIcon={headerLeftIconProps} rightIcon={headerRightIconProps} />
