@@ -6,6 +6,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { uploadFile } from '../../services/shared/files.services';
 import { onDisplayNotification } from '../../services/shared/notification.service';
 import notifee, { AndroidImportance, AndroidStyle } from '@notifee/react-native';
+import InAppBrowser from 'react-native-inappbrowser-reborn';
 const HistoryScreen = () => {
   const handleDisplayNotification = async () => {
     await notifee.createChannel({
@@ -92,6 +93,22 @@ const HistoryScreen = () => {
     // }, 2000);
   };
 
+  const onOpenInAppBrowser = async () => {
+    const isAvailable = await InAppBrowser.isAvailable();
+    if (isAvailable) {
+      await InAppBrowser.open('https://vinhkyit.com/product/1', {
+        showTitle: true,
+        toolbarColor: '#6200EE',
+        secondaryToolbarColor: 'black',
+        navigationBarColor: 'black',
+        navigationBarDividerColor: 'white',
+        enableUrlBarHiding: true,
+        enableDefaultShare: true,
+        forceCloseOnRedirection: true,
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <AppButton
@@ -104,6 +121,7 @@ const HistoryScreen = () => {
         }}
       />
       <AppButton title="Display Notification" onPress={handleDisplayNotification} />
+      <AppButton title="Open InAppBrowser" onPress={onOpenInAppBrowser} />
     </View>
   );
 };

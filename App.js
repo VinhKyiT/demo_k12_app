@@ -20,10 +20,17 @@ import notifee, { EventType } from '@notifee/react-native';
 import codePush from 'react-native-code-push';
 import CodePushProvider from '~contexts/CodePush';
 import DeepLinkProvider from '~contexts/DeepLink';
+import Geolocation from '@react-native-community/geolocation';
 
 const App = () => {
   GoogleSignin.configure({
     webClientId: '39417402772-6pb0ovgbm9hsaoafelpk76ssl4cp72v7.apps.googleusercontent.com',
+  });
+
+  Geolocation.setRNConfiguration({
+    skipPermissionRequests: false,
+    authorizationLevel: 'whenInUse',
+    enableBackgroundLocationUpdates: true,
   });
 
   useLayoutEffect(() => {

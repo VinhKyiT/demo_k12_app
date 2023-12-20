@@ -16,5 +16,8 @@ const ROUTES = {
   CHANGE_INFORMATION: 'ChangeInformationScreen',
   CAMERA: 'CameraScreen',
   CODE_SCANNER: 'CodeScannerScreen',
+  RENDER_HTML: 'RenderHTMLScreen',
+  WEB_VIEW: 'WebViewScreen',
+  GEOLOCATION: 'GeoLocationScreen',
 };
 export { ROUTES };

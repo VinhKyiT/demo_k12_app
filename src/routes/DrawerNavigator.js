@@ -14,6 +14,9 @@ import { logout } from '../redux/auth/auth.actions';
 import NavigationServices from '../utils/NavigationServices';
 import CameraScreen from '~screens/CameraScreen';
 import CodeScannerScreen from '~screens/CodeScannerScreen';
+import RenderHTMLScreen from '~screens/RenderHTML';
+import WebViewScreen from '~screens/WebViewScreen';
+import GeoLocationScreen from '~screens/GeoLocation';
 
 const Drawer = createDrawerNavigator();
 
@@ -80,6 +83,36 @@ const DrawerNavigator = () => {
         }}
         name={ROUTES.CODE_SCANNER}
         component={CodeScannerScreen}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="language-html5" color={color} size={size} />
+          ),
+          drawerLabel: 'Render HTML',
+        }}
+        name={ROUTES.RENDER_HTML}
+        component={RenderHTMLScreen}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="web" color={color} size={size} />
+          ),
+          drawerLabel: 'WebView',
+        }}
+        name={ROUTES.WEB_VIEW}
+        component={WebViewScreen}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="earth" color={color} size={size} />
+          ),
+          drawerLabel: 'Geo Location',
+        }}
+        name={ROUTES.GEOLOCATION}
+        component={GeoLocationScreen}
       />
     </Drawer.Navigator>
   );

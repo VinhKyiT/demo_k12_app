@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View, Linking } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { IMAGES } from '~assets/images';
 import styles from './styles';
@@ -18,6 +18,8 @@ import { LOGIN } from '../../redux/auth/auth.constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Formik } from 'formik';
 import { validationLoginSchema } from '../../utils/schemas/loginSchema';
+import queryString from 'query-string';
+import { getProfileApi } from '~services/apis/auth.apis';
 const AuthScreen = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const loginError = useSelector(loginErrorSelector);
@@ -39,6 +41,35 @@ const AuthScreen = () => {
     },
     [dispatch],
   );
+
+  const onLoginWithAgentAppPress = () => {
+    Linking.openURL('myloginagentapp://login');
+  };
+
+  useEffect(() => {
+    const listener = Linking.addEventListener('url', async ({ url }) => {
+      console.log('url', url);
+      const result = queryString.parseUrl(url);
+      if (result?.query?.access_token) {
+        const profile = await getProfileApi({
+          headers: {
+            Authorization: `Bearer ${result?.query?.access_token}`,
+          },
+        });
+        if (profile?.id) {
+          dispatch(getUserProfile(profile));
+          dispatch(
+            loginSuccess({
+              accessToken: result?.query?.access_token,
+              refreshToken: result?.query?.refresh_token,
+            }),
+          );
+        }
+      }
+    });
+    return () => listener.remove();
+  }, [dispatch]);
+
   useEffect(() => {
     if (isLoggedIn) {
       NavigationServices.reset({ routes: [{ name: ROUTES.DRAWER }], index: 0 });
@@ -126,6 +157,12 @@ const AuthScreen = () => {
               );
             }}
           </Formik>
+          <AppButton
+            onPress={onLoginWithAgentAppPress}
+            title="Login with My App"
+            titleStyle={styles.buttonTitle}
+            style={styles.buttonContainer}
+          />
           <AppButton
             isLoading={isLoggingIn}
             onPress={() => {
