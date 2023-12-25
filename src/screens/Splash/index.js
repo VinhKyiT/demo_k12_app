@@ -6,25 +6,48 @@ import { ROUTES } from '../../constants/routes';
 import LocalStorage from '../../helpers/storage';
 import SplashScreen from 'react-native-splash-screen';
 import useDeepLink from '~hooks/useDeepLink';
+import ReactNativeBiometrics from 'react-native-biometrics';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '~redux/auth/auth.actions';
+import { getBiometricStateSelector, loginStateSelector } from '~redux/auth/auth.selectors';
 
 const AppSplash = () => {
   const { handleDeeplinkUrlReceived } = useDeepLink();
+  const isLoggedIn = useSelector(loginStateSelector);
+  const isBiometricEnabled = useSelector(getBiometricStateSelector);
+  const dispatch = useDispatch();
   const getIsShownOnboarding = async () => {
     const result = await LocalStorage.getData('IS_SHOWN_ONBOARDING');
     return result ? true : false;
   };
 
-  const getIsLoggedInStatus = async () => {
-    const loginStatus = await LocalStorage.getData('IS_LOGGED_IN');
-    return !!loginStatus;
-  };
+  const handleBiometrics = useCallback(async () => {
+    const rnBiometrics = new ReactNativeBiometrics({ allowDeviceCredentials: true });
+    rnBiometrics
+      .simplePrompt({ promptMessage: 'Confirm fingerprint' })
+      .then(resultObj => {
+        const { success } = resultObj;
+        if (success) {
+          NavigationServices.replace(ROUTES.DRAWER);
+        } else {
+          console.log('Navigate to pin login');
+        }
+      })
+      .catch(() => {
+        console.log('biometrics failed');
+        dispatch(logout());
+      });
+  }, [dispatch]);
 
   const handleSplashData = useCallback(async () => {
     const isShownOnboarding = await getIsShownOnboarding();
-    const isLoggedIn = await getIsLoggedInStatus();
 
     if (isShownOnboarding) {
       if (isLoggedIn) {
+        if (isBiometricEnabled) {
+          handleBiometrics();
+          return;
+        }
         NavigationServices.replace(ROUTES.DRAWER);
       } else {
         NavigationServices.replace(ROUTES.AUTH_SCREEN);
@@ -32,7 +55,7 @@ const AppSplash = () => {
     } else {
       NavigationServices.replace(ROUTES.ONBOARDING_SCREEN);
     }
-  }, []);
+  }, [handleBiometrics, isBiometricEnabled, isLoggedIn]);
 
   useEffect(() => {
     handleSplashData().finally(() => {

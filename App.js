@@ -21,6 +21,7 @@ import codePush from 'react-native-code-push';
 import CodePushProvider from '~contexts/CodePush';
 import DeepLinkProvider from '~contexts/DeepLink';
 import Geolocation from '@react-native-community/geolocation';
+import Toast from 'react-native-toast-message';
 
 const App = () => {
   GoogleSignin.configure({
@@ -123,6 +124,7 @@ const App = () => {
                 <DeepLinkProvider>
                   <MainNavigator />
                   <AppModal />
+                  <Toast />
                 </DeepLinkProvider>
               </RootSiblingParent>
             </PersistGate>

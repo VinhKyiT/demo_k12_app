@@ -5,3 +5,5 @@ export const LOGIN = createTypes('AUTH/LOGIN');
 export const LOGOUT = createTypes('AUTH/LOGOUT');
 
 export const SET_TOKEN = createTypes('AUTH/SET_TOKEN');
+
+export const SET_BIOMETRICS_ENABLED = createTypes('AUTH/SET_BIOMETRICS_ENABLED');

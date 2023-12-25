@@ -1,5 +1,5 @@
-import { View, ScrollView, TouchableOpacity, Linking } from 'react-native';
-import React, { memo } from 'react';
+import { View, ScrollView, TouchableOpacity, Linking, Image, Text } from 'react-native';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './styles';
 import AppText from '~components/AppText';
 import { COLORS } from '~constants/colors';
@@ -9,6 +9,8 @@ import NavigationServices from '~utils/NavigationServices';
 import { ROUTES } from '~constants/routes';
 import { useSelector } from 'react-redux';
 import { getUserInfoSelector } from '../../redux/profile/profile.selectors';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { useFocusEffect } from '@react-navigation/native';
 
 const PROFILE_CHOICES = [
   {
@@ -34,6 +36,33 @@ const PROFILE_CHOICES = [
 ];
 
 const ProfileScreen = () => {
+  const [isLoadingProfileCard, setIsLoadingProfileCard] = useState(true);
+
+  const handleLoadingData = useCallback(() => {
+    setIsLoadingProfileCard(true);
+    setTimeout(() => {
+      setIsLoadingProfileCard(false);
+    }, 1500);
+  }, []);
+
+  useFocusEffect(handleLoadingData);
+
+  const profileCardLoadingNode = useMemo(() => {
+    return (
+      <SkeletonPlaceholder speed={1600} direction="left">
+        <View style={styles.userInfoContainer}>
+          <Image style={styles.profileImage} />
+          <View style={styles.infoWrapper}>
+            <Text style={{ height: 24, marginBottom: 8 }} />
+            <Text style={{ height: 24, marginBottom: 8 }} />
+            <Text style={{ height: 24, marginBottom: 8 }} />
+            <Text style={{ height: 34, marginBottom: 8 }} />
+          </View>
+        </View>
+      </SkeletonPlaceholder>
+    );
+  }, []);
+
   const userInfo = useSelector(getUserInfoSelector);
   return (
     <View style={styles.container}>
@@ -53,42 +82,46 @@ const ProfileScreen = () => {
             </AppText>
           </TouchableOpacity>
         </View>
-        <View style={styles.userInfoContainer}>
-          <FastImage
-            source={{
-              uri: userInfo?.avatar,
-            }}
-            style={styles.profileImage}
-          />
-          <View style={styles.infoWrapper}>
-            <AppText size={18} weight="semibold">
-              {userInfo?.name}
-            </AppText>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => {
-                Linking.openURL(`mailto:${userInfo?.email}`);
-              }}>
-              <AppText color={COLORS.TEXT_DARK_GRAY} size={15}>
-                {userInfo?.email}
+        {isLoadingProfileCard ? (
+          profileCardLoadingNode
+        ) : (
+          <View style={styles.userInfoContainer}>
+            <FastImage
+              source={{
+                uri: userInfo?.avatar,
+              }}
+              style={styles.profileImage}
+            />
+            <View style={styles.infoWrapper}>
+              <AppText size={18} weight="semibold">
+                {userInfo?.name}
               </AppText>
-            </TouchableOpacity>
-            <View style={styles.profileDivider} />
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => {
-                Linking.openURL('tel:0378383986');
-              }}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  Linking.openURL(`mailto:${userInfo?.email}`);
+                }}>
+                <AppText color={COLORS.TEXT_DARK_GRAY} size={15}>
+                  {userInfo?.email}
+                </AppText>
+              </TouchableOpacity>
+              <View style={styles.profileDivider} />
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  Linking.openURL('tel:0378383986');
+                }}>
+                <AppText color={COLORS.TEXT_DARK_GRAY} size={15}>
+                  +84 123 456 789
+                </AppText>
+              </TouchableOpacity>
+              <View style={styles.profileDivider} />
               <AppText color={COLORS.TEXT_DARK_GRAY} size={15}>
-                +84 123 456 789
+                Đường D5, Bình Thạnh, Hồ Chí Minh, Việt Nam
               </AppText>
-            </TouchableOpacity>
-            <View style={styles.profileDivider} />
-            <AppText color={COLORS.TEXT_DARK_GRAY} size={15}>
-              Đường D5, Bình Thạnh, Hồ Chí Minh, Việt Nam
-            </AppText>
+            </View>
           </View>
-        </View>
+        )}
         {PROFILE_CHOICES.map(item => {
           return (
             <TouchableOpacity
