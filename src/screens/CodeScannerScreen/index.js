@@ -1,12 +1,13 @@
 import { useIsFocused } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
-import { AppState, StyleSheet, View, Alert } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { AppState, StyleSheet, View, Alert, Linking } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { Camera, useCameraDevice, useCodeScanner } from 'react-native-vision-camera';
 import { IMAGES } from '~assets/images';
 import AppText from '~components/AppText';
 import styles from './styles';
+import InAppBrowser from 'react-native-inappbrowser-reborn';
 
 const CodeScannerScreen = () => {
   const [hasPermission, setHasPermission] = useState(false);
@@ -60,18 +61,34 @@ const CodeScannerScreen = () => {
     }
   }, [appStateVisible, isFocused, scannedCode]);
 
+  const handleScannedCode = useCallback(async code => {
+    if (code) {
+      switch (code) {
+        case code.includes('https://'):
+          await InAppBrowser.open(code, { forceCloseOnRedirection: true });
+          break;
+        default:
+          console.log('code', code);
+      }
+      setTimeout(() => {
+        setScannedCode(null);
+      }, 100);
+    }
+  }, []);
+
   useEffect(() => {
     if (scannedCode) {
-      Alert.alert('Message', scannedCode?.toString(), [
-        {
-          text: 'Ok',
-          onPress: () => {
-            setScannedCode(null);
-          },
-        },
-      ]);
+      // Alert.alert('Message', scannedCode?.toString(), [
+      //   {
+      //     text: 'Ok',
+      //     onPress: () => {
+      //       setScannedCode(null);
+      //     },
+      //   },
+      // ]);
+      handleScannedCode(scannedCode);
     }
-  }, [scannedCode]);
+  }, [scannedCode, handleScannedCode]);
 
   useEffect(() => {
     check(PERMISSIONS.ANDROID.CAMERA).then(status => {

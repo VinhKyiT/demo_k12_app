@@ -3,10 +3,11 @@ import React, { useRef, useEffect } from 'react';
 import WebView from 'react-native-webview';
 import AppIcon from '~components/AppIcon';
 import NavigationServices from '~utils/NavigationServices';
+import { useFocusEffect } from '@react-navigation/native';
 
 const WebViewScreen = () => {
   const webViewRef = useRef();
-  useEffect(() => {
+  useFocusEffect(() => {
     const listener = BackHandler.addEventListener('hardwareBackPress', () => {
       if (webViewRef?.current) {
         webViewRef?.current?.goBack();
@@ -15,7 +16,7 @@ const WebViewScreen = () => {
       return false;
     });
     return () => listener.remove();
-  }, []);
+  });
 
   const onAppBack = () => {
     NavigationServices.goBack();

@@ -20,6 +20,7 @@ import { Formik } from 'formik';
 import { validationLoginSchema } from '../../utils/schemas/loginSchema';
 import queryString from 'query-string';
 import { getProfileApi } from '~services/apis/auth.apis';
+import { showModal } from '../../components/AppModal';
 const AuthScreen = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const loginError = useSelector(loginErrorSelector);
@@ -43,7 +44,17 @@ const AuthScreen = () => {
   );
 
   const onLoginWithAgentAppPress = () => {
-    Linking.openURL('myloginagentapp://login');
+    Linking.openURL('myloginagentapp://login')
+      .then()
+      .catch(err => {
+        const errorAgentAppNotInstalled = err.message.includes('Could not open URL');
+        if (errorAgentAppNotInstalled) {
+          showModal({
+            title: 'Error',
+            content: 'Please install login agent app to use this feature',
+          });
+        }
+      });
   };
 
   useEffect(() => {
