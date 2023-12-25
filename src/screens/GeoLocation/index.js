@@ -1,9 +1,10 @@
-import { View, Text } from 'react-native';
-import React, { useEffect, useState, useCallback } from 'react';
 import Geolocation from '@react-native-community/geolocation';
-import Config from 'react-native-config';
-import axiosClient from '~utils/axiosClient';
 import queryString from 'query-string';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View } from 'react-native';
+import Config from 'react-native-config';
+import AppText from '~components/AppText';
+import axiosClient from '~utils/axiosClient';
 const GeoLocationScreen = () => {
   const [position, setPosition] = useState('');
   const [address, setAddress] = useState('');
@@ -37,7 +38,7 @@ const GeoLocationScreen = () => {
   }, [getAddress, position]);
   return (
     <View>
-      <Text>{address}</Text>
+      <AppText>{address}</AppText>
     </View>
   );
 };

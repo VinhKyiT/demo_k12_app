@@ -23,10 +23,8 @@ import { getProfileApi } from '~services/apis/auth.apis';
 import { showModal } from '../../components/AppModal';
 const AuthScreen = () => {
   const [currentTab, setCurrentTab] = useState(0);
-  const loginError = useSelector(loginErrorSelector);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(loginStateSelector);
-
   const formRef = useRef();
 
   const handleTabChange = tab => {

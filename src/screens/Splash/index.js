@@ -6,33 +6,60 @@ import { ROUTES } from '../../constants/routes';
 import LocalStorage from '../../helpers/storage';
 import SplashScreen from 'react-native-splash-screen';
 import useDeepLink from '~hooks/useDeepLink';
+import ReactNativeBiometrics from 'react-native-biometrics';
+import { useSelector } from 'react-redux';
+import { getBiometricStateSelector, loginStateSelector } from '~redux/auth/auth.selectors';
 
 const AppSplash = () => {
   const { handleDeeplinkUrlReceived } = useDeepLink();
+  const isLoggedIn = useSelector(loginStateSelector);
+  const isBioEnabled = useSelector(getBiometricStateSelector);
   const getIsShownOnboarding = async () => {
     const result = await LocalStorage.getData('IS_SHOWN_ONBOARDING');
     return result ? true : false;
   };
+  const handleBiometrics = useCallback(async () => {
+    console.log('handleBiometrics');
+    const rnBiometrics = new ReactNativeBiometrics({ allowDeviceCredentials: true });
 
-  const getIsLoggedInStatus = async () => {
-    const loginStatus = await LocalStorage.getData('IS_LOGGED_IN');
-    return !!loginStatus;
-  };
+    const isSupported = await rnBiometrics.isSensorAvailable();
+
+    console.log('isSupported', isSupported);
+
+    rnBiometrics
+      .simplePrompt({ promptMessage: 'Confirm fingerprint' })
+      .then(resultObject => {
+        const { success } = resultObject;
+
+        if (success) {
+          console.log('successful biometrics provided');
+          NavigationServices.replace(ROUTES.DRAWER);
+        } else {
+          console.log('user cancelled biometric prompt');
+        }
+      })
+      .catch(() => {
+        console.log('biometrics failed');
+      });
+  }, []);
 
   const handleSplashData = useCallback(async () => {
     const isShownOnboarding = await getIsShownOnboarding();
-    const isLoggedIn = await getIsLoggedInStatus();
 
     if (isShownOnboarding) {
       if (isLoggedIn) {
-        NavigationServices.replace(ROUTES.DRAWER);
+        if (isBioEnabled) {
+          handleBiometrics();
+        } else {
+          NavigationServices.replace(ROUTES.DRAWER);
+        }
       } else {
         NavigationServices.replace(ROUTES.AUTH_SCREEN);
       }
     } else {
       NavigationServices.replace(ROUTES.ONBOARDING_SCREEN);
     }
-  }, []);
+  }, [handleBiometrics, isBioEnabled, isLoggedIn]);
 
   useEffect(() => {
     handleSplashData().finally(() => {

@@ -1,10 +1,11 @@
-import { LOGIN, LOGOUT, SET_TOKEN } from './auth.constants';
+import { LOGIN, LOGOUT, SET_BIOMETRICS, SET_TOKEN } from './auth.constants';
 
 const initialState = {
   isLoggedIn: false,
   accessToken: '',
   refreshToken: '',
   error: '',
+  isBioEnabled: false,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -32,6 +33,11 @@ const authReducer = (state = initialState, action) => {
         ...state,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
+      };
+    case SET_BIOMETRICS.ORIGIN:
+      return {
+        ...state,
+        isBioEnabled: action?.payload,
       };
     default:
       return state;
