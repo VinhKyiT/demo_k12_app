@@ -1,0 +1,53 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Install Dependency" # will take around 2 mins
+  lane :installDependency do
+    yarn(
+      command: "install",
+      package_path: "../package.json"
+    )
+  end
+
+  desc "Build App" # will take around 20 mins
+  lane :buildApp do
+    begin
+      gradle(task: 'clean', project_dir: './')
+      gradle(task: 'assemble', build_type: 'Release', project_dir: './')
+    rescue => ex
+      UI.error(ex)
+      # slack(
+      #   message: "Android #{ENV["APP_SCHEME"]} build failed!",
+      #   channel: ENV["SLACK_CHANNEL"],
+      #   success: false,
+      #   slack_url: ENV["SLACK_URL"],
+      #   payload: {
+      #     "Build Date" => Time.new.to_s,
+      #     "Built by" => "Fastlane",
+      #   },
+      #   default_payloads: [:lane, :git_branch, :git_author],
+      # )
+    end
+  end
+
+  desc "Build and Release" # will take around 45 minutes when hermes enabled
+  lane :buildRelease do
+    installDependency
+    buildApp
+  end
+end
