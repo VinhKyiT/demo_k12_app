@@ -20,8 +20,13 @@ import { Formik } from 'formik';
 import { validationLoginSchema } from '../../utils/schemas/loginSchema';
 import queryString from 'query-string';
 import { getProfileApi } from '~services/apis/auth.apis';
+import { BannerAd, TestIds, BannerAdSize } from 'react-native-google-mobile-ads';
+import AppIcon from '../../components/AppIcon';
+import { COLORS } from '../../constants/colors';
 const AuthScreen = () => {
   const [currentTab, setCurrentTab] = useState(0);
+  const [isOpenAd, setIsOpenAd] = useState(true);
+  const [canCloseAd, setCanCloseAd] = useState(false);
   const loginError = useSelector(loginErrorSelector);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(loginStateSelector);
@@ -174,6 +179,40 @@ const AuthScreen = () => {
           />
         </View>
       </View>
+      {!!isOpenAd && (
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            justifyContent: 'flex-end',
+          }}>
+          {!!canCloseAd && (
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => {
+                setIsOpenAd(false);
+              }}
+              style={{
+                position: 'absolute',
+                right: 0,
+                top: 0,
+                zIndex: 999,
+              }}>
+              <AppIcon type="antdesign" name="closesquare" size={24} color={COLORS.GRAY} />
+            </TouchableOpacity>
+          )}
+          <BannerAd
+            requestOptions={{ keywords: ['fashion', 'clothing'] }}
+            unitId={TestIds.ADAPTIVE_BANNER}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+            onAdLoaded={() => {
+              setCanCloseAd(true);
+            }}
+          />
+        </View>
+      )}
     </KeyboardAwareScrollView>
   );
 };

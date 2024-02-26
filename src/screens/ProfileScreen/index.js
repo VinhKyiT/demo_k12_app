@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { getUserInfoSelector } from '../../redux/profile/profile.selectors';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { useFocusEffect } from '@react-navigation/native';
+import { BannerAd, TestIds, BannerAdSize } from 'react-native-google-mobile-ads';
 
 const PROFILE_CHOICES = [
   {
@@ -37,6 +38,9 @@ const PROFILE_CHOICES = [
 
 const ProfileScreen = () => {
   const [isLoadingProfileCard, setIsLoadingProfileCard] = useState(true);
+  const [canCloseAd, setCanCloseAd] = useState(false);
+  const [isOpenAd, setIsOpenAd] = useState(true);
+  const [adExtraHeight, setAdExtraHeight] = useState(0);
 
   const handleLoadingData = useCallback(() => {
     setIsLoadingProfileCard(true);
@@ -136,7 +140,52 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           );
         })}
+        <View style={{ height: adExtraHeight }} />
       </ScrollView>
+      {!!isOpenAd && (
+        <View
+          onLayout={e => {
+            console.log('e.nativeEvent.layout.height', e.nativeEvent.layout.height);
+            setAdExtraHeight(e.nativeEvent.layout.height);
+          }}
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            justifyContent: 'flex-end',
+          }}>
+          {!!canCloseAd && (
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => {
+                setIsOpenAd(false);
+                setAdExtraHeight(0);
+              }}
+              style={{
+                position: 'absolute',
+                right: 0,
+                top: 0,
+                zIndex: 999,
+              }}>
+              <AppIcon type="antdesign" name="closesquare" size={24} color={COLORS.GRAY} />
+            </TouchableOpacity>
+          )}
+          <BannerAd
+            requestOptions={{
+              keywords: ['fashion', 'clothing'],
+              networkExtras: {
+                collapsible: 'bottom',
+              },
+            }}
+            unitId={TestIds.ADAPTIVE_BANNER}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+            onAdLoaded={() => {
+              setCanCloseAd(true);
+            }}
+          />
+        </View>
+      )}
     </View>
   );
 };

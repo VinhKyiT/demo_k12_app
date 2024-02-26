@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
   foodCategoryContainer: {
     paddingVertical: 32,
     paddingLeft: 50,
+    height: 90,
   },
   foodCategoryItem: {
     width: 100,

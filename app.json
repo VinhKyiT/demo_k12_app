@@ -1,4 +1,7 @@
 {
   "name": "new_app_k12",
-  "displayName": "New App K12"
+  "displayName": "New App K12",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-7980930236764427~5229731594"
+  }
 }

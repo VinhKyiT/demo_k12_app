@@ -22,7 +22,13 @@ import CodePushProvider from '~contexts/CodePush';
 import DeepLinkProvider from '~contexts/DeepLink';
 import Geolocation from '@react-native-community/geolocation';
 import Toast from 'react-native-toast-message';
+import { AppOpenAd, TestIds, AdEventType } from 'react-native-google-mobile-ads';
 
+const adUnitId = __DEV__ ? TestIds.APP_OPEN : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+
+const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
+  keywords: ['fashion', 'clothing'],
+});
 const App = () => {
   GoogleSignin.configure({
     webClientId: '39417402772-6pb0ovgbm9hsaoafelpk76ssl4cp72v7.apps.googleusercontent.com',
@@ -35,6 +41,7 @@ const App = () => {
   });
 
   useLayoutEffect(() => {
+    appOpenAd.load();
     initLocale();
   }, []);
 
@@ -89,6 +96,12 @@ const App = () => {
   }
 
   useEffect(() => {
+    appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
+      // appOpenAd.show({ immersiveModeEnabled: true });
+    });
+  }, []);
+
+  useEffect(() => {
     bootstrap()
       .then(() => {})
       .catch(console.error);
@@ -115,7 +128,7 @@ const App = () => {
 
   // console.log(store.getState());
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{ flex: 1 }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <Provider store={store}>
@@ -134,13 +147,6 @@ const App = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.SCREEN_BG,
-  },
-});
 
 const AppWrapper = () => {
   return (
