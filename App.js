@@ -22,6 +22,9 @@ import CodePushProvider from '~contexts/CodePush';
 import DeepLinkProvider from '~contexts/DeepLink';
 import Geolocation from '@react-native-community/geolocation';
 import Toast from 'react-native-toast-message';
+import { AppOpenAd, TestIds, AdEventType } from 'react-native-google-mobile-ads';
+
+const adUnitId = __DEV__ ? TestIds.APP_OPEN : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
 
 const App = () => {
   GoogleSignin.configure({
@@ -34,9 +37,23 @@ const App = () => {
     enableBackgroundLocationUpdates: true,
   });
 
+  const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
+    keywords: ['fashion', 'clothing'],
+  });
+
   useLayoutEffect(() => {
     initLocale();
-  }, []);
+    appOpenAd.load();
+  }, [appOpenAd]);
+
+  useEffect(() => {
+    const listener = appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
+      appOpenAd.show({
+        immersiveModeEnabled: true,
+      });
+    });
+    return listener;
+  }, [appOpenAd]);
 
   useEffect(() => {
     allowPushNotification(async () => {
