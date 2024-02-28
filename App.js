@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from 'react';
-import { Alert, SafeAreaView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AppModal from '~components/AppModal';
 import { initLocale } from '~i18n';
@@ -17,7 +17,6 @@ import {
 } from './src/services/shared/notification.service';
 import messaging from '@react-native-firebase/messaging';
 import notifee, { EventType } from '@notifee/react-native';
-import codePush from 'react-native-code-push';
 import CodePushProvider from '~contexts/CodePush';
 import DeepLinkProvider from '~contexts/DeepLink';
 import Geolocation from '@react-native-community/geolocation';
