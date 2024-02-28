@@ -1,0 +1,18 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Avoid commit to sprint/iteration branches
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if [[ "$branch" =~ "sprint" ]]; then
+  echo "You can't commit directly to sprint branch"
+  exit 1
+fi
+
+if [[ "$branch" =~ "iteration" ]]; then
+  echo "You can't commit directly to iteration branch"
+  exit 1
+fi
+
+# Linting
+yarn lint-staged
